@@ -1,0 +1,10 @@
+total 29556
+drwxr-xr-x 2 root root    4096 Nov 17 03:08 .
+drwxr-xr-x 3 root root    4096 Nov 17 03:07 ..
+-rw-r--r-- 1 root root 2140202 Nov 17 03:08 azure.mp4
+-rw-r--r-- 1 root root       0 Nov 17 03:08 done.txt
+-rw-r--r-- 1 root root 3563308 Nov 17 03:08 freezio.mp4
+-rw-r--r-- 1 root root 9941165 Nov 17 03:08 inter-rao.mp4
+-rw-r--r-- 1 root root 5264330 Nov 17 03:08 juro.mp4
+-rw-r--r-- 1 root root 4985596 Nov 17 03:08 sweed.mp4
+-rw-r--r-- 1 root root 4347404 Nov 17 03:08 webka.mp4
