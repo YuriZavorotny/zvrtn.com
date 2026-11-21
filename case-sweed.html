@@ -90,6 +90,9 @@ img,video{display:block;max-width:100%}
 
 .big{font-family:var(--serif);font-weight:400;font-size:max(32px,calc(60*var(--u)));line-height:.95;text-transform:uppercase;letter-spacing:-.008em}
 .big b{font-family:var(--grot);font-weight:700;letter-spacing:-.022em}
+.big .nw{white-space:nowrap}
+@media (min-width:700px){.big .nwd{white-space:nowrap}}
+.big .hmb{display:none}
 /* антиква для высказываний: отзывы, about, выноски в кейсах */
 .say{font-family:var(--serif);font-weight:400;font-size:max(20px,calc(17.5*var(--u)));line-height:1.14;letter-spacing:-.004em}
 .say+.say{margin-top:.7em}
@@ -115,14 +118,14 @@ img,video{display:block;max-width:100%}
 /* ---------- главная ---------- */
 .hero{padding:calc(180*var(--u)) var(--m) calc(34*var(--u))}
 .hero .big{text-wrap:pretty}
-.inkw{display:grid;max-width:calc(900*var(--u))}
+.inkw{display:grid}
 
 .inkw>*{grid-area:1/1}
 .inkw .ink{pointer-events:none;color:transparent;opacity:0;transition:opacity .5s;filter:url(#oilf);
   background:linear-gradient(105deg,#5a5cff,#36c9c3,#c48bff,#ffb86b,#ff7fc4,#5a5cff) 0 0/300% 100%;-webkit-background-clip:text;background-clip:text}
 .inkw .ink b{color:transparent}
 .inkw.on .ink{opacity:1}
-.hint{display:flex;justify-content:space-between;align-items:center;margin:0 var(--m) calc(120*var(--u));padding-top:calc(12*var(--u));border-top:1px solid var(--line);color:var(--gray)}
+.hint{display:flex;justify-content:space-between;align-items:center;margin:0 var(--m) calc(120*var(--u));padding-top:calc(12*var(--u));border-top:1px solid var(--line);color:var(--ink)}
 .hint .dn{display:inline-flex;align-items:center;gap:.7em}
 .hint .dn svg{width:.9em;height:.9em;transform:rotate(90deg);animation:bob 1.8s var(--ease) infinite}
 @keyframes bob{0%,100%{translate:0 -3px}50%{translate:0 3px}}
@@ -242,10 +245,12 @@ img,video{display:block;max-width:100%}
 .chap .ct{position:sticky;top:calc(var(--hh) + 24px)}
 .chap .ct h3{font-family:var(--serif);font-weight:400;font-size:max(22px,calc(20*var(--u)));line-height:1.02;letter-spacing:-.005em;margin-top:.45em;text-wrap:balance}
 .pull{font-family:var(--grot);font-weight:700;font-size:max(18px,calc(14.5*var(--u)));line-height:1.22;letter-spacing:-.012em;max-width:26em;margin-bottom:max(16px,calc(20*var(--u)));text-wrap:balance}
-.shots{display:grid;grid-template-columns:repeat(2,1fr);gap:calc(8*var(--u));margin-top:calc(40*var(--u));padding:calc(8*var(--u));background:rgba(205,202,195,.55);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
+.shots{display:grid;grid-template-columns:repeat(2,1fr);gap:calc(8*var(--u));margin-top:calc(40*var(--u))}
 .shots.c3{grid-template-columns:repeat(3,1fr)}
 .shots.c5{grid-template-columns:repeat(5,1fr)}
 .shots.c1{grid-template-columns:1fr}
+.vshot{margin-top:calc(40*var(--u))}
+.vshot video{display:block;width:100%;height:auto;aspect-ratio:2000/1196;background:#fff}
 .shots figure,.mq figure{position:relative;cursor:zoom-in;overflow:hidden;background:rgba(255,255,255,.35)}
 .shots img{width:100%;height:auto}
 .shots img,.mq img{transition:filter .45s,opacity .45s}
@@ -368,7 +373,7 @@ html.vt .item.gl-on .asset video{opacity:1!important}
   .phead{padding:120px 0 10px}
   .sec{grid-template-columns:1fr;row-gap:20px;padding:16px 0 64px}
   .hero{padding:118px 20px 56px}
-  .big{font-size:30px;line-height:1.06}
+  .big{font-size:calc((100vw - 40px)*.0975);line-height:1.06}.big .hdt{display:none}.big .hmb{display:inline}
   .hint{margin-bottom:56px}
   #list{height:auto;padding:0}
   .row,.early .item{position:static;height:auto;margin-bottom:104px}
@@ -396,10 +401,10 @@ html.vt .item.gl-on .asset video{opacity:1!important}
   .study{padding:0;margin-top:80px}
   .chap{grid-template-columns:1fr;row-gap:22px;margin-top:84px}
   .chap .ct{position:static}
-  .shots,.shots.c3{grid-template-columns:1fr;margin-left:-20px;margin-right:-20px;padding:8px;gap:8px}.shots.c5{grid-template-columns:1fr 1fr;margin-left:-20px;margin-right:-20px}
+  .shots,.shots.c3{grid-template-columns:1fr;gap:8px}.shots.c5{grid-template-columns:1fr 1fr}
   .cmp{margin-left:-20px;margin-right:-20px}
   .qs,.jobs,.cards{grid-template-columns:1fr}
-  .ndaw{margin-left:-20px;margin-right:-20px}.ndaw .shots,.ndaw .shots.c3{margin-left:0;margin-right:0}
+  .ndaw .shots,.ndaw .shots.c3{margin-left:0;margin-right:0}
   .mqw{margin-top:72px}.mq figure img{height:var(--hm)}
   .pn{margin-top:96px;column-gap:16px}.pn .n{font-size:24px}
 }
@@ -434,24 +439,24 @@ html.vt .item.gl-on .asset video{opacity:1!important}
     <h2>Designing the Admin Portal End-to-End Across All Product Streams</h2><div class="body "><p>In Sweed Portal I worked across the entire admin platform, not a single vertical. I was responsible for the UX and cross-stream consistency of key product modules.</p><p>Even though my formal title was Senior Product Designer, the scope of responsibility and impact was closer to a Staff level role: I connected multiple teams, unified interaction patterns, aligned product logic between modules and ensured a seamless, predictable UX across the whole portal.</p></div>
   </section>
   <section class="chap">
-    <div class="ct"><p class="lbl gray">01</p><h3>Dashboard / Reports / Money / Inventory</h3></div>
-    <div><p class="pull">Rather than designing one-off pages, I worked at the system level.</p><div class="body "><p>These are the core operational modules of the portal that store managers and back-office teams use every day, the daily backbone of the retail workflow.</p><p>When I joined, these areas were already live and evolving fast across several product streams. I refined and extended the existing UX, kept modules consistent and added new features without breaking user expectations.</p><p>Rather than designing one-off pages, I worked at the system level, so each change fit a cohesive logic shared across the portal.</p></div><div class="shots "><figure><img src="big/sweed-01.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-02.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-03.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-04.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-05.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-06.jpg" alt="" decoding="async"></figure></div></div>
+    <div class="ct"><p class="lbl gray">01</p><h3>E-commerce / Marketing</h3></div>
+    <div><p class="pull">A small UX ambiguity can translate into lost revenue or misaligned offers on the storefront.</p><div class="body "><p>E-commerce runs the online storefront operation: Active orders as a board and as a table, order packing with barcode verification, Dispatch on a map with drivers and alerts, and delivery shifts. Marketing sits right next to it with Events, Discounts, Segments and User Workflows: campaigns, promotions and loyalty mechanics. Together they are the growth layer of the platform.</p><p>I refined the configuration flows, aligned delivery and assignment logic with store-level settings and improved tools for non-technical staff, and made marketing and e-commerce feel like one system. A big part of the work was reducing hidden states and clarifying cause and effect. Order packing, for example, shows which items are verified and which are missing before the final Verified or Not verified decision, so staff never have to guess whether an order is ready.</p><p>A small UX ambiguity here can mean lost revenue or misaligned offers, so I unified the logic behind these controls and exposed key dependencies, making configuration predictable rather than accidental.</p></div><div class="vshot"><video src="v/sweed-ecommerce.mp4" poster="v/sweed-ecommerce.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="Walkthrough: E-commerce and Marketing"></video></div></div>
   </section>
   <section class="chap">
     <div class="ct"><p class="lbl gray">02</p><h3>Customers</h3></div>
-    <div><p class="pull">This module needed clarity, predictability and robustness more than visual novelty.</p><div class="body "><p>The Customers module is the foundation of the portal’s buyer management and patient verification. Dispensary staff use it to validate identities, maintain medical records, manage documents, connect caregivers to patients and run compliance checks before a sale.</p><p>I extended and matured the existing UX: flows for validation, documents and medical eligibility, clearer states and edge cases, simpler navigation for high-frequency tasks. Because the module affects checkout and compliance risk, it needed clarity and robustness more than visual novelty.</p><p>A large part of the work was shaping the system rules behind customer states: when eligibility changes, which validations block, how caregiver relationships cascade. I defined edge scenarios with product and engineering to prevent loopholes that could lead to regulatory violations or checkout failure.</p></div><div class="shots "><figure><img src="big/sweed-07.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-08.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-09.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-10.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-11.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-12.jpg" alt="" decoding="async"></figure></div></div>
+    <div><p class="pull">This module needed clarity, predictability and robustness more than visual novelty.</p><div class="body "><p>The Customers module is the foundation of the portal’s buyer management and patient verification. Dispensary staff start from the customer queue and open a profile with tabs for Info, Documents, Forms, Purchase history and Logs, to validate identities, maintain medical records, connect caregivers to patients and run compliance checks before a sale.</p><p>I extended and matured the existing UX: flows for validation, documents and medical eligibility, clearer states and edge cases, simpler navigation for high-frequency tasks. Because the module affects checkout and compliance risk, it needed clarity and robustness more than visual novelty.</p><p>A large part of the work was shaping the system rules behind customer states: when eligibility changes, which validations block, how caregiver relationships cascade. I defined edge scenarios with product and engineering to prevent loopholes that could lead to regulatory violations or checkout failure.</p></div><div class="vshot"><video src="v/sweed-customers.mp4" poster="v/sweed-customers.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="Walkthrough: Customers"></video></div></div>
   </section>
   <section class="chap">
-    <div class="ct"><p class="lbl gray">03</p><h3>E-commerce / Marketing</h3></div>
-    <div><p class="pull">A small UX ambiguity can translate into lost revenue or misaligned offers on the storefront.</p><div class="body "><p>E-commerce configures the online storefront: product availability, pickup and delivery flows, dispatching and the customer-facing experience. Marketing is tightly connected, with campaigns, promotions, segmentation and loyalty mechanics. Together they are the growth layer of the platform.</p><p>I refined the configuration flows, aligned delivery and assignment logic with store-level settings and improved tools for non-technical staff. I made marketing and e-commerce settings feel like one system. A big part of the work was reducing hidden states and clarifying cause and effect, so admins understand how a setting affects the live storefront and campaigns.</p><p>A small UX ambiguity here can mean lost revenue or misaligned offers, so I unified the logic behind these controls and exposed key dependencies, making configuration predictable rather than accidental.</p></div><div class="shots "><figure><img src="big/sweed-13.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-14.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-15.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-16.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-17.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-18.jpg" alt="" decoding="async"></figure></div></div>
+    <div class="ct"><p class="lbl gray">03</p><h3>Store Setup</h3></div>
+    <div><p class="pull">A single wrong setting can change pricing, eligibility or fulfillment.</p><div class="body "><p>Store Setup is the configuration layer of the portal: Products, Prices, Attributes, Categories, Brands, Distributors, Locations, Employees, Hardware and more. It defines what the business looks like operationally before any sales happen.</p><p>I evolved the UX for these foundational settings: navigation hierarchy, dependencies between settings, easier configuration without breaking store logic. A single wrong setting can change pricing, eligibility or fulfillment, so the UX had to reinforce safety and clarity. Category settings, for instance, decide which product fields are enabled (quality line, strain, scents, flavorings, potency), so they are grouped and labeled to be read before they are changed.</p><p>Much of the work was modeling the logic behind settings: what is global vs store-level, how controls are grouped, what stays in advanced menus. I reduced cognitive load while keeping full configurability for power users through defaults and progressive disclosure.</p></div><div class="vshot"><video src="v/sweed-store-setup.mp4" poster="v/sweed-store-setup.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="Walkthrough: Store Setup"></video></div></div>
   </section>
   <section class="chap">
-    <div class="ct"><p class="lbl gray">04</p><h3>Store Setup</h3></div>
-    <div><p class="pull">A single wrong setting can change pricing, eligibility or fulfillment.</p><div class="body "><p>Store Setup is the configuration layer of the portal: products, brands, categories, taxes, permissions, hardware, fulfillment rules and compliance constraints. It defines what the business looks like operationally before any sales happen.</p><p>I evolved the UX for these foundational settings: navigation hierarchy, dependencies between settings, easier configuration without breaking store logic. A single wrong setting can change pricing, eligibility or fulfillment, so the UX had to reinforce safety and clarity and let operators configure advanced behavior without deep system knowledge.</p><p>Much of the work was modeling the logic behind settings: what is global vs store-level, how controls are grouped, what stays in advanced menus. I reduced cognitive load while keeping full configurability for power users through defaults and progressive disclosure.</p></div><div class="shots "><figure><img src="big/sweed-19.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-20.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-21.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-22.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-23.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-24.jpg" alt="" decoding="async"></figure></div></div>
+    <div class="ct"><p class="lbl gray">04</p><h3>Settings</h3></div>
+    <div><p class="pull">The goal was to make platform-wide decisions safer, not just easier to click through.</p><div class="body "><p>Settings is the infrastructure layer of the portal: E-commerce rules such as auto-approving orders and how long pickup, curbside and drive-through orders are held, Integrations like SendGrid, the store Schedule and Store behavior around promos, prices and refunds, plus Delivery, Notifications, Payment Methods, Company Profile and Billing. I supported its growing complexity while keeping a clean, predictable UX model.</p><p>I untangled technical concepts into understandable controls, grouped scattered toggles and made sensitive changes traceable and safe to edit. I set clear boundaries between organization-level and store-level logic, rethinking how inheritance, overrides and defaults are shown, so changes have a predictable scope.</p><p>Design changes here have long-term architectural consequences, so the work required systems thinking: configuration that is auditable, reversible when possible and resistant to misconfiguration. The goal was to make platform-wide decisions safer, not just easier to click through.</p></div><div class="vshot"><video src="v/sweed-settings.mp4" poster="v/sweed-settings.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="Walkthrough: Settings"></video></div></div>
   </section>
   <section class="chap">
-    <div class="ct"><p class="lbl gray">05</p><h3>Settings</h3></div>
-    <div><p class="pull">The goal was to make platform-wide decisions safer, not just easier to click through.</p><div class="body "><p>Settings is the infrastructure layer of the portal: organization-level rules, compliance integrations, timezones, delivery constraints, automation defaults and platform-level toggles. I supported its growing complexity while keeping a clean, predictable UX model.</p><p>I untangled technical concepts into understandable controls, grouped scattered toggles and made sensitive changes traceable and safe to edit. I set clear boundaries between organization-level and store-level logic, rethinking how inheritance, overrides and defaults are shown, so changes have a predictable scope.</p><p>Design changes here have long-term architectural consequences, so the work required systems thinking: configuration that is auditable, reversible when possible and resistant to misconfiguration. The goal was to make platform-wide decisions safer, not just easier to click through.</p></div><div class="shots "><figure><img src="big/sweed-25.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-26.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-27.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-28.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-29.jpg" alt="" decoding="async"></figure><figure><img src="big/sweed-30.jpg" alt="" decoding="async"></figure></div></div>
+    <div class="ct"><p class="lbl gray">05</p><h3>Dashboard / Reports / Money / Inventory</h3></div>
+    <div><p class="pull">Rather than designing one-off pages, I worked at the system level.</p><div class="body "><p>These are the core operational modules of the portal that store managers and back-office teams use every day. Dashboard shows at a glance how the store and its campaigns are performing. Reports is where analysts build and save their own views, such as gross sales by day. Money controls cash: shifts, cash drawers and the gap between expected and actual amounts. Inventory covers purchases, counts and transfers between locations.</p><p>When I joined, these areas were already live and growing fast across several product streams. I refined and extended the existing UX and kept the modules consistent as new features arrived. Much of it came down to data hierarchy and edge cases: a report builder with metrics, intervals, filters and grouping side by side, a Shifts list where every difference between expected and actual cash is visible at a glance, and Purchases and Transfers with statuses that are easy to scan.</p><p>Rather than designing one-off pages, I worked at the system level, so each change fit a cohesive logic shared across the portal.</p></div><div class="vshot"><video src="v/sweed-operations.mp4" poster="v/sweed-operations.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="Walkthrough: Dashboard, Reports, Money and Inventory"></video></div></div>
   </section>
   <nav class="pn">
     <a class="pv" href="case-inter-rao.html"><span class="lbl gray">Previous</span><span class="n"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span>Inter RAO</span></a>
@@ -828,9 +833,9 @@ function wrap(el){
     [].slice.call(n.childNodes).forEach(function(c){
       if(c.nodeType===3){
         var f=document.createDocumentFragment();
-        c.textContent.split(/(\s+)/).forEach(function(t){
+        c.textContent.split(/([ \t\r\n]+)/).forEach(function(t){
           if(!t) return;
-          if(/^\s+$/.test(t)){f.appendChild(document.createTextNode(t));return}
+          if(/^[ \t\r\n]+$/.test(t)){f.appendChild(document.createTextNode(t));return}
           var w=document.createElement("span");w.className="scr-w";w.setAttribute("aria-hidden","true");
           t.split("").forEach(function(ch){var s=document.createElement("span");s.className="scr-c";s.dataset.c=ch;s.textContent=ch;w.appendChild(s);spans.push(s)});
           f.appendChild(w);
@@ -1023,6 +1028,17 @@ b.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();va
 if("IntersectionObserver" in window){var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){setTimeout(function(){n.classList.add("in")},250);io.disconnect()}},{threshold:.35});io.observe(n)}else n.classList.add("in");
 n.addEventListener("pointermove",function(e){var r=n.getBoundingClientRect();v.style.setProperty("--gx",((e.clientX-r.left)/r.width*100).toFixed(1)+"%");v.style.setProperty("--gy",((e.clientY-r.top)/r.height*100).toFixed(1)+"%")});
 n.addEventListener("pointerleave",function(){v.style.setProperty("--gx","50%");v.style.setProperty("--gy","50%")});})();
+
+/* ролики-превью: играет только один, тот что лучше всего виден; при переходе к нему стартует с начала */
+(function(){var vs=[].slice.call(document.querySelectorAll(".vshot video"));if(!vs.length||!("IntersectionObserver" in window)||matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+var ratio=new Map(),cur=null;
+function pick(){var best=null,br=.6;vs.forEach(function(v){var r=ratio.get(v)||0;if(r>br){br=r;best=v}});
+ if(best===cur)return;
+ if(cur)cur.pause();
+ cur=best;
+ if(cur){try{cur.currentTime=0}catch(e){}var p=cur.play();if(p&&p.catch)p.catch(function(){})}}
+var io=new IntersectionObserver(function(es){es.forEach(function(e){ratio.set(e.target,e.intersectionRatio)});pick()},{threshold:[0,.2,.4,.6,.7,.8,.9,1]});
+vs.forEach(function(v){io.observe(v)})})();
 </script>
 </body>
 </html>
