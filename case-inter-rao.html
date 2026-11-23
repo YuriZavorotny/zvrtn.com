@@ -117,6 +117,7 @@ img,video{display:block;max-width:100%}
 
 /* ---------- главная ---------- */
 .hero{padding:calc(180*var(--u)) var(--m) calc(34*var(--u))}
+@media (min-width:700px){.hero{box-sizing:border-box;min-height:calc(89svh - 56*var(--u) - 62px);padding-top:calc(110*var(--u));padding-bottom:calc(56*var(--u));display:flex;flex-direction:column;justify-content:flex-end}}
 .hero .big{text-wrap:pretty}
 .inkw{display:grid}
 
@@ -125,7 +126,8 @@ img,video{display:block;max-width:100%}
   background:linear-gradient(105deg,#5a5cff,#36c9c3,#c48bff,#ffb86b,#ff7fc4,#5a5cff) 0 0/300% 100%;-webkit-background-clip:text;background-clip:text}
 .inkw .ink b{color:transparent}
 .inkw.on .ink{opacity:1}
-.hint{display:flex;justify-content:space-between;align-items:center;margin:0 var(--m) calc(120*var(--u));padding-top:calc(12*var(--u));border-top:1px solid var(--line);color:var(--ink)}
+.hint{display:flex;justify-content:space-between;align-items:center;margin:0 var(--m) calc(64*var(--u));padding-top:max(16px,calc(22*var(--u)));border-top:1px solid var(--line);color:var(--gray)}
+.inkw,.inkw *{cursor:default}
 .hint .dn{display:inline-flex;align-items:center;gap:.7em}
 .hint .dn svg{width:.9em;height:.9em;transform:rotate(90deg);animation:bob 1.8s var(--ease) infinite}
 @keyframes bob{0%,100%{translate:0 -3px}50%{translate:0 3px}}
@@ -372,7 +374,7 @@ html.vt .item.gl-on .asset video{opacity:1!important}
   .ddp a{padding:.75em 0}
   .phead{padding:120px 0 10px}
   .sec{grid-template-columns:1fr;row-gap:20px;padding:16px 0 64px}
-  .hero{padding:118px 20px 56px}
+  .hero{box-sizing:border-box;min-height:calc(88svh - 96px);padding:110px 20px 64px;display:flex;flex-direction:column;justify-content:center}
   .big{font-size:calc((100vw - 40px)*.0975);line-height:1.06}.big .hdt{display:none}.big .hmb{display:inline}
   .hint{margin-bottom:56px}
   #list{height:auto;padding:0}
@@ -669,7 +671,7 @@ var aUv=gl.getAttribLocation(P_Q.p,"aUv");gl.enableVertexAttribArray(aUv);gl.ver
 var ib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(gridIdx),gl.STATIC_DRAW);
 gl.bindVertexArray(null);
 
-var CFG={EDGE_ZONE:.3,GRID_SIZE:20,GRID_STRENGTH:0,LENS_STRENGTH:.3,CA_STRENGTH:.05,SMEAR_STRENGTH:.5,
+var CFG={EDGE_ZONE:.3,GRID_SIZE:20,GRID_STRENGTH:0,LENS_STRENGTH:.3,CA_STRENGTH:.05,SMEAR_STRENGTH:.25,
   LIQUID_STRENGTH:.05,LIQUID_SPEED:.0005,FISHEYE:.3,
   RIPPLE_MAX_RADIUS:1.4,RIPPLE_FRONT_SHARPNESS:10,RIPPLE_STRENGTH:.045,RIPPLE_FREQUENCY:12,RIPPLE_CHROMA:.02,RIPPLE_BRIGHTNESS:.45};
 
@@ -726,11 +728,12 @@ var heroEl=document.querySelector(".hero");
 function frame(now){
   var OFF=0;
   if(touch){var ty=Math.min(scrollY-PAD,document.documentElement.scrollHeight-(H+PAD*2));OFF=scrollY-ty;canvas.style.transform="translate3d(0,"+ty+"px,0)"}
+  var rdt=Math.max(.008,(now-last)/1000)||.016;
   var dt=Math.min(.033,(now-last)/1000)||.016;last=now;
 
-  /* скорость прокрутки (сглаженная, быстро растёт, медленно гаснет) */
+  /* скорость прокрутки в px/с, не зависит от частоты кадров (сглаженная, быстро растёт, медленно гаснет) */
   var dy=Math.abs(scrollY-lastScroll);lastScroll=scrollY;
-  var raw=Math.min(2,dy/25);
+  var raw=Math.min(1.2,dy/rdt/1500);
   sv+=(raw-sv)*(raw>sv?.05:.04);
 
   /* фон: жидкость */
