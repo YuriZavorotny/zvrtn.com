@@ -8,7 +8,7 @@ var ARROW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wid
 document.getElementById("list").innerHTML=PROJECTS.map(function(p,i){
   var src=(small&&p.video480)?p.video480:p.video;
   return '<article class="row item '+(i%2?'l':'r')+'" style="--y:'+(620*i)+'"'+(p.tint?' data-tint="'+p.tint.join(",")+'"':'')+'>'+
-    '<div class="asset"><video src="'+esc(src)+'" muted loop playsinline preload="auto" autoplay></video></div>'+
+    '<div class="asset"><video src="'+esc(src)+'" poster="'+esc(src.replace(/\.mp4$/,".jpg"))+'" muted loop playsinline preload="'+(i<2?'auto':'metadata')+'" autoplay></video></div>'+
     '<a class="txt" href="'+esc(p.href)+'">'+
       '<h3 class="ttl"><span class="arr" aria-hidden="true">'+ARROW+'</span><span class="nm">'+esc(p.title)+'</span></h3>'+
       '<div class="meta"><p class="role">'+esc(p.role)+'</p><p class="dt">'+esc(p.period)+'</p>'+(p.metric||[]).map(function(m){return '<p class="mt">'+esc(m)+'</p>'}).join('')+'</div>'+
@@ -27,7 +27,7 @@ if("IntersectionObserver" in window){
   var io=new IntersectionObserver(function(es){es.forEach(function(e){
     var it=items.filter(function(i){return i.asset===e.target})[0]; if(!it) return;
     it.visible=e.isIntersecting;
-    if(e.isIntersecting){var pr=it.video.play();pr&&pr.catch&&pr.catch(function(){})} else it.video.pause();
+    if(e.isIntersecting){if(it.video.preload!=="auto")it.video.preload="auto";var pr=it.video.play();pr&&pr.catch&&pr.catch(function(){})} else it.video.pause();
   })},{rootMargin:"200px"});
   items.forEach(function(it){io.observe(it.asset)});
 }
@@ -37,6 +37,13 @@ function kick(){items.forEach(function(it){if(it.visible!==false&&it.video.pause
 items.forEach(function(it){it.video.addEventListener("canplay",kick)});
 ["pointerdown","touchstart","keydown","scroll","visibilitychange"].forEach(function(ev){addEventListener(ev,kick,{passive:true})});
 setTimeout(kick,600);setTimeout(kick,2000);
+/* сторож: если видео на экране застряло без данных, перезапускаем загрузку */
+setInterval(function(){items.forEach(function(it){var v=it.video;
+  if(it.visible===false||v.readyState>=2){it.stuck=0;return}
+  if(v.readyState===it.lastRS&&v.buffered.length===it.lastBuf)it.stuck=(it.stuck||0)+1;else it.stuck=0;
+  it.lastRS=v.readyState;it.lastBuf=v.buffered.length;
+  if(it.stuck>=2){it.stuck=0;v.preload="auto";v.load();var p=v.play();p&&p.catch&&p.catch(function(){})}
+})},2000);
 /* ---------- WebGL ---------- */
 var canvas=document.getElementById("gl");
 var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
