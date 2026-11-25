@@ -727,7 +727,7 @@ FOOT = '''  <footer class="foot">
   </footer>'''
 
 SITE = "https://zvrtn.com/"
-OG_DESC = {"home": "Product designer with 13 years in B2B & SaaS. AI features, code prototypes, measurable impact.",
+OG_DESC = {"home": "Product designer with 13 years in web & apps. AI features, code prototypes, measurable impact.",
            "about": "Product designer. Led design teams, mentored designers, built design systems and AI features.",
            "contact": "Email, LinkedIn and Telegram."}
 def og(cur, title):
@@ -796,7 +796,7 @@ LI_RECS = "https://www.linkedin.com/in/zvrtn/details/recommendations/"
 def home():
     recs = "".join('<figure><q class="rq">%s</q><figcaption><a class="rn" href="%s" target="_blank" rel="noopener">%s%s</a><p class="lbl gray rl">%s</p></figcaption></figure>\n      ' % (esc(q), LI[n], n, ARROW, re.sub(r",\s+[A-Z][a-z]{2} \d{4}$", "", r)) for n, r, q in RECS)
     main = f'''  <section class="hero">
-    <div class="inkw"><h1 class="big"><span class="hdt"><b>Product designer</b> with 13 years <span class="nwd">in B2B &amp; SaaS.</span> <span class="nw"><b>AI&nbsp;features</b>,</span> code prototypes, measurable impact</span><span class="hmb"><b>Product designer</b> with 13 years in B2B &amp; SaaS, shipping <b>AI&nbsp;features</b> with measurable impact</span></h1></div>
+    <div class="inkw"><h1 class="big"><span class="hdt"><b>Product designer</b> with 13 years <span class="nwd">in web&nbsp;&amp;&nbsp;apps.</span> <span class="nw"><b>AI&nbsp;features</b>,</span> code prototypes, measurable impact</span><span class="hmb"><b>Product designer</b> with 13 years in web&nbsp;&amp;&nbsp;apps, shipping <b>AI&nbsp;features</b> with measurable impact</span></h1></div>
   </section>
   <a class="hint" href="#list"><span class="lbl dn"><span data-scr>Scroll</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span class="lbl" data-scr>2013 – 2026</span></a>
   <div id="list"></div>
