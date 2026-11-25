@@ -35,3 +35,8 @@ ffmpeg -framerate 30 -i fr_az3/%05d.jpg -c:v libx264 -crf 20 -preset slow -pix_f
 - `img/` — экраны в 2000 px: sweed-NN, azure-NN (azure-02c/02f/02h/01h — производные).
 - `orig/` — исходные скриншоты Azure до правок. `fix_meta2.py`, `tbl.py`, `unchk.py` делают из них отредактированные экраны (тексты набираются шрифтом Selawik из fonts/, вспомогательные функции в `retitle.py`).
 - Готовые ролики кладутся в корень репо в v/ (mp4 + jpg-постер из первого кадра).
+
+## Sweed AI (A/B в Workflows)
+
+`proto/sweedai_src/ab.html?s=0..3` — экран A/B-теста со Sweed AI в четырёх состояниях (HTML, шрифт Figtree, сайдбар и шапка из sweed-18).
+`python3 sweedai_src/shot2.py` из proto/ пишет кадры img/sweedai-00..03.jpg, ролик: `node render5.js sweedai` → v/sweed-ai.mp4.

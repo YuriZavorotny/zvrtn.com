@@ -14,7 +14,7 @@ FONTS = '''<link rel="preconnect" href="https://fonts.googleapis.com">
 ARROW = '<span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span>'
 
 CASES = [
- dict(slug="sweed", title="Sweed", role="Senior/Staff Product Designer", period="Dec 2023 – Jan 2026", years="2023–2026", video="v/sweed.mp4",
+ dict(slug="sweed", title="Sweed", role="Senior/Staff Product Designer", period="Dec 2023 – Feb 2026", years="2023–2026", video="v/sweed.mp4",
       link=("sweedpos.com", "https://sweedpos.com"),
       metric=["Orders placed 2.8x", "Open rate +19%", "CTR +12%", "Revenue per user +$27"]),
  dict(slug="juro", title="Juro", role="Lead Product Designer", period="Sep 2020 – Dec 2023", years="2020–2023", video="v/juro.mp4",

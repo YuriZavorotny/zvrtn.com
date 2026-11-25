@@ -1,0 +1,6 @@
+{"img":"sweedai","h":1248,"start":"00","screens":["00","02","01","03"],
+ "hs":[{"s":"00","id":"gen","box":[1505,690,1763,734,"8px"],"to":"02"},
+       {"s":"02","id":"add","box":[1552,1153,1913,1203,"8px"],"to":"01"},
+       {"s":"01","id":"start","box":[1552,1153,1913,1203,"8px"],"to":"03"}],
+ "steps":[["hover","gen"],["click","gen"],["click","add"],["hover","start"],["click","start"]],
+ "endHold":3.2}

@@ -18,8 +18,8 @@ ICO_COPY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 ICO_OUT = '<svg class="out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 19L19 5"/><path d="M8.5 5H19v10.5"/></svg>'
 
 CASES = [
- dict(slug="sweed", title="Sweed", role="Senior/Staff Product Designer", period="Dec 2023 – Jan 2026", video="v/sweed.mp4", big=True,
-      product="Admin platform for regulated retail", link=("sweedpos.com", "https://www.sweedpos.com"),
+ dict(slug="sweed", title="Sweed", role="Senior/Staff Product Designer", period="Dec 2023 – Feb 2026", video="v/sweed.mp4", big=True,
+      product="AI marketing and admin platform for regulated retail", link=("sweedpos.com", "https://www.sweedpos.com"),
       metric=["Orders placed 2.8x", "Open rate +19%", "CTR +12%", "Revenue per user +$27"]),
  dict(slug="juro", title="Juro", role="Lead Product Designer", period="Sep 2020 – Dec 2023", video="v/juro.mp4", big=True,
       product="Contract editor, legal tech SaaS", link=("juro.com", "https://juro.com"),
@@ -909,6 +909,28 @@ PULLS.update({
   "Settings": "The goal was to make platform-wide decisions safer, not just easier to click through.",
 })
 
+
+AB_AI = (
+  study('<p class="state">A/B testing with Sweed AI, built into Workflows</p>' +
+        body(ps("Workflows is the canvas where dispensary marketers build automated campaigns: an audience, a delay, an email, a condition. I designed the A/B testing layer for it and the Sweed AI tools that live inside that layer.",
+                "The idea is simple. AI is good at producing options and has no way of knowing which one will sell. So Sweed AI drafts, tunes and checks the variants, and the test decides. Sweed made the tools public in August 2026 as part of its AI marketing suite.")), "Case study") +
+  chapter("One email and a guess", body(ps("A step in Workflows could send only one version of an email. Marketers had no way to compare subject lines or content, so campaign performance was unpredictable and hard to improve."),
+      ul("Built in: testing had to live inside the flow builder, with no redirects and no external tools",
+         "Flexible: marketers needed control over test size, the winning metric and how the winner is chosen",
+         "Light: setup and monitoring had to feel native and usable by any team, not only by analysts"))) +
+  chapter("A test is a property of the step", body(ps("Instead of a separate tool, A/B testing became a checkbox on the email step. Turning it on opens the settings right in the side panel: the share of the segment that gets the test, the winning metric such as order placed rate, the test duration, and what the rest of the audience receives.",
+      "Variants sit in a table below the settings, and the canvas marks the step as a test, so it reads at a glance even in a long flow."))) +
+  chapter("What changed", body(ps("Curaleaf, one of the largest cannabis retailers in the US, ran its email campaigns with A/B testing in November and December 2024."),
+      '<div style="margin-top:calc(40*var(--u))">' + nums([("2.8x", "Order-placed rate", "9% → 26%"), ("+19%", "Open rate", "~18% → 21.5%"), ("+12%", "Click-through rate", ""), ("+$27", "Revenue per user", "Median $140 → $167")]) + '</div>')) +
+  chapter("Sweed AI drafts, the test decides", body(ps("Sweed AI sits inside the test, not in front of it. Every suggestion is labeled and reversible, and nothing goes out until the marketer starts the test."),
+      ul("Tunes the setup: suggests test share, metric and duration from the segment size and the campaign goal, and says why",
+         "Drafts variants: the marketer describes the goal, AI writes subject lines and content from the store catalog, active promos and each customer's past purchases",
+         "Checks compliance: every draft is checked against cannabis advertising rules before it can join the test, with a one-click rewrite",
+         "Explains the result: after the test, AI says why the winner won and what to test next")) +
+      '<div class="vshot"><video src="v/sweed-ai.mp4" poster="v/sweed-ai.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="Walkthrough: generating variants with Sweed AI, starting the test and reading the result" style="aspect-ratio:2000/1248"></video></div>'
+      '<p class="lbl gray cap">Numbers in the prototype are illustrative</p>')
+)
+
 def content(slug):
     _n[0] = 0; _pc[0] = 0
     if slug == "juro":
@@ -964,8 +986,19 @@ def content(slug):
         new = [chs[2], chs[1], chs[3], chs[4], chs[0]]
         new = [re.sub(r'<p class="lbl gray">\d\d</p>', '<p class="lbl gray">%02d</p>' % (i + 1), c, count=1) for i, c in enumerate(new)]
         s = s[:start] + "".join(new) + s[end:]
-        return s.replace(old, nums([("−15%", "Support load", ""), ("+25%", "Admin engagement", ""),
-                  ("2.8x", "Order-placed rate", ""), ("+$27", "Revenue per user", "")], "four"))
+        s = s.replace(old, nums([("2.8x", "Order-placed rate", ""), ("+$27", "Revenue per user", ""),
+                  ("−15%", "Support load", ""), ("+25%", "Admin engagement", "")], "four"))
+        # роль: акцент на A/B и Sweed AI
+        a = "<p>I drove the redesign of core operational workflows"; assert a in s
+        s = s.replace(a, "<p>My main focus was marketing automation: I designed A/B testing for Workflows, the campaign builder, and the Sweed AI tools inside it.</p>" + a, 1)
+        # старый обзор платформы уходит в конец, перед ним новая история про A/B и AI
+        st = s.index('  <section class="study">')
+        s = s[:st] + AB_AI + s[st:].replace('<p class="lbl gray">Case study</p>', '<p class="lbl gray">Across the platform</p>', 1)
+        n = [0]
+        def ren(m):
+            n[0] += 1; return '<p class="lbl gray">%02d</p>' % n[0]
+        s = re.sub(r'(?<=<div class="ct">)<p class="lbl gray">\d\d</p>', ren, s)
+        return s
     if slug == "microsoft-azure":
         nda = ('<div class="vshot"><video src="v/azure-feedback.mp4" poster="v/azure-feedback.jpg" muted loop playsinline preload="metadata" disablepictureinpicture '
                'aria-label="Walkthrough: filtering feedback, opening an item, print view and creating a feature" style="aspect-ratio:2000/1248"></video></div>')
