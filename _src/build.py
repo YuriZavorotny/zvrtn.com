@@ -18,6 +18,9 @@ ICO_COPY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 ICO_OUT = '<svg class="out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 19L19 5"/><path d="M8.5 5H19v10.5"/></svg>'
 
 CASES = [
+ dict(slug="profi", title="Profi", role="Senior Product Designer", period="Mar 2026 – Nov 2026", video="v/profi.mp4", big=True,
+      product="AI tutor matching, service marketplace", stores=[("App Store", "https://apps.apple.com/us/app/id909017353")],
+      metric=["Client-to-contact conversion +23.5%", "First AI shortlist +21%", "5+ A/B tests in 6 months"]),
  dict(slug="sweed", title="Sweed", role="Senior/Staff Product Designer", period="Dec 2023 – Feb 2026", video="v/sweed.mp4", big=True,
       product="AI marketing and admin platform for regulated retail", link=("sweedpos.com", "https://www.sweedpos.com"),
       metric=["Orders placed 2.8x", "Open rate +19%", "CTR +12%", "Revenue per user +$27"]),
@@ -148,7 +151,7 @@ img,video{display:block;max-width:100%%}
 .hint .dn svg{width:.9em;height:.9em;transform:rotate(90deg);animation:bob 1.8s var(--ease) infinite}
 @keyframes bob{0%%,100%%{translate:0 -3px}50%%{translate:0 3px}}
 
-#list{position:relative;height:calc(1160*var(--u))}
+#list{position:relative;height:calc((440*var(--n,3) - 160)*var(--u))}
 .row{position:absolute;left:0;right:0;top:calc(var(--y)*var(--u));height:calc(280*var(--u));pointer-events:none}
 .asset{position:absolute;top:0;width:calc(449*var(--u));height:calc(280*var(--u));pointer-events:auto;background:transparent;display:block}
 .asset video{position:absolute;inset:0;width:100%%;height:100%%;object-fit:cover}
@@ -164,6 +167,7 @@ img,video{display:block;max-width:100%%}
 .item.gl-on .asset video{opacity:0}
 .asset video{transition:filter .45s,opacity .45s}
 @media (hover:hover){.stage:has(.item.hov) .item:not(.hov):not(.gl-on) .asset video{filter:grayscale(1);opacity:.38}}
+@media (hover:hover){.stage:not(:has(.item.hov)) .item:not(.act):not(.gl-on) .asset video{filter:grayscale(1);opacity:.38}}
 /* ранние работы: три колонки поменьше */
 .early{margin:calc(170*var(--u)) var(--m) 0;display:grid;grid-template-columns:calc(236*var(--u)) 1fr;column-gap:calc(20*var(--u))}
 .early .grid3{display:grid;grid-template-columns:repeat(3,1fr);column-gap:calc(40*var(--u))}
@@ -451,6 +455,16 @@ if(fine){dd.addEventListener("pointerenter",function(){clearTimeout(t);set(true)
 document.addEventListener("click",function(e){if(!dd.contains(e.target))set(false)});
 document.addEventListener("keydown",function(e){if(e.key==="Escape")set(false)});
 })();
+/* десктоп: цветной только один кейс, ближайший к центру экрана или тот, на который навели; остальные ч/б и полупрозрачные */
+(function(){
+if(matchMedia("(hover: none)").matches) return;
+var raf=0;
+function pick(){raf=0;var els=[].slice.call(document.querySelectorAll(".item"));if(!els.length)return;var c=innerHeight/2,best=null,bd=1e9;
+  els.forEach(function(el){var r=el.getBoundingClientRect(),d=Math.abs((r.top+r.bottom)/2-c);if(d<bd){bd=d;best=el}});
+  window.__activeLi=best;els.forEach(function(el){el.classList.toggle("act",el===window.__activeLi)})}
+function sched(){if(!raf)raf=requestAnimationFrame(pick)}
+addEventListener("scroll",sched,{passive:true});addEventListener("resize",sched);addEventListener("load",sched);sched();
+})();
 /* телефон: активен один блок, ближайший к центру экрана (стрелка, цвет), остальные гаснут */
 (function(){
 if(!matchMedia("(hover: none)").matches) return;
@@ -673,7 +687,7 @@ function tile(p,cls,st){
 }
 if(window.PROJECTS&&document.getElementById("list")){
 var bigP=PROJECTS.filter(function(p){return p.big}),smallP=PROJECTS.filter(function(p){return !p.big});
-document.getElementById("list").innerHTML=bigP.map(function(p,i){return tile(p,'row '+(i%%2?'l':'r'),' style="--y:'+(440*i)+'"')}).join("");
+document.getElementById("list").style.setProperty("--n",bigP.length);document.getElementById("list").innerHTML=bigP.map(function(p,i){return tile(p,'row '+(i%%2?'l':'r'),' style="--y:'+(440*i)+'"')}).join("");
 document.getElementById("early").innerHTML=smallP.map(function(p){return tile(p,'','')}).join("");
 }""" % json.dumps(ARROW)
     s = s[:a] + new + s[b:]
@@ -816,7 +830,7 @@ def home():
 # ------------------------------------------------------------------ about
 def about():
     by = {c["title"]: c["href"] for c in CASES}
-    xp = [("Profi", "Senior Product Designer", "Mar 2026 – now")] + [(c["title"], c["role"], c["period"]) for c in CASES]
+    xp = [(c["title"], c["role"], c["period"]) for c in CASES]
     def xrow(c, r, y, link=True):
         inner = '<span class="co">%s</span><span class="lbl">%s</span><span class="lbl gray yr">%s</span>' % (c, r, y)
         return '<li>%s</li>' % (('<a class="xr" href="%s">%s</a>' % (by[c], inner)) if (link and c in by) else '<div class="xr">%s</div>' % inner)
@@ -834,7 +848,7 @@ def about():
     </div>
   </section>
 ''' + sec("In numbers", '<div class="nums four">%s</div>' % "".join('<div><b>%s</b><p class="lbl">%s</p><p class="lbl gray">%s</p></div>' % x for x in [
-          ("+21%", "Client-to-contact<br>conversion", "Profi"), ("+25%", "Engagement with<br>admin workflows", "Sweed"),
+          ("+23.5%", "Client-to-contact<br>conversion", "Profi"), ("+25%", "Engagement with<br>admin workflows", "Sweed"),
           ("+29.5%", "Document import<br>into the editor", "Juro"), ("2.7x", "Feedback<br>processing speed", "Microsoft Azure")])) \
       + sec("Education", '<div class="edu">%s</div>' % "".join('<div><p class="deg">%s</p><p class="lbl">%s</p><p class="lbl gray">%s</p></div>' % x for x in [
           ("Art History", "Master's degree, Saint Petersburg<br>State University", "2014 – 2016"),
@@ -934,6 +948,8 @@ AB_AI = (
 
 def content(slug):
     _n[0] = 0; _pc[0] = 0
+    if slug == "profi":
+        return profi_content()
     if slug == "juro":
         s = content_old("juro").replace('<div style="margin-top:2em">', '<div class="cards">')
         s = s.replace("Alex Green, Head Counsel, Alpha Inc. Legal", "Jane Doe, Head Counsel").replace("Sarah Smith, Sales Manager / HR Manager, Compass Industries", "John Doe, Sales Manager / HR Manager")
@@ -1053,6 +1069,116 @@ def content(slug):
                         "The product is still in use inside the company today, with only minor updates."))) +
           marquee("interrao", range(1, 11), "min(48vh,calc(315*var(--u)))", "40vh"))
     raise KeyError(slug)
+
+# ------------------------------------------------------------------ Профи: AI-подбор репетиторов
+PERSONAS = [
+ ("Oksana", "Parent, 47", "Looking for a maths tutor for her daughter before the final exams", [
+  ("How do you usually look for a tutor?",
+   "Honestly? The dream is a friend handing me one: here, take this one. We went through three or four tutors before we found ours, my daughter kept saying she was falling asleep. So now I want to see everyone at once, not just the ones who replied. I screenshot the good ones and show her. The last word is hers."),
+  ("What do you think of the offers tutors send you?",
+   "I barely read them. It’s dead information, he didn’t write it himself. Feels like you’re chatting with a bot."),
+  ("What if the service picked three tutors and explained why?",
+   "If it really explains, education, reviews, how they work with kids, then yes, that’s exactly the “bring it to me on a plate” I want. If it just says “a perfect fit for you”, I’ll scroll past. And show the price straight away: 5,000 and I’m gone, you can find one for 2,500."),
+ ]),
+ ("Roman", "Student, 17", "Preparing for computer science and physics exams on his own", [
+  ("How do you choose between tutors?",
+   "Systematically. Reviews and rating first, then who they are and their education, then price, then experience, photo last. I go through about five profiles in fifteen minutes."),
+  ("Why don’t you open the offers?",
+   "Eight people wrote within a minute. Obviously an auto-reply."),
+  ("What would make you trust a recommendation?",
+   "Proof, not words. “Came with 65, passed with 89 three months later.” And I’d trust a 4.9 more than a 5.0. A 5.0 means he adapts to everyone. A 4.9 means he has character."),
+ ]),
+]
+
+SYN_CSS = """<style>
+.syn{margin-top:calc(40*var(--u));background:#fff;border:1px solid #e2e2e6;border-radius:12px;overflow:hidden;font-family:var(--grot);color:#1c1c1f;font-size:max(14px,calc(10.5*var(--u)))}
+.syn .tb{display:flex;align-items:baseline;gap:14px;padding:12px 18px;border-bottom:1px solid #e2e2e6;background:#fafafb}
+.syn .tb b{font-weight:600}.syn .tb span{color:#7a7a85}.syn .tb em{margin-left:auto;font-style:normal;color:#7a7a85}
+.syn .bd{display:grid;grid-template-columns:calc(230*var(--u)) 1fr}
+.syn .pp{display:flex;flex-direction:column;border-right:1px solid #e2e2e6;background:#fafafb;padding:10px 0}
+.syn .pp h4,.syn .sgw h4{margin:0;font-weight:500;font-size:max(12px,calc(9*var(--u)));color:#7a7a85;padding:4px 18px 8px}
+.syn .pp button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 18px;background:transparent;border-left:2px solid transparent}
+.syn .pp button:hover{background:#f0f0f3}
+.syn .pp button.on{background:#eceef4;border-left-color:#3b5bdb}
+.syn .av{font-style:normal;flex:none;width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:13px}
+.syn .pp b{display:block;font-weight:600}
+.syn .pp span{display:block;color:#7a7a85;font-size:.9em;margin-top:1px}
+.syn .cv{display:flex;flex-direction:column;min-height:calc(400*var(--u))}
+.syn .pf{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;padding:14px 22px;border-bottom:1px solid #e2e2e6}
+.syn .pf dt{color:#7a7a85}.syn .pf dd{margin:0}
+.syn .log{flex:1;display:flex;flex-direction:column;gap:14px;padding:18px 22px}
+.syn .t{max-width:40em;line-height:1.5}
+.syn .t small{display:block;font-size:.85em;color:#7a7a85;margin-bottom:3px}
+.syn .t.a p{margin:0;padding:.55em .9em;background:#f5f5f7;border-left:2px solid #3b5bdb;border-radius:0 6px 6px 0}
+.syn .t p{margin:0}
+.syn .dots{display:inline-flex;gap:5px;padding:.4em 0}.syn .dots i{width:6px;height:6px;border-radius:50%;background:#9a9aa5;animation:sd 1s infinite}.syn .dots i:nth-child(2){animation-delay:.15s}.syn .dots i:nth-child(3){animation-delay:.3s}
+@keyframes sd{0%,100%{opacity:.3}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.syn .dots i{animation:none}}
+.syn .sgw{border-top:1px solid #e2e2e6;padding:12px 4px 14px}
+.syn .sgw h4{padding-left:18px}
+.syn .sg{display:flex;flex-wrap:wrap;gap:6px;padding:0 18px}
+.syn .sg button{text-align:left;background:#fff;border:1px solid #d8d8de;border-radius:6px;padding:.45em .8em}
+.syn .sg button:hover{border-color:#3b5bdb;color:#3b5bdb}
+.syn .sg button[disabled]{opacity:.4;cursor:default;border-color:#d8d8de;color:inherit}
+.syn button:focus-visible{outline:2px solid #3b5bdb;outline-offset:2px}
+.vshot video{border-radius:calc(22*var(--u))}
+@media (max-width:700px){.syn .tb em{display:none}.syn .bd{grid-template-columns:1fr}.syn .pp{flex-direction:row;border-right:0;border-bottom:1px solid #e2e2e6;padding:0}.syn .pp h4{display:none}.syn .pp button{border-left:0;border-bottom:2px solid transparent;padding:10px 14px}.syn .pp button.on{border-bottom-color:#3b5bdb}.syn .pf,.syn .log{padding-left:14px;padding-right:14px}.syn .sgw{padding-left:0;padding-right:0}.syn .sgw h4,.syn .sg{padding-left:14px;padding-right:14px}.syn .cv{min-height:420px}.vshot video{border-radius:14px}}
+</style>"""
+
+SYN_JS = """<script>(function(){var P=%s,COL=['#8a6d3b','#4b5b7a'],r=document.getElementById('syn'),pp=r.querySelector('.pp'),cv=r.querySelector('.cv');
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function av(i,p){var a=el('i','av',p[0][0]);a.style.background=COL[i];return a}
+function turn(k,who,txt){var d=el('div','t '+k);d.appendChild(el('small',null,who));var p=el('p',null,txt);d.appendChild(p);return d}
+function show(i){var p=P[i];[].forEach.call(pp.querySelectorAll('button'),function(b,k){b.classList.toggle('on',k==i);b.setAttribute('aria-pressed',k==i)});
+cv.innerHTML='';var pf=el('dl','pf');[['Segment',p[1]],['Context',p[2]]].forEach(function(x){pf.appendChild(el('dt',null,x[0]));pf.appendChild(el('dd',null,x[1]))});cv.appendChild(pf);
+var log=el('div','log');log.setAttribute('aria-live','polite');cv.appendChild(log);var sw=el('div','sgw');sw.appendChild(el('h4',null,'Suggested questions'));var sg=el('div','sg');sw.appendChild(sg);cv.appendChild(sw);
+p[3].forEach(function(qa,n){var b=el('button',null,qa[0]);b.type='button';b.onclick=function(){
+ b.disabled=true;log.appendChild(turn('q','Interviewer',qa[0]));var d=turn('a',p[0],'');d.lastChild.className='dots';d.lastChild.innerHTML='<i></i><i></i><i></i>';log.appendChild(d);
+ setTimeout(function(){d.lastChild.className='';d.lastChild.textContent=qa[1]},900)};sg.appendChild(b);
+ if(n==0){b.disabled=true;log.appendChild(turn('q','Interviewer',qa[0]));log.appendChild(turn('a',p[0],qa[1]))}})}
+pp.appendChild(el('h4',null,'Personas'));
+P.forEach(function(p,i){var b=el('button');b.type='button';b.appendChild(av(i,p));var w=el('div');w.appendChild(el('b',null,p[0]));w.appendChild(el('span',null,p[1]));b.appendChild(w);b.onclick=function(){show(i)};pp.appendChild(b)});
+show(0)})();</script>"""
+
+def pvid(n, label):
+    return ('<div class="vshot"><video src="v/%s.mp4" poster="v/%s.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="%s"></video></div>' % (n, n, label))
+
+PULLS.update({
+  "The first shortlist": "Clients welcomed a shortlist. The next question was whether AI could make it personal.",
+  "An LLM pick that explains itself": "The model was fine. What we built around it was not.",
+  "Same model, better frame": "The AI became a highlight on top of the full list, not a filter that hid it.",
+  "Synthetic respondents": "Weak hypotheses died in a chat window, not in a two-week A/B test.",
+})
+
+def profi_content():
+    syn = (SYN_CSS + '<div class="syn" id="syn"><div class="tb"><b>Synthetic respondents</b><span>Study: choosing a tutor</span><em>Persona chat</em></div><div class="bd"><div class="pp"></div><div class="cv"></div></div></div>'
+           '<p class="lbl gray cap">Try it. Sample answers written in the personas’ voice for this page; the real tool runs on Claude.</p>'
+           + (SYN_JS % json.dumps(PERSONAS, ensure_ascii=False)))
+    return (
+      company(body(ps("Profi is a large service marketplace: tutors, repair, beauty, home services. A client describes a task, specialists reply with offers, and the client picks who to work with.",
+                      "Tutoring is one of its biggest verticals. That’s where I worked, in the growth team."))) +
+      role(body(ps("Senior Product Designer in the tutoring vertical. I owned the AI matching experience end to end on web, mobile web, and iOS, together with a product manager, analysts and engineers.",
+                   "The job went from interviews and usability tests to A/B tests on the internal experiment platform, and prototypes I built in code with Claude and Claude Code."))) +
+      results(nums([("+23.5%", "Client-to-contact<mbr>conversion", ""), ("+21%", "First AI<mbr>shortlist", ""),
+                    ("5+", "A/B tests<mbr>in 6 months", ""), ("3", "Platforms: web, mobile<mbr>web, and iOS", "")], "four")) +
+      study('<p class="state">Teaching an LLM to pick a tutor, and earning the client’s trust in that pick</p>' +
+            body(ps("A client posts a request and gets a stream of offers, often more than they can read. Many read a few and never write to anyone. The gap between interest in a specialist and the first message was the biggest drop in the funnel.",
+                    "The idea was to let the product do the first round of choosing: show the best few offers for this particular task, say why each one fits, and let the client ask for others in plain words if none do. It took several releases to get there, and the release that didn’t win taught us the most."))) +
+      chapter("The first shortlist", body(ps("The first version highlighted three best-fit offers above the stream, ranked by experience and reviews. Nothing else changed: the client could still read every offer.",
+                 "In the A/B test it raised client-to-contact conversion by 21%. That settled the main question: clients welcome a shortlist. The next one was harder. Could an LLM make the pick personal to the client’s task and explain itself well enough to be trusted?"))) +
+      chapter("An LLM pick that explains itself", body(ps("In the next version an LLM ranked the offers against the task the client had described in the order wizard, and wrote a short “Why they fit you” for each pick. If none of the three fit, the client could open “Find other pros”, say what to change in their own words and get a new set.",
+                 "The test didn’t win. Instead of guessing, I put the A/B data next to moderated usability sessions with students and parents, and the picture was clear. The model was fine. What we built around it was not:"),
+               ul("The rest of the offers sat collapsed under the shortlist, so clients read fewer offers overall",
+                  "The new pick could take minutes, and the loader promised “a second”",
+                  "An empty text field left people stuck: they didn’t know what to type",
+                  "Explanations were too generic to trust, and people read them as AI filler"),
+               ps("Every point came with a fix, and all of them were about the interface, not the model.")) + pvid("profi-match", "Walkthrough: AI shortlist with explanations, opening a chat")) +
+      chapter("Same model, better frame", body(ps("The next release kept the same LLM and rebuilt everything around it. The shortlist became a highlight on top of the full list, so nothing was hidden. Explanations moved from prose to the client’s own criteria (budget, time, format) plus one fact from reviews with its source.",
+                 "Re-picking got hints as chips and a text field prefilled from the order, so the client edits instead of starting from scratch. The loader tells the truth about timing, and there is a clear fallback when nothing better turns up.",
+                 "This version raised client-to-contact conversion by 23.5%, more than the first shortlist, with the same model that didn’t win a release earlier.")) + pvid("profi-repick", "Walkthrough: re-picking specialists with a hint and a prefilled request") + pvid("profi-mobile", "Walkthrough: AI shortlist on mobile web")) +
+      chapter("Synthetic respondents", body(ps("Between releases there were more hypotheses than A/B slots. So we built synthetic respondents: AI personas based on nine in-depth interviews from our own research, each with their habits, contradictions and real phrasing.",
+                 "Before a test, the team could interview them, show them a prototype or check a hypothesis. They don’t replace real people, but they filter out weak ideas early and help prepare for real interviews. I later packaged the approach as a reusable Claude skill, so colleagues could build personas for other verticals.")) + syn)
+    )
 
 def case(i):
     c = CASES[i]; nx = CASES[(i + 1) % len(CASES)]; pv = CASES[(i - 1) % len(CASES)]

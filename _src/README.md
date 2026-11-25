@@ -45,3 +45,15 @@ Montserrat 12/14/16/24, ноды 144 px с цветной шапкой и фок
 Ролик собирается в Remotion (proto/sweedai_remotion): `python3 sweedai_src/shot.py` пишет кадры состояний 0, e, f, g, 2, 1, 3
 в sweedai_remotion/public, потом `npm i && npx remotion render src/index.ts SweedAI out/sweed-ai.mp4 --browser-executable=<chrome>`,
 пережать ffmpeg (crf 23, faststart) в v/sweed-ai.mp4, постер из первого кадра. Таймлайн и координаты в src/SweedAI.tsx.
+## Ролики Профи (remotion/)
+
+Обложка кейса и ролики глав собраны в Remotion из React-компонентов интерфейса (src/ui).
+
+```
+cd _src/remotion && npm i
+npx remotion render ProfiCover out/cover.mp4      # обложка, 1440×900, затем ужать до 1152×720 в v/profi.mp4
+npx remotion render ProfiMatch out/match.mp4      # v/profi-match.mp4
+npx remotion render ProfiRepick out/repick.mp4    # v/profi-repick.mp4
+```
+
+Для обложки нужны public/reel.mp4 и public/reel_last.jpg (фрагмент рекламного ролика с заменённым логотипом, в репо не кладём).
