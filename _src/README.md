@@ -38,5 +38,10 @@ ffmpeg -framerate 30 -i fr_az3/%05d.jpg -c:v libx264 -crf 20 -preset slow -pix_f
 
 ## Sweed AI (A/B в Workflows)
 
-`proto/sweedai_src/ab.html?s=0..3` — экран A/B-теста со Sweed AI в четырёх состояниях (HTML, шрифт Figtree, сайдбар и шапка из sweed-18).
-`python3 sweedai_src/shot2.py` из proto/ пишет кадры img/sweedai-00..03.jpg, ролик: `node render5.js sweedai` → v/sweed-ai.mp4.
+`proto/sweedai_src/ab.html?s=0..3` — экран A/B-теста со Sweed AI в четырёх состояниях. Собран по библиотеке Workflows из flow.fig:
+Montserrat 12/14/16/24, ноды 144 px с цветной шапкой и фокус-полосами, канвас #f3f3f3, правая панель настроек, бирюзовые подписи полей,
+блок кнопок Cancel / Save снизу. Сайдбар и топлайн взяты из продового кадра sweed-18.
+Вёрстка в 1440 px, снимается с масштабом 2000/1440: `python3 shot.py` из sweedai_src.
+Ролик собирается в Remotion (proto/sweedai_remotion): `python3 sweedai_src/shot.py` пишет кадры состояний 0, e, f, g, 2, 1, 3
+в sweedai_remotion/public, потом `npm i && npx remotion render src/index.ts SweedAI out/sweed-ai.mp4 --browser-executable=<chrome>`,
+пережать ffmpeg (crf 23, faststart) в v/sweed-ai.mp4, постер из первого кадра. Таймлайн и координаты в src/SweedAI.tsx.

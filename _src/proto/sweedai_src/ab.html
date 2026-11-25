@@ -1,160 +1,161 @@
 <!DOCTYPE html>
 <html><head><meta charset="utf-8">
 <style>
-@font-face{font-family:F;src:url(figtree-latin-400-normal.woff2);font-weight:400}
-@font-face{font-family:F;src:url(figtree-latin-500-normal.woff2);font-weight:500}
-@font-face{font-family:F;src:url(figtree-latin-600-normal.woff2);font-weight:600}
-@font-face{font-family:F;src:url(figtree-latin-700-normal.woff2);font-weight:700}
-:root{--teal:#1f7a70;--tealT:#1c6f66;--lbl:#24786c;--ink:#151515;--mut:#8a8a8a;--line:#e2e2e2;--bg:#f3f3f3;--y:#ffbe00;
- --ai:#eef6f4;--aiB:#cbe3dd;--mag:#d100e6;--red:#e5484d}
+@font-face{font-family:M;src:url(montserrat-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:M;src:url(montserrat-latin-500-normal.woff2);font-weight:500}
+@font-face{font-family:M;src:url(montserrat-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:M;src:url(montserrat-latin-700-normal.woff2);font-weight:700}
+/* токены из библиотеки Sweed (flow.fig) */
+:root{--ink:#12130f;--i50:rgba(18,19,15,.5);--i30:rgba(18,19,15,.3);--i10:rgba(18,19,15,.1);--i5:rgba(18,19,15,.05);
+ --teal:#1d7874;--line:#e8e8e7;--canvas:#f3f3f3;--yellow:#ffbf00;--green:#5bba6f;--red:#ed254e;
+ --audience:#5bba6f;--delay:#06aed5;--action:#c200fb;--split:#f67227;
+ --ai:#a682ff;--aiT:rgba(166,130,255,.09);--aiB:rgba(166,130,255,.45)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{width:2000px;height:1248px;font-family:F,sans-serif;color:var(--ink);background:#fff;position:relative;overflow:hidden;font-size:18px}
-.sb{position:absolute;left:0;top:0;width:305px;height:1248px;background:#06485f url(sidebar.png) no-repeat top left}
-.sb .fix{position:absolute;left:0;width:305px;height:44px;font-size:18px;padding-left:67px;line-height:44px}
-.top{position:absolute;left:305px;top:0;width:1695px;height:76px;background:#f3f3f3 url(topbar.png) no-repeat}
-.main{position:absolute;left:361px;top:76px;right:56px;bottom:0}
-.crumb{position:absolute;left:78px;top:20px;font-size:17px;color:#9a9a9a}.crumb b{font-weight:400;color:#3aa66a}
-.back{position:absolute;left:0;top:24px;width:56px;height:56px;border-radius:8px;background:#f1f1f1;display:grid;place-items:center}
-h1{position:absolute;left:78px;top:42px;font-size:34px;font-weight:700}
-.tabs{position:absolute;left:0;top:102px;display:flex;background:#f1f1f1;border-radius:8px;border:1px solid #e6e6e6;overflow:hidden}
-.tabs span{padding:9px 20px;font-size:19px}.tabs .on{background:var(--y)}
-.hdiv{position:absolute;left:0;right:0;top:168px;height:6px;background:#f1f1f1;border-radius:3px}
-.ticons{position:absolute;right:0;top:24px;display:flex;gap:12px}.ticons i{width:56px;height:56px;border-radius:8px;background:#f1f1f1;display:block}
-.work{position:absolute;left:0;right:0;top:196px;bottom:20px;border:1px solid #ececec;border-radius:10px;overflow:hidden;display:flex}
-.canvas{flex:1;background:var(--bg);position:relative}
-.panel{width:800px;background:#fff;border-left:1px solid #ececec;padding:26px 30px;position:relative}
-/* nodes */
-.node{position:absolute;width:230px;background:#fff;border:2px solid;border-radius:8px;font-size:15px;overflow:hidden}
-.node .nh{color:#fff;padding:6px 10px;display:flex;justify-content:space-between;font-weight:500}
-.node .nb{padding:7px 10px;color:#8a8a8a;line-height:1.25}.node .nb b{display:block;font-weight:500;color:#222}
-.wire{position:absolute;height:2px;background:#7cc49a}
-.plus{position:absolute;width:30px;height:30px;border-radius:50%;background:#e7e7e7;display:grid;place-items:center;font-size:22px;color:#333}
-.selbar{position:absolute;height:8px;background:var(--mag);border-radius:4px}
-.abtag{position:absolute;font-size:13px;font-weight:600;color:#fff;background:var(--mag);padding:3px 8px;border-radius:5px}
-/* panel */
-.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.ph h2{font-size:23px;font-weight:700}
-.ib{width:40px;height:40px;border-radius:8px;background:#f1f1f1;display:inline-grid;place-items:center;margin-left:8px}
-label{display:block;color:var(--lbl);font-size:16px;margin-bottom:6px}
-.q{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#ececec;color:#555;font-size:11px;margin-left:6px;vertical-align:1px}
-.in{height:46px;border:1px solid #dedede;border-radius:8px;padding:0 15px;display:flex;align-items:center;justify-content:space-between;font-size:17px;background:#fff}
-.chev{width:10px;height:10px;border-right:2px solid #888;border-bottom:2px solid #888;transform:rotate(45deg) translateY(-3px)}
-.row{display:flex;gap:16px}.row>*{flex:1}
-.cb{display:flex;align-items:center;gap:10px;color:var(--lbl);font-size:16px;padding-top:24px}
-.cb i{width:20px;height:20px;border-radius:4px;background:var(--teal);display:grid;place-items:center;color:#fff;font-size:13px;font-style:normal}
-h3{font-size:20px;font-weight:700;margin:22px 0 14px}
-.slider{height:4px;background:#e4e4e4;border-radius:2px;position:relative;margin:16px 0 6px}
-.slider b{position:absolute;left:0;top:0;height:4px;width:30%;background:var(--teal);border-radius:2px}
-.slider i{position:absolute;left:30%;top:-8px;width:20px;height:20px;border-radius:50%;background:var(--teal);margin-left:-10px}
-.g{margin-bottom:14px}
-.btn{height:44px;border-radius:8px;display:inline-flex;align-items:center;gap:10px;padding:0 18px;font-size:17px;font-weight:600;white-space:nowrap}
-.b1{background:var(--teal);color:#fff}.b2{background:#f1f1f1;color:#222}.b3{border:1.5px solid var(--teal);color:var(--tealT);background:#fff}
-.tbl{border-radius:8px;overflow:hidden;border:1px solid #eee;font-size:16px}
-.tbl .tr{display:grid;align-items:center;padding:12px 16px;min-height:44px;gap:12px}
-.tbl .th{background:#151515;color:#fff;min-height:40px;padding:9px 16px}
-.tbl .tr:nth-child(odd):not(.th){background:#f7f7f7}
-.chip{font-size:12px;font-weight:600;background:#e9e9e9;color:#555;border-radius:4px;padding:2px 6px;margin-left:8px;vertical-align:2px}
-.chip.ai{background:var(--ai);color:var(--tealT);border:1px solid var(--aiB)}
-.sub{color:#777;font-size:14px;display:block;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body{width:1440px;height:898.56px;position:relative;overflow:hidden;font:500 12px/16px M,sans-serif;color:var(--ink);background:#fff}
+.abs{position:absolute}
+/* оболочка портала: продовые сайдбар и топлайн, как в остальных роликах */
+.sb{left:0;top:0;width:220px;height:899px;background:#04465e url(sidebar.png) no-repeat 0 0/220px auto}
+.sb .fix{position:absolute;left:0;width:220px;height:32px;line-height:46px;overflow:hidden;padding-left:48px;font:400 13px/32px M;color:#fff}
+.top{left:220px;top:0;width:1220px;height:56px;background:#f3f3f3 url(topbar.png) no-repeat 0 0/1220px 56px}
+/* header / block */
+.ib40{width:40px;height:40px;border-radius:8px;background:var(--i5);display:grid;place-items:center}
+.crumb{left:316px;top:68px;color:#5bba6f}.crumb i{font-style:normal;color:var(--i30);margin:0 4px}
+h1{position:absolute;left:316px;top:84px;font:700 24px/32px M}
+.tabs{left:260px;top:128px;display:flex;height:32px;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:#f3f3f3}
+.tabs span{padding:0 15px;font:500 14px/30px M;border-left:1px solid var(--line)}.tabs span:first-child{border:0}.tabs .on{background:var(--yellow)}
+.sep{left:260px;top:176px;width:1140px;height:4px;border-radius:2px;background:var(--i5)}
+/* рабочая область: канвас + правая панель */
+.work{left:260px;top:196px;width:1140px;height:623px;border:1px solid var(--line);border-radius:8px;overflow:hidden;display:flex}
+.canvas{flex:1;background:var(--canvas);position:relative}
+.panel{width:440px;background:#fff;border-left:1px solid var(--line);position:relative;padding:0 24px}
+/* ноды */
+.node{position:absolute;width:144px;background:#fff;border-radius:8px}
+.node .h{height:24px;border-radius:8px 8px 0 0;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 8px}
+.node .h svg{width:12px;height:12px}
+.node .r{border:1px solid;border-top:0;padding:8px;min-height:32px}.node .r:last-child{border-radius:0 0 8px 8px}
+.node .r .k{color:var(--i50)}
+.fb{position:absolute;left:0;width:144px;height:8px;border-radius:8px}
+.plus{position:absolute;width:24px;height:24px;border-radius:8px;background:var(--i5);display:grid;place-items:center}
+.ab{font:600 10px/16px M;background:rgba(255,255,255,.25);border-radius:4px;padding:0 5px}
+/* форма */
+.h2{height:60px;position:relative;display:flex;align-items:center;justify-content:space-between}
+.h2 b{font:700 16px/20px M;display:flex;align-items:center;gap:8px}
+.h2:after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;border-radius:2px;background:var(--i5)}
+.lbl{color:var(--teal);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.help{width:16px;height:16px;border-radius:50%;background:var(--i5);color:var(--i50);font:700 10px/16px M;text-align:center}
+.inp{height:32px;border:1px solid var(--i10);border-radius:8px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;background:#fff}
+.inp.ph{color:var(--i30)}
+.row{display:flex;gap:16px}.row>*{flex:1;min-width:0}
+.f{margin-top:16px}
+.cb{display:flex;align-items:center;gap:8px;color:var(--teal)}
+.cbx{width:16px;height:16px;border-radius:4px;background:var(--teal);display:grid;place-items:center}
+.cbx.off{background:#fff;box-shadow:inset 0 0 0 1px var(--i30)}
+.btn.aib{background:var(--ai);color:#fff;box-shadow:0 4px 12px rgba(166,130,255,.35)}.btn{height:32px;border-radius:8px;background:var(--i5);display:inline-flex;align-items:center;gap:8px;padding:0 12px;font:700 12px/16px M;white-space:nowrap}
+.sh{display:flex;align-items:center;justify-content:space-between;margin:20px 0 12px}
+.sh b{font:700 14px/20px M}
+/* таблица */
+.tb{border-radius:4px;overflow:hidden}
+.tb .tr{display:grid;align-items:center;min-height:44px;padding:6px 12px;gap:8px;border-bottom:1px solid var(--line)}
+.tb .th{background:var(--ink);color:#fff;min-height:32px;border:0}
+.tb .tr>span{min-width:0}.tb .s{color:var(--i50);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bd{display:inline-block;font:500 10px/16px M;border-radius:8px;padding:0 6px;margin-left:6px;vertical-align:1px}
+.bd.def{background:var(--i5);color:var(--i50)}
+.bd.ai{background:var(--ai);color:#fff}
+.bd.win{background:var(--yellow);color:var(--ink)}
 /* AI */
-.spark{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:7px;background:var(--teal);flex:none}
-.spark svg{width:16px;height:16px}
-.aicard{background:var(--ai);border:1px solid var(--aiB);border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;font-size:16px;line-height:1.4}
-.aicard .t{font-weight:600;color:var(--tealT)}
-.aicard .lk{color:var(--tealT);font-weight:600;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
-.foot{position:absolute;left:30px;right:30px;bottom:24px;display:flex;gap:16px}
-.foot .btn{flex:1;justify-content:space-between;height:50px}
-.seg{display:flex;border:1px solid #dedede;border-radius:8px;overflow:hidden;height:46px}
-.seg span{flex:1;display:grid;place-items:center;font-size:16px;border-left:1px solid #dedede}.seg span:first-child{border:0}
-.seg .on{background:var(--teal);color:#fff}
-.ta{border:1.5px solid var(--teal);border-radius:8px;padding:12px 15px;font-size:17px;line-height:1.45;min-height:96px;box-shadow:0 0 0 4px #e3f1ee}
-.vc{border:1px solid #e4e4e4;border-radius:10px;padding:13px 16px;margin-bottom:10px;display:grid;grid-template-columns:26px 1fr auto;gap:12px;align-items:start}
-.vc .ck{width:20px;height:20px;border-radius:4px;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:13px;margin-top:2px}
-.vc .s{font-weight:600;font-size:17px}.vc .p{color:#6f6f6f;font-size:15px;margin-top:3px;line-height:1.35}
-.ok{font-size:14px;color:#2b8a4e;display:flex;gap:6px;align-items:center;margin-top:7px}
-.warn{font-size:14px;color:#b4232a;margin-top:7px;line-height:1.35}
-.warn u{color:var(--tealT);font-weight:600;text-decoration:underline;text-underline-offset:3px;margin-left:6px}
-.vc.flag{border-color:#f2c3c5;background:#fff8f8}
-.vc.flag .ck{background:#fff;border:1.5px solid #c9c9c9}
-.tag{font-size:13px;color:#777;white-space:nowrap}
-.win{background:#fff6d6 !important}
-.wb{font-size:12px;font-weight:700;background:var(--y);color:#3a2a00;border-radius:4px;padding:2px 7px;margin-left:8px}
-.bar{height:8px;border-radius:4px;background:#e8e8e8;position:relative}.bar b{position:absolute;left:0;top:0;height:8px;border-radius:4px;background:var(--teal)}
-.status{display:inline-flex;align-items:center;gap:8px;font-size:15px;color:#2b8a4e;background:#eaf6ee;border-radius:6px;padding:4px 10px}
+.spk{width:16px;height:16px;flex:none}
+.aic{background:var(--aiT);box-shadow:inset 0 0 0 1px var(--aiB);border-radius:8px;padding:14px 16px;display:flex;gap:10px;line-height:18px}
+.aic .t{font-weight:700}
+.lk{color:var(--ink);font-weight:700;text-decoration:underline;text-decoration-color:rgba(18,19,15,.35);text-underline-offset:3px}
+/* блок кнопок снизу */
+.bb{left:260px;top:835px;width:1140px;display:flex;justify-content:center;gap:8px}
+.bb .b{height:40px;border-radius:8px;display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 12px;font:700 14px/16px M;min-width:200px}
+.bb .g{background:var(--i5)}
+.bb .p{background:var(--teal);color:#fff;box-shadow:0 4px 12px rgba(29,120,116,.25)}.bb .ai{background:var(--ai);color:#fff;box-shadow:0 4px 12px rgba(166,130,255,.35)}
+.ta{border:1px solid var(--ai);border-radius:8px;padding:10px 12px;min-height:64px;line-height:18px;box-shadow:0 0 0 3px var(--aiT)}
+.seg{display:flex;height:32px;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:#f3f3f3}
+.seg span{flex:1;text-align:center;line-height:30px;border-left:1px solid var(--line)}.seg span:first-child{border:0}.seg .on{background:var(--yellow)}
+.dc{border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:grid;grid-template-columns:16px 1fr;gap:12px;margin-bottom:12px}
+.dc b{font:700 12px/16px M;display:block}.dc .p{color:var(--i50);margin-top:2px;line-height:16px}
+.ok{color:#2f8f46;margin-top:6px;display:flex;align-items:center;gap:6px}.ok:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green)}
+.er{color:var(--red);margin-top:6px}
+.dc.bad{border-color:rgba(237,37,78,.35);background:rgba(237,37,78,.03)}
+.bar{height:4px;border-radius:2px;background:var(--i5);margin-top:4px;position:relative}.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:2px;background:var(--teal)}
+.pill{font:500 12px/24px M;color:#fff;background:var(--green);border-radius:12px;padding:0 10px}
 </style></head><body>
-<div class="sb">
- <div class="fix" style="top:489px;background:#12515a;color:#fff">Events</div>
- <div class="fix" style="top:622px;background:var(--y);color:#151515">User Workflows</div>
-</div>
-<div class="top"></div>
-<div class="main">
- <div class="back"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2.2"><path d="M20 12H5M11 6l-6 6 6 6"/></svg></div>
- <div class="crumb">Marketing / <b>User Workflows</b></div>
- <h1>Weekend win-back</h1>
- <div class="tabs"><span class="on">Flow</span><span>Settings</span><span>Reports</span></div>
- <div class="ticons"><i style="display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></i><i style="display:grid;place-items:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M4 5h16l-6 8v6l-4-2v-4z"/></svg></i></div>
- <div class="hdiv"></div>
- <div class="work">
-  <div class="canvas" id="cv"></div>
-  <div class="panel" id="panel"></div>
- </div>
-</div>
-<template id="sparkT"><span class="spark"><svg viewBox="0 0 16 16"><path d="M8 0.8l1.7 4.6 4.7 1.7-4.7 1.7L8 15.4l-1.7-4.6L1.6 9.1l4.7-1.7z" fill="#ffbe00"/></svg></span></template>
+<div class="abs sb"><div class="fix" style="top:352.7px;background:#12515a">Events</div><div class="fix" style="top:448.6px;background:var(--yellow);color:var(--ink)">User Workflows</div></div>
+<div class="abs top"></div>
+<div class="abs ib40" style="left:260px;top:72px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#12130f" stroke-width="2"><path d="M20 12H5M11 6l-6 6 6 6"/></svg></div>
+<div class="abs crumb">Marketing<i>/</i>User Workflows</div>
+<h1>Weekend win-back</h1>
+<div class="abs ib40" style="left:1312px;top:72px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#12130f" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
+<div class="abs ib40" style="left:1360px;top:72px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#12130f" stroke-width="2"><path d="M4 5h16l-6 8v6l-4-2v-4z"/></svg></div>
+<div class="abs tabs"><span class="on">Flow</span><span>Settings</span><span>Reports</span></div>
+<div class="abs sep"></div>
+<div class="abs work"><div class="canvas" id="cv"></div><div class="panel" id="P"></div></div>
+<div class="abs bb" id="BB"></div>
 <script>
 const S=new URLSearchParams(location.search).get('s')||'1';
-const spark=document.getElementById('sparkT').innerHTML;
-// canvas
-const cv=document.getElementById('cv');
-const nodes=[
- {x:30,c:'#4caf50',t:'Audience',l:'Segments',v:'Lapsed 30+ days'},
- {x:300,c:'#16b4d6',t:'Delay',l:'Time',v:'Fri, 05:00 PM'},
- {x:570,c:'#d100e6',t:'Action',l:'Event type',v:'Send email',sel:1}];
-let h='';const Y=330;
-h+=`<div class="wire" style="left:0;width:770px;top:${Y+40}px"></div>`;
-nodes.forEach((n,i)=>{
- h+=`<div class="node" style="left:${n.x}px;top:${Y}px;border-color:${n.c}"><div class="nh" style="background:${n.c}"><span>${n.t}</span></div><div class="nb">${n.l}<b>${n.v}</b></div>${n.sel?'<div class="nb">Variants<b>'+(S=='0'?'1 · A/B test':S=='1'?'3 · A/B test':S=='2'?'Drafting…':'Winner sent')+'</b></div>':''}</div>`;
- if(i)h+=`<div class="plus" style="left:${n.x-50}px;top:${Y+26}px">+</div>`;
- if(n.sel){h+=`<div class="selbar" style="left:${n.x}px;width:230px;top:${Y-22}px"></div><div class="selbar" style="left:${n.x}px;width:230px;top:${Y+160}px"></div>`;
-  h+=`<div class="abtag" style="left:${n.x+150}px;top:${Y+6}px">A/B</div>`}
-});
-cv.innerHTML=h;
-const P=document.getElementById('panel');
-const head=`<div class="ph"><h2>Action</h2><div><span class="ib"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M5 3h11l3 3v15H5zM8 3v6h8V3M8 21v-7h8v7"/></svg></span><span class="ib"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e5484d" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14"/></svg></span></div></div>`;
-const typeRow=`<div class="row g"><div><label>Type<span class="q">?</span></label><div class="in">Send email<i class="chev"></i></div></div><div class="cb"><i>✓</i>Enable A/B testing<span class="q">?</span></div></div>`;
-if(S=='1'||S=='0'){const Z=S=='0';
-P.innerHTML=head+typeRow+`
-<h3>A/B settings</h3>
-${Z?'':`<div class="aicard g">${spark}<div><span class="t">Sweed AI tuned this test.</span> Your segment is 4,120 customers, so a 30% test group gives each variant enough sends to call a winner in 5 hours. Order placed rate fits a win-back goal better than opens. <span class="lk">Undo</span></div></div>`}
-<div class="row g"><div><label>Test audience, %<span class="q">?</span></label><div class="in">30</div></div><div><label>Resulting audience, %<span class="q">?</span></label><div class="in" style="color:#888">70</div></div></div>
-<div class="slider"><b></b><i></i></div>
-<div class="row g" style="margin-top:18px"><div><label>Winning metric<span class="q">?</span></label><div class="in">Order placed rate<i class="chev"></i></div></div><div><label>Test duration<span class="q">?</span></label><div class="row" style="gap:10px"><div class="in">5</div><div class="in">hours<i class="chev"></i></div></div></div></div>
-<div style="display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px"><h3 style="margin:0">Variants</h3><div style="display:flex;gap:10px"><span class="btn b3" id="gen">${spark.replace('class="spark"','class="spark" style="width:22px;height:22px"')}Generate with Sweed AI</span><span class="btn b2">+ Add variant</span></div></div>
-<div class="tbl"><div class="tr th" style="grid-template-columns:1fr 70px"><span>Name</span><span>Share</span></div>
-<div class="tr" style="grid-template-columns:1fr 70px"><span>Variant 1<span class="chip">DEFAULT</span><span class="sub">We miss you. Here's 20% off this weekend</span></span><span>${Z?'30%':'10%'}</span></div>
-${Z?'':`<div class="tr" style="grid-template-columns:1fr 70px"><span>Variant 2<span class="chip ai">Sweed AI</span><span class="sub">Your Blue Dream is back in stock, 20% off till Sunday</span></span><span>10%</span></div>
-<div class="tr" style="grid-template-columns:1fr 70px"><span>Variant 3<span class="chip ai">Sweed AI</span><span class="sub">Last call: 20% off flower ends Sunday at 9 PM</span></span><span>10%</span></div>`}</div>
-<div class="foot"><span class="btn b2">Reset</span><span class="btn b1" id="start">Start test<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></div>`;
+const SPK=c=>`<svg class="spk" viewBox="0 0 16 16"><path d="M8 1l1.6 4.4L14 7l-4.4 1.6L8 13l-1.6-4.4L2 7l4.4-1.6z" fill="${c||'#a682ff'}"/><path d="M13 1.5l.5 1.3 1.3.5-1.3.5-.5 1.3-.5-1.3-1.3-.5 1.3-.5z" fill="#ffbf00"/></svg>`;
+const I={user:'<svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="1.4"><circle cx="6" cy="4" r="2.2"/><path d="M2 11c.5-2.2 2-3.2 4-3.2s3.5 1 4 3.2"/></svg>',
+ clock:'<svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="1.4"><circle cx="6" cy="6" r="4.6"/><path d="M6 3.4V6l1.8 1.2"/></svg>',
+ arrow:'<svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="1.5"><path d="M1.5 6h8.5M7 3l3 3-3 3"/></svg>',
+ split:'<svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="1.4"><path d="M2 3h6l2 2M2 9h6l2-2M10 5V2.5M10 7v2.5"/></svg>'};
+const node=(x,y,c,t,ic,rows,sel,tag)=>`<div class="node" style="left:${x}px;top:${y}px">${sel?`<div class="fb" style="top:-16px;background:${c}"></div>`:''}
+<div class="h" style="background:${c}">${I[ic]}<span>${tag?`<span class="ab">${tag}</span> `:''}${t}</span></div>
+${rows.map(r=>`<div class="r" style="border-color:${c}">${r}</div>`).join('')}
+${sel?`<div class="fb" style="bottom:-16px;background:${c}"></div>`:''}</div>`;
+const plus=(x,y)=>`<div class="plus" style="left:${x}px;top:${y}px"><svg width="12" height="12" viewBox="0 0 12 12" stroke="#12130f" stroke-width="1.5"><path d="M6 1v10M1 6h10"/></svg></div>`;
+const Y=250;
+const actRows={ '0':['Send Email','<span class="k">A/B test</span><br>1 variant'],'1':['Send Email','<span class="k">A/B test</span><br>3 variants'],'2':['Send Email','<span class="k">A/B test</span><br>3 drafts'],'e':['Send Email','<span class="k">A/B test</span><br>1 variant'],'f':['Send Email','<span class="k">A/B test</span><br>1 variant'],'g':['Send Email','<span class="k">A/B test</span><br>Drafting…'],'3':['Send Email','<span class="k">Winner</span><br>Variant 2']}[S];
+document.getElementById('cv').innerHTML=
+ node(40,Y,'var(--audience)','Audience','user',['Lapsed 30+ days'])+plus(196,Y+28)+
+ node(232,Y,'var(--delay)','Delay','clock',['Fri, 05:00 PM'])+plus(388,Y+28)+
+ node(424,Y,'var(--action)','Action','arrow',actRows,1,'A/B')+plus(580,Y+28)+
+ node(616,Y,'var(--split)','Conditional split','split',['Has purchase'])+
+ `<div class="abs ib40" style="right:12px;top:12px;background:#fff"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#12130f" stroke-width="2"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg></div>`;
+const H2=(t,extra,right)=>`<div class="h2"><b>${t}${extra||''}</b>${right||'<span style="display:flex;gap:8px"><span class="ib40" style="width:32px;height:32px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e5484d" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14"/></svg></span></span>'}</div>`;
+const sel=(v,ph)=>`<div class="inp ${ph?'ph':''}">${v}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#12130f" stroke-width="1.6"><path d="M2.5 4.5L6 8l3.5-3.5"/></svg></div>`;
+const fld=(l,c)=>`<div><div class="lbl">${l}<span class="help">?</span></div>${c}</div>`;
+const typeRow=`<div class="row f" style="align-items:flex-end">${fld('Type',sel('Send Email'))}<div class="cb" style="height:32px"><span class="cbx"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="1.8"><path d="M2 5l2 2 4-4"/></svg></span>Enable A/B testing<span class="help">?</span></div></div>`;
+const P=document.getElementById('P'),BB=document.getElementById('BB');
+const B=(t,cls,ic,id)=>`<div class="b ${cls}" ${id?`id="${id}"`:''}>${ic}<span>${t}</span></div>`;
+const icX='<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#12130f" stroke-width="1.8"><path d="M3 3l10 10M13 3L3 13"/></svg>';
+const icOk='<svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="8" fill="rgba(255,255,255,.25)"/><path d="M5.5 9l2.3 2.3L12.5 6.6" fill="none" stroke="#fff" stroke-width="1.8"/></svg>';
+const icGo='<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#fff" stroke-width="1.8"><path d="M3 9h11M10 5l4 4-4 4"/></svg>';
+const icRe='<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#12130f" stroke-width="1.6"><path d="M13 8a5 5 0 11-1.5-3.5M13 2.5V5h-2.5"/></svg>';
+if(S=='0'||S=='1'){const Z=S=='0';
+ P.innerHTML=H2('Action')+typeRow+
+ `<div class="sh"><b>A/B settings</b></div>`+
+ (Z?'':`<div class="aic" style="margin-bottom:20px">${SPK()}<div><span class="t">Sweed AI tuned this test:</span> 30% of the segment, winner by orders in 5 hours. <span class="lk">Undo</span></div></div>`)+
+ `<div class="row">${fld('Test audience, %',sel('30'))}${fld('Winning metric',sel('Order placed rate'))}</div>
+  <div class="row f">${fld('Test duration',`<div class="row" style="gap:8px"><div class="inp">5</div>${sel('Hours')}</div>`)}${fld('After the test',sel('Send the winner'))}</div>
+  <div class="sh"><b>Variants</b><span style="display:flex;gap:8px"><span class="btn aib" id="gen">${SPK('#fff')}Generate with Sweed AI</span><span class="btn">+ Add variant</span></span></div>
+  <div class="tb"><div class="tr th" style="grid-template-columns:minmax(0,1fr) 48px"><span>Name</span><span>Share</span></div>
+  <div class="tr" style="grid-template-columns:minmax(0,1fr) 48px"><span>Variant 1<span class="bd def">Default</span><span class="s">We miss you. Here's 20% off this weekend</span></span><span>${Z?'30%':'10%'}</span></div>
+  ${Z?'':`<div class="tr" style="grid-template-columns:minmax(0,1fr) 48px"><span>Variant 2<span class="bd ai">Sweed AI</span><span class="s">Your Blue Dream is back in stock, 20% off till Sunday</span></span><span>10%</span></div>
+  <div class="tr" style="grid-template-columns:minmax(0,1fr) 48px"><span>Variant 3<span class="bd ai">Sweed AI</span><span class="s">Last call: 20% off flower ends Sunday at 9 PM</span></span><span>10%</span></div>`}</div>`;
+ BB.innerHTML=B('Cancel','g',icX)+B('Save','p',icOk)+B('Start test','p',icGo,'start');
 }
-if(S=='2'){
-P.innerHTML=`<div class="ph"><h2 style="display:flex;align-items:center;gap:12px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2.2"><path d="M20 12H5M11 6l-6 6 6 6"/></svg>${spark}Generate variants</h2><span class="tag">Uses this segment, store catalog and active promos</span></div>
-<div class="g"><label>What should this email do?</label><div class="ta">Bring back customers who haven't ordered in 30 days. 20% off flower this weekend, pickup or delivery.</div></div>
-<div class="row g"><div><label>Vary</label><div class="seg"><span>Subject</span><span>Content</span><span class="on">Both</span></div></div><div><label>Number of variants</label><div class="in">3<i class="chev"></i></div></div></div>
-<div style="display:flex;justify-content:space-between;align-items:center;margin:22px 0 12px"><h3 style="margin:0">Drafts</h3><span class="tag">Checked against California ad rules</span></div>
-<div class="vc"><span class="ck">✓</span><div><div class="s">Your Blue Dream is back in stock, 20% off till Sunday</div><div class="p">Picked from the last purchase of each customer. Product block: 4 items in stock at their store.</div><div class="ok">● Compliant</div></div><span class="tag">Content + subject</span></div>
-<div class="vc"><span class="ck">✓</span><div><div class="s">Last call: 20% off flower ends Sunday at 9 PM</div><div class="p">Deadline in the subject, short body with one button to the deal.</div><div class="ok">● Compliant</div></div><span class="tag">Subject</span></div>
-<div class="vc flag"><span class="ck"></span><div><div class="s">Feel better this weekend with 20% off</div><div class="p">Friendly tone, lifestyle image, bundle of three products.</div><div class="warn">Health claim in the subject. Not allowed in cannabis ads in California.<u>Rewrite</u></div></div><span class="tag">Content + subject</span></div>
-<div class="foot"><span class="btn b2">Regenerate</span><span class="btn b1" id="add">Add 2 variants to test<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></div>`;
+if('2efg'.includes(S)){const E=S=='e',FIN=S=='g'||S=='2',HID=S!='2';
+ P.innerHTML=H2('Generate variants',SPK(),`<span class="ib40" style="width:32px;height:32px">${icX}</span>`)+
+ `<div class="f"><div class="lbl">What should this email do?</div><div class="ta" id="ta">${E?'':"Bring back customers who haven't ordered in 30 days. 20% off flower this weekend, pickup or delivery."}</div></div>
+  <div class="row f">${fld('Vary','<div class="seg"><span>Subject</span><span>Content</span><span class="on">Both</span></div>')}${fld('Variants',sel('3'))}</div>
+  <div id="drafts" style="${HID?'visibility:hidden':''}"><div class="sh" id="dh"><b>Drafts</b><span style="color:var(--i50)">Checked against California ad rules</span></div>
+  <div class="dc"><span class="cbx"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="1.8"><path d="M2 5l2 2 4-4"/></svg></span><div><b>Your Blue Dream is back in stock, 20% off till Sunday</b><div class="p">Built from each customer's last purchase.</div><div class="ok">Compliant</div></div></div>
+  <div class="dc"><span class="cbx"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="1.8"><path d="M2 5l2 2 4-4"/></svg></span><div><b>Last call: 20% off flower ends Sunday at 9 PM</b><div class="p">Deadline in the subject, one button to the deal.</div><div class="ok">Compliant</div></div></div>
+  <div class="dc bad"><span class="cbx off"></span><div><b>Feel better this weekend with 20% off</b><div class="p">Lifestyle tone, bundle of three products.</div><div class="er">Health claim in the subject, not allowed in California. <span class="lk">Rewrite</span></div></div></div></div>`;
+ BB.innerHTML=FIN?B('Regenerate','g',icRe)+B('Add 2 variants','p',icOk,'add'):B('Cancel','g',icX)+'<div class="b ai" id="genbtn">'+SPK('#fff')+'<span>Generate drafts</span></div>';
 }
 if(S=='3'){
-const r=(n,chip,sub,sent,op,or,w,win)=>`<div class="tr ${win?'win':''}" style="grid-template-columns:1fr 80px 90px 170px"><span>${n}${chip}${win?'<span class="wb">Winner</span>':''}<span class="sub">${sub}</span></span><span>${sent}</span><span>${op}</span><span style="display:grid;gap:5px">${or}<span class="bar"><b style="width:${w}%"></b></span></span></div>`;
-P.innerHTML=head+typeRow+`
-<div style="display:flex;justify-content:space-between;align-items:center;margin:20px 0 14px"><h3 style="margin:0">Test results</h3><span class="status">● Winner sent to 70% · Fri 10:05 PM</span></div>
-<div class="tbl g"><div class="tr th" style="grid-template-columns:1fr 80px 90px 170px"><span>Variant</span><span>Sent</span><span>Opened</span><span>Order placed</span></div>
-${r('Variant 1','<span class="chip">DEFAULT</span>','We miss you. Here\'s 20% off this weekend','412','17.2%','8.7%',33)}
-${r('Variant 2','<span class="chip ai">Sweed AI</span>','Your Blue Dream is back in stock, 20% off till Sunday','412','22.6%','14.1%',54,1)}
-${r('Variant 3','<span class="chip ai">Sweed AI</span>','Last call: 20% off flower ends Sunday at 9 PM','412','24.0%','10.4%',40)}
-</div>
-<div class="aicard" style="margin-top:18px">${spark}<div><div class="t" style="margin-bottom:6px">Why Variant 2 won</div>Naming the product a customer already bought brought more orders than urgency. Variant 3 got the most opens but fewer orders, so the subject line pulled people in and the email body didn't close.<div style="margin-top:12px;display:flex;gap:18px"><span class="lk">Test send time next</span><span class="lk">Use this subject in other win-back flows</span></div></div></div>
-<div class="foot"><span class="btn b2">Duplicate test</span><span class="btn b1">Open report<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></div>`;
+ const r=(n,b,sub,op,or,w,win)=>`<div class="tr" style="grid-template-columns:minmax(0,1fr) 56px 96px;${win?'background:rgba(255,191,0,.12)':''}"><span>${n}${b}${win?'<span class="bd win">Winner</span>':''}<span class="s">${sub}</span></span><span>${op}</span><span>${or}<div class="bar"><i style="width:${w}%"></i></div></span></div>`;
+ P.innerHTML=H2('Action')+typeRow+
+ `<div class="sh"><b>Test results</b><span class="pill">Winner sent to 70%</span></div>
+  <div class="tb"><div class="tr th" style="grid-template-columns:minmax(0,1fr) 56px 96px"><span>Variant · 412 sent each</span><span>Opened</span><span>Order placed</span></div>
+  ${r('Variant 1','<span class="bd def">Default</span>',"We miss you. Here's 20% off this weekend",'17.2%','8.7%',33)}
+  ${r('Variant 2','<span class="bd ai">Sweed AI</span>','Your Blue Dream is back in stock, 20% off till Sunday','22.6%','14.1%',54,1)}
+  ${r('Variant 3','<span class="bd ai">Sweed AI</span>','Last call: 20% off flower ends Sunday at 9 PM','24.0%','10.4%',40)}</div>
+  <div class="aic" style="margin-top:20px">${SPK()}<div><div class="t" style="margin-bottom:6px">Why Variant 2 won</div>Naming a product the customer already bought brought more orders than urgency. Variant 3 got the most opens but fewer orders: the subject pulled people in, the email didn't close.<div style="margin-top:12px;display:flex;gap:20px"><span class="lk">Test send time next</span><span class="lk">Reuse in win-back flows</span></div></div></div>`;
+ BB.innerHTML=B('Duplicate test','g',icRe)+B('Open report','p',icGo);
 }
 </script></body></html>

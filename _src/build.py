@@ -913,15 +913,16 @@ PULLS.update({
 AB_AI = (
   study('<p class="state">A/B testing with Sweed AI, built into Workflows</p>' +
         body(ps("Workflows is the canvas where dispensary marketers build automated campaigns: an audience, a delay, an email, a condition. I designed the A/B testing layer for it and the Sweed AI tools that live inside that layer.",
-                "The idea is simple. AI is good at producing options and has no way of knowing which one will sell. So Sweed AI drafts, tunes and checks the variants, and the test decides. Sweed made the tools public in August 2026 as part of its AI marketing suite.")), "Case study") +
+                "Sweed AI is the AI layer of the whole platform: product recommendations at the register, dynamic customer segments, on-screen help for budtenders, and in marketing it drafts banners, emails and survey insights. In Workflows I designed how Sweed AI works inside an A/B test.",
+                "The idea is simple. AI is good at producing options and has no way of knowing which one will sell. So Sweed AI drafts, tunes and checks the variants, and the test decides.")), "Case study") +
   chapter("One email and a guess", body(ps("A step in Workflows could send only one version of an email. Marketers had no way to compare subject lines or content, so campaign performance was unpredictable and hard to improve."),
       ul("Built in: testing had to live inside the flow builder, with no redirects and no external tools",
          "Flexible: marketers needed control over test size, the winning metric and how the winner is chosen",
          "Light: setup and monitoring had to feel native and usable by any team, not only by analysts"))) +
   chapter("A test is a property of the step", body(ps("Instead of a separate tool, A/B testing became a checkbox on the email step. Turning it on opens the settings right in the side panel: the share of the segment that gets the test, the winning metric such as order placed rate, the test duration, and what the rest of the audience receives.",
       "Variants sit in a table below the settings, and the canvas marks the step as a test, so it reads at a glance even in a long flow."))) +
-  chapter("What changed", body(ps("Curaleaf, one of the largest cannabis retailers in the US, ran its email campaigns with A/B testing in November and December 2024."),
-      '<div style="margin-top:calc(40*var(--u))">' + nums([("2.8x", "Order-placed rate", "9% → 26%"), ("+19%", "Open rate", "~18% → 21.5%"), ("+12%", "Click-through rate", ""), ("+$27", "Revenue per user", "Median $140 → $167")]) + '</div>')) +
+  chapter("What changed", body(ps("Curaleaf, one of the largest cannabis retailers in the US, ran its email campaigns with A/B testing in November and December 2024.",
+      "Order-placed rate went from 9% to 26%, open rate from about 18% to 21.5%, and median revenue per user from $140 to $167. Click-through rate grew by 12%."))) +
   chapter("Sweed AI drafts, the test decides", body(ps("Sweed AI sits inside the test, not in front of it. Every suggestion is labeled and reversible, and nothing goes out until the marketer starts the test."),
       ul("Tunes the setup: suggests test share, metric and duration from the segment size and the campaign goal, and says why",
          "Drafts variants: the marketer describes the goal, AI writes subject lines and content from the store catalog, active promos and each customer's past purchases",
@@ -998,7 +999,9 @@ def content(slug):
         def ren(m):
             n[0] += 1; return '<p class="lbl gray">%02d</p>' % n[0]
         s = re.sub(r'(?<=<div class="ct">)<p class="lbl gray">\d\d</p>', ren, s)
-        return s
+        return s + study('<p class="state">Launched after I left</p>' + body(ps(
+            "In August 2026, after I finished my work at Sweed, the A/B testing with Sweed AI went into open testing with customers, as part of Sweed's AI marketing launch.")) +
+            ('<a class="lbl ul lk" href="https://finance.yahoo.com/technology/ai/articles/sweed-launches-ai-powered-smart-120000915.html" target="_blank" rel="noopener">Launch coverage on Yahoo Finance%s</a>' % ICO_OUT), "Launch")
     if slug == "microsoft-azure":
         nda = ('<div class="vshot"><video src="v/azure-feedback.mp4" poster="v/azure-feedback.jpg" muted loop playsinline preload="metadata" disablepictureinpicture '
                'aria-label="Walkthrough: filtering feedback, opening an item, print view and creating a feature" style="aspect-ratio:2000/1248"></video></div>')
