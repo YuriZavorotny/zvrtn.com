@@ -432,77 +432,145 @@ html.vt .item.gl-on .asset video{opacity:1!important}
   </header>
   <section class="cintro">
     <div><p class="lbl gray">Company</p><div class="body soft "><p>Profi is a large service marketplace: tutors, repair, beauty, home services. A client describes a task, specialists reply with offers, and the client picks who to work with.</p><p>Tutoring is one of its biggest verticals. That’s where I worked, in the growth team.</p></div></div>
-    <div><p class="lbl gray">Role</p><div class="body "><p>Senior Product Designer in the tutoring vertical. I owned the AI matching experience end to end on web, mobile web, and iOS, together with a product manager, analysts and engineers.</p><p>The job went from interviews and usability tests to A/B tests on the internal experiment platform, and prototypes I built in code with Claude and Claude Code.</p></div></div>
+    <div><p class="lbl gray">Role</p><div class="body "><p>Senior Product Designer in the tutoring vertical. I owned the AI matching experience end to end on web, mobile web, and iOS, together with a product manager, analysts and engineers.</p><p>The work went from interviews and usability tests to A/B tests on the internal experiment platform, and prototypes I built in code with Claude and Claude Code.</p></div></div>
   </section>
   <section class="panel">
     <p class="lbl gray">Results</p>
-    <div class="nums four"><div><b>+23.5%</b><p class="lbl">Client-to-contact<br class="mbr"> conversion</p></div><div><b>+21%</b><p class="lbl">First AI<br class="mbr"> shortlist</p></div><div><b>5+</b><p class="lbl">A/B tests<br class="mbr"> in 6 months</p></div><div><b>3</b><p class="lbl">Platforms: web, mobile<br class="mbr"> web, and iOS</p></div></div>
+    <div class="nums four"><div><b>+23.5%</b><p class="lbl">Client-to-contact<br class="mbr"> conversion</p></div><div><b>+21%</b><p class="lbl">First<br class="mbr"> shortlist</p></div><div><b>4</b><p class="lbl">Design stages,<br class="mbr"> each A/B tested</p></div><div><b>3</b><p class="lbl">Platforms: web, mobile<br class="mbr"> web, and iOS</p></div></div>
   </section>
   <section class="study">
     <p class="lbl gray">Case study</p>
-    <h2>Teaching an LLM to pick a tutor, and earning the client’s trust in that pick</h2><div class="body "><p>A client posts a request and gets a stream of offers, often more than they can read. Many read a few and never write to anyone. The gap between interest in a specialist and the first message was the biggest drop in the funnel.</p><p>The idea was to let the product do the first round of choosing: show the best few offers for this particular task, say why each one fits, and let the client ask for others in plain words if none do. It took several releases to get there, and the release that didn’t win taught us the most.</p></div>
+    <h2>Teaching an LLM to pick a tutor, and earning the client’s trust in that pick</h2><div class="body "><p>A client posts a request and gets a stream of offers, often more than they can read. Many read a few and never write to anyone. The gap between interest in a specialist and the first message was the biggest drop in the funnel.</p><p>The idea was to let the product do the first round of choosing: show the best few offers for this task, say why each one fits, and let the client ask for others in plain words. It took four stages to get there. Before the first one, we went and listened.</p></div>
   </section>
-  <section class="chap">
-    <div class="ct"><p class="lbl gray">01</p><h3>The first shortlist</h3></div>
-    <div><p class="pull">Clients welcomed a shortlist. The next question was whether AI could make it personal.</p><div class="body "><p>The first version highlighted three best-fit offers above the stream, ranked by experience and reviews. Nothing else changed: the client could still read every offer.</p><p>In the A/B test it raised client-to-contact conversion by 21%. That settled the main question: clients welcome a shortlist. The next one was harder. Could an LLM make the pick personal to the client’s task and explain itself well enough to be trusted?</p></div></div>
-  </section>
-  <section class="chap">
-    <div class="ct"><p class="lbl gray">02</p><h3>An LLM pick that explains itself</h3></div>
-    <div><p class="pull">The model was fine. What we built around it was not.</p><div class="body "><p>In the next version an LLM ranked the offers against the task the client had described in the order wizard, and wrote a short “Why they fit you” for each pick. If none of the three fit, the client could open “Find other pros”, say what to change in their own words and get a new set.</p><p>The test didn’t win. Instead of guessing, I put the A/B data next to moderated usability sessions with students and parents, and the picture was clear. The model was fine. What we built around it was not:</p><ul><li>The rest of the offers sat collapsed under the shortlist, so clients read fewer offers overall</li><li>The new pick could take minutes, and the loader promised “a second”</li><li>An empty text field left people stuck: they didn’t know what to type</li><li>Explanations were too generic to trust, and people read them as AI filler</li></ul><p>Every point came with a fix, and all of them were about the interface, not the model.</p></div><div class="vshot"><video src="v/profi-match.mp4" poster="v/profi-match.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="Walkthrough: AI shortlist with explanations, opening a chat"></video></div></div>
-  </section>
-  <section class="chap">
-    <div class="ct"><p class="lbl gray">03</p><h3>Same model, better frame</h3></div>
-    <div><p class="pull">The AI became a highlight on top of the full list, not a filter that hid it.</p><div class="body "><p>The next release kept the same LLM and rebuilt everything around it. The shortlist became a highlight on top of the full list, so nothing was hidden. Explanations moved from prose to the client’s own criteria (budget, time, format) plus one fact from reviews with its source.</p><p>Re-picking got hints as chips and a text field prefilled from the order, so the client edits instead of starting from scratch. The loader tells the truth about timing, and there is a clear fallback when nothing better turns up.</p><p>This version raised client-to-contact conversion by 23.5%, more than the first shortlist, with the same model that didn’t win a release earlier.</p></div><div class="vshot"><video src="v/profi-repick.mp4" poster="v/profi-repick.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="Walkthrough: re-picking specialists with a hint and a prefilled request"></video></div><div class="vshot"><video src="v/profi-mobile.mp4" poster="v/profi-mobile.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="Walkthrough: AI shortlist on mobile web"></video></div></div>
-  </section>
-  <section class="chap">
-    <div class="ct"><p class="lbl gray">04</p><h3>Synthetic respondents</h3></div>
-    <div><p class="pull">Weak hypotheses died in a chat window, not in a two-week A/B test.</p><div class="body "><p>Between releases there were more hypotheses than A/B slots. So we built synthetic respondents: AI personas based on nine in-depth interviews from our own research, each with their habits, contradictions and real phrasing.</p><p>Before a test, the team could interview them, show them a prototype or check a hypothesis. They don’t replace real people, but they filter out weak ideas early and help prepare for real interviews. I later packaged the approach as a reusable Claude skill, so colleagues could build personas for other verticals.</p></div><style>
-.syn{margin-top:calc(40*var(--u));background:#fff;border:1px solid #e2e2e6;border-radius:12px;overflow:hidden;font-family:var(--grot);color:#1c1c1f;font-size:max(14px,calc(10.5*var(--u)))}
-.syn .tb{display:flex;align-items:baseline;gap:14px;padding:12px 18px;border-bottom:1px solid #e2e2e6;background:#fafafb}
-.syn .tb b{font-weight:600}.syn .tb span{color:#7a7a85}.syn .tb em{margin-left:auto;font-style:normal;color:#7a7a85}
-.syn .bd{display:grid;grid-template-columns:calc(230*var(--u)) 1fr}
-.syn .pp{display:flex;flex-direction:column;border-right:1px solid #e2e2e6;background:#fafafb;padding:10px 0}
-.syn .pp h4,.syn .sgw h4{margin:0;font-weight:500;font-size:max(12px,calc(9*var(--u)));color:#7a7a85;padding:4px 18px 8px}
-.syn .pp button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 18px;background:transparent;border-left:2px solid transparent}
-.syn .pp button:hover{background:#f0f0f3}
-.syn .pp button.on{background:#eceef4;border-left-color:#3b5bdb}
-.syn .av{font-style:normal;flex:none;width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:13px}
-.syn .pp b{display:block;font-weight:600}
-.syn .pp span{display:block;color:#7a7a85;font-size:.9em;margin-top:1px}
-.syn .cv{display:flex;flex-direction:column;min-height:calc(400*var(--u))}
-.syn .pf{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;padding:14px 22px;border-bottom:1px solid #e2e2e6}
-.syn .pf dt{color:#7a7a85}.syn .pf dd{margin:0}
-.syn .log{flex:1;display:flex;flex-direction:column;gap:14px;padding:18px 22px}
-.syn .t{max-width:40em;line-height:1.5}
-.syn .t small{display:block;font-size:.85em;color:#7a7a85;margin-bottom:3px}
-.syn .t.a p{margin:0;padding:.55em .9em;background:#f5f5f7;border-left:2px solid #3b5bdb;border-radius:0 6px 6px 0}
+  <div class="dk">
+<style>
+.dk{--dk:#14161b;--dk2:#1d2027;--dk3:#262a33;--dl:rgba(255,255,255,.09);--dt:#e9e8e3;--dg:#8b8d96;--amb:#f5a524;
+ background:var(--dk);color:var(--dt);margin:calc(120*var(--u)) 0 0;padding:calc(90*var(--u)) var(--m) calc(100*var(--u))}
+.dk .lbl.gray,.dk .gray{color:var(--dg)}
+.dk .chap{margin-top:0}
+.dk .chap+.chap{margin-top:calc(110*var(--u))}
+.dk .body p,.dk .body li{color:var(--dt)}
+.dk .pull{color:#fff}
+.dk .dh{font-family:var(--serif);font-weight:400;font-size:max(34px,calc(46*var(--u)));line-height:1;letter-spacing:-.01em;max-width:14em;margin:0 0 calc(70*var(--u)) calc(310*var(--u));text-wrap:balance}
+.pipe{list-style:none;margin:calc(40*var(--u)) 0 0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--dl);border:1px solid var(--dl);border-radius:14px;overflow:hidden}
+.pipe li{background:var(--dk2);padding:max(16px,calc(16*var(--u))) max(14px,calc(14*var(--u))) max(18px,calc(18*var(--u)));display:flex;flex-direction:column;gap:.55em;position:relative}
+.pipe li:not(:last-child):after{content:"";position:absolute;right:-6px;top:50%;width:10px;height:10px;border-top:1px solid var(--dg);border-right:1px solid var(--dg);transform:translateY(-50%) rotate(45deg);background:var(--dk2);z-index:1}
+.pipe b{font-family:var(--grot);font-weight:700;font-size:max(15px,calc(11.5*var(--u)));color:#fff;letter-spacing:-.01em}
+.pipe span{font-size:max(13.5px,calc(9.6*var(--u)));line-height:1.45;color:var(--dg)}
+.pipe li.ai{background:#2a2419}.pipe li.ai b{color:var(--amb)}
+.syn{margin-top:calc(40*var(--u));background:var(--dk2);border:1px solid var(--dl);border-radius:16px;overflow:hidden;font-family:var(--grot);color:var(--dt);font-size:max(14.5px,calc(10.5*var(--u)))}
+.syn .tb{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--dl)}
+.syn .tb b{font-weight:600;color:#fff}
+.syn .md{display:flex;gap:2px;margin-left:auto;white-space:nowrap;background:var(--dk);border-radius:10px;padding:3px}
+.syn .md button{padding:.42em .85em;border-radius:8px;color:var(--dg);font-size:.92em}
+.syn .md button.on{background:var(--dk3);color:#fff}
+.syn .bd{display:grid;grid-template-columns:calc(220*var(--u)) 1fr}
+.syn .pp{display:flex;flex-direction:column;border-right:1px solid var(--dl);padding:10px 0}
+.syn h4{margin:0;font-weight:500;font-size:max(12px,calc(8.8*var(--u)));color:var(--dg);padding:6px 16px 8px}
+.syn .pp button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px 16px;border-left:2px solid transparent;color:var(--dt)}
+.syn .pp button:hover{background:rgba(255,255,255,.03)}
+.syn .pp button.on{background:rgba(255,255,255,.05);border-left-color:var(--amb)}
+.syn .av{font-style:normal;flex:none;width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#14161b;font-weight:700;font-size:13px}
+.syn .pp b{display:block;font-weight:600;color:#fff}.syn .pp span{display:block;color:var(--dg);font-size:.88em;margin-top:1px}
+.syn .cv{display:flex;flex-direction:column;min-height:calc(420*var(--u))}
+.syn .pf{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;padding:14px 22px;border-bottom:1px solid var(--dl);font-size:.93em}
+.syn .pf dt{color:var(--dg)}.syn .pf dd{margin:0}
+.syn .log{flex:1;display:flex;flex-direction:column;gap:16px;padding:20px 22px}
+.syn .t{max-width:42em;line-height:1.5}
+.syn .t small{display:block;font-size:.82em;color:var(--dg);margin-bottom:4px}
 .syn .t p{margin:0}
-.syn .dots{display:inline-flex;gap:5px;padding:.4em 0}.syn .dots i{width:6px;height:6px;border-radius:50%;background:#9a9aa5;animation:sd 1s infinite}.syn .dots i:nth-child(2){animation-delay:.15s}.syn .dots i:nth-child(3){animation-delay:.3s}
+.syn .t.a p{padding:.65em .95em;background:var(--dk3);border-radius:4px 12px 12px 12px}
+.syn .t.a small{color:var(--amb)}
+.syn .dots{display:inline-flex;gap:5px;padding:.3em 0}.syn .dots i{width:6px;height:6px;border-radius:50%;background:var(--dg);animation:sd 1s infinite}.syn .dots i:nth-child(2){animation-delay:.15s}.syn .dots i:nth-child(3){animation-delay:.3s}
 @keyframes sd{0%,100%{opacity:.3}50%{opacity:1}}
+.syn .sgw{border-top:1px solid var(--dl);padding:12px 0 16px}
+.syn .sg{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px}
+.syn .sg button{text-align:left;border:1px solid var(--dl);border-radius:9px;padding:.5em .85em;color:var(--dt);background:rgba(255,255,255,.02)}
+.syn .sg button:hover{border-color:var(--amb);color:#fff}
+.syn .sg button[disabled]{opacity:.35;cursor:default;border-color:var(--dl)}
+.syn button:focus-visible,.pipe:focus-visible{outline:2px solid var(--amb);outline-offset:2px}
+.hyp{margin-top:calc(40*var(--u));display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--dl);border:1px solid var(--dl);border-radius:16px;overflow:hidden}
+.hyp>div{background:var(--dk2);padding:max(18px,calc(20*var(--u))) max(18px,calc(22*var(--u)))}
+.hyp .q,.hyp .dc{grid-column:1/-1}
+.hyp .q p.h{font-family:var(--grot);font-weight:700;font-size:max(18px,calc(14*var(--u)));line-height:1.25;color:#fff;margin-top:.4em;max-width:30em}
+.hyp blockquote{margin:.7em 0 0;font-size:max(15px,calc(10.8*var(--u)));line-height:1.5}
+.hyp .dc{background:#2a2419}
+.hyp .dc p:not(.lbl){font-size:max(15.5px,calc(11.2*var(--u)));line-height:1.5;margin-top:.5em;color:#fff;max-width:40em}
+.hyp .dc .lbl{color:var(--amb)}
 @media (prefers-reduced-motion:reduce){.syn .dots i{animation:none}}
-.syn .sgw{border-top:1px solid #e2e2e6;padding:12px 4px 14px}
-.syn .sgw h4{padding-left:18px}
-.syn .sg{display:flex;flex-wrap:wrap;gap:6px;padding:0 18px}
-.syn .sg button{text-align:left;background:#fff;border:1px solid #d8d8de;border-radius:6px;padding:.45em .8em}
-.syn .sg button:hover{border-color:#3b5bdb;color:#3b5bdb}
-.syn .sg button[disabled]{opacity:.4;cursor:default;border-color:#d8d8de;color:inherit}
-.syn button:focus-visible{outline:2px solid #3b5bdb;outline-offset:2px}
-.vshot video{border-radius:calc(22*var(--u))}
-@media (max-width:700px){.syn .tb em{display:none}.syn .bd{grid-template-columns:1fr}.syn .pp{flex-direction:row;border-right:0;border-bottom:1px solid #e2e2e6;padding:0}.syn .pp h4{display:none}.syn .pp button{border-left:0;border-bottom:2px solid transparent;padding:10px 14px}.syn .pp button.on{border-bottom-color:#3b5bdb}.syn .pf,.syn .log{padding-left:14px;padding-right:14px}.syn .sgw{padding-left:0;padding-right:0}.syn .sgw h4,.syn .sg{padding-left:14px;padding-right:14px}.syn .cv{min-height:420px}.vshot video{border-radius:14px}}
-</style><div class="syn" id="syn"><div class="tb"><b>Synthetic respondents</b><span>Study: choosing a tutor</span><em>Persona chat</em></div><div class="bd"><div class="pp"></div><div class="cv"></div></div></div><p class="lbl gray cap">Try it. Sample answers written in the personas’ voice for this page; the real tool runs on Claude.</p><script>(function(){var P=[["Oksana", "Parent, 47", "Looking for a maths tutor for her daughter before the final exams", [["How do you usually look for a tutor?", "Honestly? The dream is a friend handing me one: here, take this one. We went through three or four tutors before we found ours, my daughter kept saying she was falling asleep. So now I want to see everyone at once, not just the ones who replied. I screenshot the good ones and show her. The last word is hers."], ["What do you think of the offers tutors send you?", "I barely read them. It’s dead information, he didn’t write it himself. Feels like you’re chatting with a bot."], ["What if the service picked three tutors and explained why?", "If it really explains, education, reviews, how they work with kids, then yes, that’s exactly the “bring it to me on a plate” I want. If it just says “a perfect fit for you”, I’ll scroll past. And show the price straight away: 5,000 and I’m gone, you can find one for 2,500."]]], ["Roman", "Student, 17", "Preparing for computer science and physics exams on his own", [["How do you choose between tutors?", "Systematically. Reviews and rating first, then who they are and their education, then price, then experience, photo last. I go through about five profiles in fifteen minutes."], ["Why don’t you open the offers?", "Eight people wrote within a minute. Obviously an auto-reply."], ["What would make you trust a recommendation?", "Proof, not words. “Came with 65, passed with 89 three months later.” And I’d trust a 4.9 more than a 5.0. A 5.0 means he adapts to everyone. A 4.9 means he has character."]]]],COL=['#8a6d3b','#4b5b7a'],r=document.getElementById('syn'),pp=r.querySelector('.pp'),cv=r.querySelector('.cv');
+@media (max-width:700px){
+ .dk{padding:64px var(--m) 72px;margin-top:84px}
+ .dk .dh{margin:0 0 48px}
+ .pipe{grid-template-columns:1fr}.pipe li:not(:last-child):after{right:auto;left:24px;top:auto;bottom:-6px;transform:rotate(135deg)}
+ .syn .tb{padding:12px}.syn .md{margin-left:0;width:100%}.syn .md button{flex:1;padding:.5em .2em;font-size:.84em}
+ .syn .bd{grid-template-columns:1fr}.syn .pp{flex-direction:row;border-right:0;border-bottom:1px solid var(--dl);padding:0}.syn .pp h4{display:none}
+ .syn .pp button{border-left:0;border-bottom:2px solid transparent;padding:10px 14px}.syn .pp button.on{border-bottom-color:var(--amb)}
+ .syn .pf,.syn .log{padding-left:14px;padding-right:14px}.syn .sg{padding:0 14px}.syn h4{padding-left:14px}.syn .cv{min-height:440px}
+ .hyp{grid-template-columns:1fr}
+}
+/* stages */
+.pair{display:grid;grid-template-columns:1366fr 368fr;gap:calc(14*var(--u));align-items:end;margin-top:calc(40*var(--u))}
+.pair img{display:block;width:100%;height:auto;border-radius:calc(10*var(--u));box-shadow:0 1px 2px rgba(0,0,0,.06),0 12px 40px -12px rgba(0,0,0,.18)}
+.pair img.m{border-radius:calc(22*var(--u))}
+.track{list-style:none;margin:calc(56*var(--u)) var(--m) 0;padding:0 0 0 calc(310*var(--u));display:grid;grid-template-columns:repeat(4,1fr);gap:calc(14*var(--u))}
+.track li{border-top:2px solid var(--ink);padding-top:max(12px,calc(12*var(--u)));display:flex;flex-direction:column;gap:.35em}
+.track li.dim{border-top-color:var(--line)}
+.track b{font-family:var(--grot);font-weight:700;font-size:max(16px,calc(12.5*var(--u)));letter-spacing:-.01em}
+.track span{font-size:max(14px,calc(10*var(--u)));line-height:1.4;color:var(--soft)}
+.track em{font-style:normal;font-family:var(--serif);font-size:max(30px,calc(30*var(--u)));line-height:1;margin-top:.2em}
+.kv{display:grid;grid-template-columns:max(110px,calc(100*var(--u))) 1fr;gap:.9em max(16px,calc(20*var(--u)));margin-top:max(22px,calc(26*var(--u)))}
+.kv dt{font-family:var(--mono);font-weight:500;font-size:var(--lbl);text-transform:uppercase;letter-spacing:.04em;color:var(--gray);padding-top:.25em}
+.kv dd{margin:0;font-size:max(15.5px,calc(11*var(--u)));line-height:1.5}
+.kv dd.ai{border-left:2px solid #f5a524;padding-left:.8em}
+@media (max-width:700px){.pair{grid-template-columns:1fr;gap:16px}.pair img.m{width:62%;justify-self:center}.track{padding:0;grid-template-columns:1fr 1fr;row-gap:24px;margin-top:48px}.kv{grid-template-columns:1fr;gap:.2em}.kv dd{margin-bottom:.8em}}
+</style>    <p class="dh">Research first: real interviews, then AI respondents built from them</p>
+  <section class="chap">
+    <div class="ct"><p class="lbl gray">01</p><h3>How we listened</h3></div>
+    <div><p class="pull">Nine interviews became two people the whole team could talk to any day.</p><div class="body "><p>We ran nine in-depth interviews with parents and students who had looked for a tutor on Profi. Two patterns came up again and again. People don’t trust offers, because they read like auto-replies. And they choose by proof: reviews, results, education, price.</p><p>The interviews also gave us two very different people. Oksana, a parent who wants a tutor “brought on a plate” and lets her daughter make the final call. Roman, a 17-year-old who picks tutors on his phone like an analyst and trusts a 4.9 more than a 5.0.</p></div></div>
+  </section>
+  <section class="chap">
+    <div class="ct"><p class="lbl gray">02</p><h3>Synthetic respondents</h3></div>
+    <div><p class="pull">Weak hypotheses died in a chat window, not in a two-week A/B test.</p><div class="body "><p>Between releases there were more hypotheses than A/B slots. So I turned the two personas into synthetic respondents: AI chat personas on Claude, each with a system prompt built from interview quotes, habits and contradictions.</p><p>The tool has three modes. In an interview the persona tells stories. In a prototype test it reacts to a screen. In a hypothesis check it is told not to agree just to be polite. Synthetic respondents don’t replace real people, but they cut weak ideas early and help us prepare better questions for real sessions. I later packaged the approach as a reusable Claude skill, so other teams could build personas for their verticals.</p></div><ol class="pipe" aria-label="How a synthetic respondent is built"><li><b>Interviews</b><span>Nine in-depth interviews with parents and students</span></li><li><b>Persona prompt</b><span>Who they are, how they talk, how they search, what puts them off, their own phrases</span></li><li><b>Session mode</b><span>Interview, prototype test or hypothesis check</span></li><li class="ai"><b>Claude</b><span>Answers in the persona’s voice and pushes back when an idea doesn’t solve their problem</span></li><li><b>Decision</b><span>Cut, change or send to an A/B test</span></li></ol><div class="syn" id="syn"><div class="tb"><b>Synthetic respondents</b><div class="md" role="group" aria-label="Session mode"></div></div><div class="bd"><div class="pp"></div><div class="cv"></div></div></div><p class="lbl gray cap">Try it. Answers on this page paraphrase the personas’ prompts; the real tool runs live on Claude.</p><script>(function(){var P=[{"name": "Oksana", "seg": "Parent, 47", "ctx": "Looking for a maths tutor for her daughter before the final exams", "modes": {"interview": [["How do you usually look for a tutor?", "Honestly? The dream is a friend handing me one: here, take this one. We went through three or four tutors before we found ours, my daughter kept saying she was falling asleep. So now I want to see everyone at once, not just the ones who replied. The last word is hers."], ["What do you think of the offers tutors send you?", "I barely read them. It’s dead information, he didn’t write it himself. Feels like you’re chatting with a bot."]], "prototype": [["Here’s a new screen: three tutors on top, each with “Why they fit you”. What do you do first?", "Photos, then education, then reviews, then price. If the price says 5,000 I’m gone, you can find one for 2,500. And where do I save the two I like? I want to show them to my daughter, right now I take screenshots."]], "hypothesis": [["Idea: AI picks three tutors and writes a short note on why each one fits. Would you write to one of them?", "If the note says something real, education, reviews, how they are with kids, then yes, that’s exactly “bring it to me on a plate”. If it says “a perfect fit for you”, I scroll past. That’s the same dead text as the offers."]]}}, {"name": "Roman", "seg": "Student, 17", "ctx": "Preparing for computer science and physics exams on his own, on his phone", "modes": {"interview": [["How do you choose between tutors?", "Systematically. Reviews and rating first, then who they are and their education, then price, then experience, photo last. About five profiles in fifteen minutes."], ["Why don’t you open the offers?", "Eight people wrote within a minute. Obviously an auto-reply."]], "prototype": [["Here’s the same screen on mobile. What do you look at?", "Rating and number of reviews. A 5.0 means he adapts to everyone, a 4.9 means he has character. Then I want a trial lesson. Writing the first message is a big step, I’d rather close the tab and ask my classmates."]], "hypothesis": [["Idea: AI picks three tutors and writes a short note on why each one fits. Would you write to one of them?", "Depends what’s in the note. “Explains clearly” tells me nothing. “Came with 65, passed with 89” is a reason to write. And show where it’s from, otherwise it’s just the AI talking."]]}}],COL=['#f5c26b','#9fb4d9'],M=[['interview','Interview'],['prototype','Prototype test'],['hypothesis','Hypothesis check']],
+r=document.getElementById('syn'),pp=r.querySelector('.pp'),cv=r.querySelector('.cv'),md=r.querySelector('.md'),cur=0,mode='hypothesis';
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
-function av(i,p){var a=el('i','av',p[0][0]);a.style.background=COL[i];return a}
-function turn(k,who,txt){var d=el('div','t '+k);d.appendChild(el('small',null,who));var p=el('p',null,txt);d.appendChild(p);return d}
-function show(i){var p=P[i];[].forEach.call(pp.querySelectorAll('button'),function(b,k){b.classList.toggle('on',k==i);b.setAttribute('aria-pressed',k==i)});
-cv.innerHTML='';var pf=el('dl','pf');[['Segment',p[1]],['Context',p[2]]].forEach(function(x){pf.appendChild(el('dt',null,x[0]));pf.appendChild(el('dd',null,x[1]))});cv.appendChild(pf);
+function turn(k,who,txt){var d=el('div','t '+k);d.appendChild(el('small',null,who));d.appendChild(el('p',null,txt));return d}
+function show(){var p=P[cur];[].forEach.call(pp.querySelectorAll('button'),function(b,k){b.classList.toggle('on',k==cur);b.setAttribute('aria-pressed',k==cur)});
+[].forEach.call(md.querySelectorAll('button'),function(b){var on=b.dataset.m==mode;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+cv.innerHTML='';var pf=el('dl','pf');[['Segment',p.seg],['Context',p.ctx],['Built from','In-depth interviews']].forEach(function(x){pf.appendChild(el('dt',null,x[0]));pf.appendChild(el('dd',null,x[1]))});cv.appendChild(pf);
 var log=el('div','log');log.setAttribute('aria-live','polite');cv.appendChild(log);var sw=el('div','sgw');sw.appendChild(el('h4',null,'Suggested questions'));var sg=el('div','sg');sw.appendChild(sg);cv.appendChild(sw);
-p[3].forEach(function(qa,n){var b=el('button',null,qa[0]);b.type='button';b.onclick=function(){
- b.disabled=true;log.appendChild(turn('q','Interviewer',qa[0]));var d=turn('a',p[0],'');d.lastChild.className='dots';d.lastChild.innerHTML='<i></i><i></i><i></i>';log.appendChild(d);
+p.modes[mode].forEach(function(qa,n){var b=el('button',null,qa[0]);b.type='button';b.onclick=function(){
+ b.disabled=true;log.appendChild(turn('q','Designer',qa[0]));var d=turn('a',p.name,'');d.lastChild.className='dots';d.lastChild.innerHTML='<i></i><i></i><i></i>';log.appendChild(d);
  setTimeout(function(){d.lastChild.className='';d.lastChild.textContent=qa[1]},900)};sg.appendChild(b);
- if(n==0){b.disabled=true;log.appendChild(turn('q','Interviewer',qa[0]));log.appendChild(turn('a',p[0],qa[1]))}})}
+ if(n==0){b.disabled=true;log.appendChild(turn('q','Designer',qa[0]));log.appendChild(turn('a',p.name,qa[1]))}});}
+M.forEach(function(m){var b=el('button',null,m[1]);b.type='button';b.dataset.m=m[0];b.onclick=function(){mode=m[0];show()};md.appendChild(b)});
 pp.appendChild(el('h4',null,'Personas'));
-P.forEach(function(p,i){var b=el('button');b.type='button';b.appendChild(av(i,p));var w=el('div');w.appendChild(el('b',null,p[0]));w.appendChild(el('span',null,p[1]));b.appendChild(w);b.onclick=function(){show(i)};pp.appendChild(b)});
-show(0)})();</script></div>
+P.forEach(function(p,i){var b=el('button');b.type='button';var a=el('i','av',p.name[0]);a.style.background=COL[i];b.appendChild(a);var w=el('div');w.appendChild(el('b',null,p.name));w.appendChild(el('span',null,p.seg));b.appendChild(w);b.onclick=function(){cur=i;show()};pp.appendChild(b)});
+show()})();</script></div>
+  </section>
+  <section class="chap">
+    <div class="ct"><p class="lbl gray">03</p><h3>One hypothesis, two voices</h3></div>
+    <div><div class="body "><p>Both personas liked the idea and rejected generic wording. That kind of answer is cheap to get from a chat and expensive to learn from a failed A/B test.</p></div><div class="hyp"><div class="q"><p class="lbl gray">Hypothesis check</p><p class="h">An AI note on why each tutor fits will make clients write first</p></div><div><p class="lbl gray">Oksana, parent</p><blockquote>“If the note says something real, education, reviews, how they are with kids, then yes. If it says ‘a perfect fit for you’, I scroll past.”</blockquote></div><div><p class="lbl gray">Roman, student</p><blockquote>“‘Explains clearly’ tells me nothing. ‘Came with 65, passed with 89’ is a reason to write. And show where it’s from.”</blockquote></div><div class="dc"><p class="lbl">What it changed</p><p>Generic praise reads as AI filler. Ground every explanation in the client’s own criteria and one concrete fact from reviews, with its source.</p></div></div><p class="lbl gray cap">A check of the kind we ran between releases. Quotes paraphrase the personas’ prompts</p></div>
+  </section>
+  </div>
+<ol class="track" aria-label="Four stages"><li><b>I. Best match</b><span>A shortlist above the offers</span><em>+21%</em></li><li class="dim"><b>II. Praised for</b><span>Reasons from reviews, and a way to ask for others</span></li><li class="dim"><b>III. LLM explains</b><span>An LLM picks and writes why</span></li><li><b>IV. Better frame</b><span>Same model, rebuilt around trust</span><em>+23.5%</em></li></ol>  <section class="chap">
+    <div class="ct"><p class="lbl gray">04</p><h3>Best match</h3></div>
+    <div><p class="pull">Clients welcomed a shortlist. The next question was whether it could be personal.</p><div class="body "><p>The first stage changed nothing in how offers arrive. When a request collected eight or more offers, the list opened with a block of three that had the best reviews on similar tasks. Below eight, there was no block: a shortlist of three out of five is noise.</p><p>On desktop the block sits on top of the offers column, next to the open chat. On mobile web it takes the first screen under the offers tab, so the client sees the three before scrolling. Pinned chats stay pinned inside the block.</p><dl class="kv"><dt>AI</dt><dd class="ai">Ranking by reviews on similar tasks. No explanation yet, only a short line: great reviews on similar tasks.</dd><dt>Result</dt><dd>Client-to-contact conversion grew by 21% in the A/B test.</dd><dt>Next</dt><dd>Clients welcome a shortlist. Now make it about their task and tell them why.</dd></dl></div><figure class="pair"><img src="big/profi-s1d.jpg" alt="Stage 1 on desktop: a shortlist of three best-matched offers on top of the list" loading="lazy" decoding="async"><img class="m" src="big/profi-s1m.jpg" alt="Stage 1 on mobile web" loading="lazy" decoding="async"></figure><p class="lbl gray cap">Desktop and mobile web. Redrawn in English with sample data</p></div>
+  </section>
+  <section class="chap">
+    <div class="ct"><p class="lbl gray">05</p><h3>Praised for</h3></div>
+    <div><p class="pull">Reviews turned into reasons, and the client got a way to ask for others.</p><div class="body "><p>The second stage gave each pick a reason. Under every tutor we showed what clients praise them for, pulled from reviews: explains clearly, exam results, punctual. The block got a clear name, best fit for your task, and the rest of the offers moved under “More specialists”.</p><p>The client also got a way out. “Find other pros” opened a short form: wishes for the task, price, tutor, where to study. Submitting it started a new search, and the old offers moved down. On mobile web the form is a bottom sheet over the list, one tap per field.</p><dl class="kv"><dt>AI</dt><dd class="ai">Review highlights per tutor, and a new search from structured parameters.</dd><dt>Next</dt><dd>A form only captures what we thought to ask. Let an LLM read the task and the reviews, and let the client say what to change in their own words.</dd></dl></div><figure class="pair"><img src="big/profi-s2d.jpg" alt="Stage 2 on desktop: review highlights under each tutor and a form to find other pros" loading="lazy" decoding="async"><img class="m" src="big/profi-s2m.jpg" alt="Stage 2 on mobile web" loading="lazy" decoding="async"></figure><p class="lbl gray cap">Desktop and mobile web. Redrawn in English with sample data</p></div>
+  </section>
+  <section class="chap">
+    <div class="ct"><p class="lbl gray">06</p><h3>An LLM explains the pick</h3></div>
+    <div><p class="pull">The model was fine. What we built around it was not.</p><div class="body "><p>In the third stage an LLM took over. It ranked the offers against the task the client had written in the order wizard and wrote a short “Why they fit you” for each pick. Picks appeared one by one while it read reviews and collected ratings, no skeletons.</p><p>“Find other pros” appeared after the client had read all three, and turned into a prompt: a text field prefilled from the wizard. The client edits it, the LLM picks again. If the client starts a chat with someone outside the three, that tutor joins the block. On mobile the prompt opens as a bottom sheet with the keyboard up, so editing feels like writing a message.</p><dl class="kv"><dt>AI</dt><dd class="ai">LLM ranking against the client’s own task, generated explanations, re-pick from a prompt.</dd><dt>Learned</dt><dd>The A/B test and moderated usability sessions pointed at the frame, not the model: the other offers were hidden, the wait felt long, a blank-looking prompt left people unsure, and explanations read as filler.</dd><dt>Next</dt><dd>Keep the model. Rebuild trust around it.</dd></dl></div><figure class="pair"><img src="big/profi-s3d.jpg" alt="Stage 3 on desktop: LLM explanations on each card and a prompt to re-pick" loading="lazy" decoding="async"><img class="m" src="big/profi-s3m.jpg" alt="Stage 3 on mobile web" loading="lazy" decoding="async"></figure><p class="lbl gray cap">Desktop and mobile web. Redrawn in English with sample data</p></div>
+  </section>
+  <section class="chap">
+    <div class="ct"><p class="lbl gray">07</p><h3>Same model, better frame</h3></div>
+    <div><p class="pull">The AI became a highlight on top of the full list, not a filter that hid it.</p><div class="body "><p>The fourth stage kept the same LLM and changed everything around it. The shortlist became a highlight on top of the full list, so nothing was hidden. Explanations moved from prose to the client’s own criteria, budget, time, format, plus one fact from reviews with its source.</p><p>Re-picking got hints as chips next to the prefilled prompt, so the client edits instead of starting from scratch. The loader says honestly what the AI is doing and how long it takes, and there is a clear fallback when nothing better turns up. On mobile web the criteria fold into the card and open with one tap.</p><dl class="kv"><dt>AI</dt><dd class="ai">The same LLM, now grounded: criteria the client gave, a sourced fact from reviews, hints for the prompt.</dd><dt>Result</dt><dd>Client-to-contact conversion grew by 23.5%, more than the first shortlist, with the model that didn’t win a stage earlier.</dd></dl></div><figure class="pair"><img src="big/profi-s4d.jpg" alt="Stage 4 on desktop: explanations built from the client’s criteria and a sourced review fact" loading="lazy" decoding="async"><img class="m" src="big/profi-s4m.jpg" alt="Stage 4 on mobile web" loading="lazy" decoding="async"></figure><p class="lbl gray cap">Desktop and mobile web. Redrawn in English with sample data</p><div class="vshot"><video src="v/profi-match.mp4" poster="v/profi-match.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="Walkthrough: AI shortlist with explanations, opening a chat"></video></div><div class="vshot"><video src="v/profi-repick.mp4" poster="v/profi-repick.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="Walkthrough: re-picking specialists with a hint and a prefilled request"></video></div></div>
+  </section>
+  <section class="chap">
+    <div class="ct"><p class="lbl gray">08</p><h3>Where AI ended up</h3></div>
+    <div><div class="body "><p>By the end the LLM did four jobs in the product, and two more in how we worked.</p><ul><li>Reads the client’s task and ranks the offers against it</li><li>Explains each pick with the client’s criteria and a sourced fact from reviews</li><li>Turns the order into an editable prompt for a new pick</li><li>Keeps the full list one scroll away, so AI suggests and never decides</li><li>Synthetic respondents on Claude to test ideas before A/B slots</li><li>Prototypes in code with Claude and Claude Code, shared as links</li></ul><p>The biggest lesson: when an AI feature loses, look at the frame first. Our model was the same in the stage that didn’t win and in the stage that won by 23.5%.</p></div></div>
   </section>
   <nav class="pn">
     <a class="pv" href="case-inter-rao.html"><span class="lbl gray">Previous</span><span class="n"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span>Inter RAO</span></a>
