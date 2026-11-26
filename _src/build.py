@@ -1194,19 +1194,27 @@ SR_CSS = """<style>
 .syn .sg button{text-align:left;border:1px solid var(--kl);border-radius:10px;padding:.5em .85em;color:var(--kt);line-height:1.35}
 .syn .sg button:hover{border-color:var(--ac)}
 .syn .sg button[disabled]{display:none}
+.syn .ask{display:flex;gap:8px;margin:0 24px 20px;padding:6px 6px 6px 14px;border:1px solid var(--kl);border-radius:12px;background:var(--k1)}
+.syn .ask:focus-within{border-color:var(--ac)}
+.syn .ask input{flex:1;min-width:0;background:none;border:0;outline:none;color:var(--kt);font:inherit;font-size:16px}
+.syn .ask input::placeholder{color:var(--kg)}
+.syn .ask button{padding:.45em .9em;border-radius:8px;background:var(--kt);color:var(--k0);font-weight:600;font-size:.9em}
+.syn .t.nt small{color:var(--kg)}.syn .t.nt p{color:var(--kg);font-size:.95em}
 .syn button:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.syn .dots i,.syn .t.in{animation:none}}
 @media (max-width:700px){
  .pipe{grid-template-columns:1fr}
  .syn .tb{flex-wrap:wrap;padding:12px}.syn .md{margin-left:0;width:100%%}.syn .md button{flex:1;padding:.5em .2em;font-size:.84em}
  .syn .bd{grid-template-columns:1fr}.syn .pp{flex-direction:row;border-right:0;border-bottom:1px solid var(--kl);padding:8px}
- .syn .log{padding:18px 16px;max-height:none}.syn .sg{padding:0 16px 18px}.syn .cv{min-height:400px}
+ .syn .log{padding:18px 16px;max-height:none}.syn .sg{padding:0 16px 14px}.syn .ask{margin:0 16px 16px}.syn .cv{min-height:400px}
 }
 /* stages */
 .chb{margin-top:calc(56*var(--u))}
 .ch{margin-top:calc(36*var(--u))}
-.cb{display:grid;grid-template-columns:repeat(4,1fr);min-height:calc(300*var(--u));gap:calc(14*var(--u));align-items:end;max-width:calc(560*var(--u))}
-.cb>div{position:relative;display:flex;flex-direction:column;justify-content:flex-end;outline:none}
+.cb{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:minmax(calc(260*var(--u)),1fr) auto auto;column-gap:calc(14*var(--u));max-width:calc(560*var(--u))}
+.cb>div{grid-row:span 3;display:grid;grid-template-rows:subgrid}
+.cb .bw{display:flex;flex-direction:column;justify-content:flex-end}
+.cb>div{position:relative;outline:none}
 .cb i{display:block;width:calc(40*var(--u));min-width:28px;background:#b9b7b0;border-radius:4px 4px 0 0;transition:opacity .2s}
 .cb .fin i{background:var(--ink)}
 .cb .v{font-family:var(--mono);font-weight:500;font-size:var(--lbl);line-height:1;letter-spacing:.04em;font-variant-numeric:tabular-nums;margin-bottom:.7em}
@@ -1216,7 +1224,7 @@ SR_CSS = """<style>
 .ch.anim .cb>div:nth-child(2) i{transition-delay:.14s}.ch.anim .cb>div:nth-child(3) i{transition-delay:.28s}.ch.anim .cb>div:nth-child(4) i{transition-delay:.42s}
 .cb .lr .v{font-family:var(--mono);font-weight:500;font-size:var(--lbs);text-transform:uppercase;letter-spacing:.04em;color:var(--gray)}
 .cb b{border-top:1px solid var(--line);padding-top:.6em;font-family:var(--grot);font-weight:700;font-size:max(15px,calc(11*var(--u)))}
-.cb .n{font-size:max(13px,calc(9.4*var(--u)));line-height:1.35;color:var(--soft);min-height:2.7em}
+.cb .n{font-size:max(13px,calc(9.4*var(--u)));line-height:1.35;color:var(--soft)}
 .cb .tt{position:absolute;left:0;bottom:100%%;margin-bottom:8px;width:max-content;max-width:16em;background:var(--ink);color:#fff;font-size:13px;line-height:1.35;padding:.5em .7em;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .15s;z-index:2}
 .cb>div:hover .tt,.cb>div:focus-visible .tt{opacity:1}
 .cb>div:focus-visible i{outline:2px solid var(--ink);outline-offset:2px}
@@ -1234,7 +1242,7 @@ SR_CSS = """<style>
 .kv dt{font-family:var(--mono);font-weight:500;font-size:var(--lbl);text-transform:uppercase;letter-spacing:.04em;color:var(--gray);padding-top:.25em}
 .kv dd{margin:0;font-size:max(15.5px,calc(11*var(--u)));line-height:1.5}
 .kv dd.ai{border-left:2px solid #f5a524;padding-left:.8em}
-@media (max-width:700px){.pair{grid-template-columns:1fr;gap:16px}.pair img.m{width:62%%;justify-self:center}.cb{gap:10px}.ch .n{font-size:12px}.track{padding:0;grid-template-columns:1fr 1fr;row-gap:24px;margin-top:56px}.kv{grid-template-columns:1fr;gap:.2em}.kv dd{margin-bottom:.8em}}
+@media (max-width:700px){.pair{grid-template-columns:1fr;gap:16px}.pair img.m{width:100%%;order:2}.cb{column-gap:10px;max-width:none;grid-template-rows:minmax(190px,1fr) auto auto}.ch .cap{margin-top:14px}.cb i{width:100%%;min-width:0}.ch .n{font-size:12px}.track{padding:0;grid-template-columns:1fr 1fr;row-gap:24px;margin-top:56px}.kv{grid-template-columns:1fr;gap:.2em}.kv dd{margin-bottom:.8em}}
 </style>""".replace("%%", "%")
 
 SR_JS = """<script>(function(){var P=__P__,COL=['#f5b641','#8fb3ff'],M=[['interview','Interview'],['prototype','Prototype test'],['hypothesis','Hypothesis check']],
@@ -1245,10 +1253,16 @@ function show(){var p=P[cur];r.dataset.p=cur;
 [].forEach.call(pp.querySelectorAll('button'),function(b,k){b.classList.toggle('on',k==cur);b.setAttribute('aria-pressed',k==cur)});
 [].forEach.call(md.querySelectorAll('button'),function(b){var on=b.dataset.m==mode;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
 cv.innerHTML='';var log=el('div','log');log.setAttribute('aria-live','polite');cv.appendChild(log);var sg=el('div','sg');cv.appendChild(sg);
+var fm=el('form','ask');var inp=el('input');inp.type='text';inp.placeholder='Ask '+p.name+' a question';inp.setAttribute('aria-label','Ask '+p.name+' a question');var sb=el('button',null,'Send');sb.type='submit';fm.appendChild(inp);fm.appendChild(sb);cv.appendChild(fm);
+function reply(q,a,note){log.appendChild(turn('q','You',q,1));var d=turn('a'+(note?' nt':''),note?'Demo':p.name,'',1);d.lastChild.className='dots';d.lastChild.innerHTML='<i></i><i></i><i></i>';log.appendChild(d);log.scrollTop=log.scrollHeight;
+ setTimeout(function(){d.lastChild.className='';d.lastChild.textContent=a;log.scrollTop=log.scrollHeight},RM?0:1100)}
+fm.onsubmit=function(ev){ev.preventDefault();var q=inp.value.trim();if(!q)return;inp.value='';
+ var SW=' about would could their there which think these those where what when your with from have that this then like just them they does into very much more some only also than make want need'.split(' '),W=function(t){return (t.toLowerCase().match(/[a-z]{4,}/g)||[]).filter(function(x){return SW.indexOf(x)<0})},qw=W(q),best=null,bs=0;
+ Object.keys(p.modes).forEach(function(m){p.modes[m].forEach(function(qa){var w=W(qa[0]+' '+qa[1]),sc=0;qw.forEach(function(x){if(w.indexOf(x)>-1)sc++});if(sc>bs){bs=sc;best=qa}})});
+ if(best&&bs>0)reply(q,best[1]);else reply(q,'This page answers from a fixed set of interview-based replies. The live tool on Claude answers any question. Try asking about tutors, offers, reviews or price.',1)};
 p.modes[mode].forEach(function(qa,n){
  if(n==0){log.appendChild(turn('q','You',qa[0]));log.appendChild(turn('a',p.name,qa[1]));return}
- var b=el('button',null,qa[0]);b.type='button';b.onclick=function(){b.remove();log.appendChild(turn('q','You',qa[0],1));var d=turn('a',p.name,'',1);d.lastChild.className='dots';d.lastChild.innerHTML='<i></i><i></i><i></i>';log.appendChild(d);
- setTimeout(function(){d.lastChild.className='';d.lastChild.textContent=qa[1];log.scrollTop=log.scrollHeight},RM?0:1100)};sg.appendChild(b)});}
+ var b=el('button',null,qa[0]);b.type='button';b.onclick=function(){b.remove();reply(qa[0],qa[1])};sg.appendChild(b)});}
 M.forEach(function(m){var b=el('button',null,m[1]);b.type='button';b.dataset.m=m[0];b.onclick=function(){mode=m[0];show()};md.appendChild(b)});
 P.forEach(function(p,i){var b=el('button');b.type='button';var a=el('i','av',p.name[0]);a.style.background=COL[i];b.appendChild(a);var w=el('div');w.appendChild(el('b',null,p.name));w.appendChild(el('span',null,p.seg));b.appendChild(w);b.onclick=function(){cur=i;show()};pp.appendChild(b)});
 show()})();</script>"""
@@ -1296,7 +1310,7 @@ PULLS.update({
 def profi_content():
     syn = ('<div class="syn" id="syn"><div class="tb"><b>Synthetic respondents</b><small>AI</small><div class="md" role="group" aria-label="Session mode"></div></div>'
            '<div class="bd"><div class="pp"></div><div class="cv"></div></div></div>'
-           '<p class="lbl gray cap">Try it. Answers on this page paraphrase the personas’ prompts; the real tool runs live on Claude.</p>'
+           '<p class="lbl gray cap">Try it: pick a question or type your own. Answers on this page paraphrase the personas’ prompts; the real tool runs live on Claude.</p>'
            + SR_JS.replace("__P__", json.dumps(PERSONAS, ensure_ascii=False)))
     pipe = ('<ol class="pipe" aria-label="How a synthetic respondent is built">'
             '<li><em>Research</em><b>Interviews</b><span>9 in-depth interviews</span></li>'
@@ -1312,7 +1326,7 @@ def profi_content():
            '<p class="lbl gray cap">A check of the kind we ran between releases. Quotes paraphrase the personas’ prompts</p>')
     bars = [("I", "Shortlist of three", 21, "+21%"), ("II", "Review highlights", 13, "+13%"), ("III", "LLM picks and explains", 18, "+18%"), ("IV", "Same LLM, grounded", 23.5, "+23.5%")]
     chart = ('<figure class="ch" aria-label="Client-to-contact conversion lift by iteration"><div class="cb">' +
-             "".join('<div class="c%s" tabindex="0"><span class="v" data-v="%s">%s</span><i style="--h:calc(%s * var(--u))"></i><b>%s</b><span class="n">%s</span>'
+             "".join('<div class="c%s" tabindex="0"><span class="bw"><span class="v" data-v="%s">%s</span><i style="--h:calc(%s * var(--u))"></i></span><b>%s</b><span class="n">%s</span>'
                      '<span class="tt">Iteration %s: %s. %s</span></div>' % (" fin" if k == "IV" else "", v, t, round(v / 25 * 230, 1) if v else 6, k, esc(n), k, esc(n), "client-to-contact conversion " + t + " against variant A") for k, n, v, t in bars) +
              '</div><figcaption class="lbl gray cap">Conversion lift of each iteration vs the original</figcaption>'
              '<table class="vh"><caption>Conversion lift by iteration</caption><tr><th>Iteration</th><th>Lift</th></tr>' +
