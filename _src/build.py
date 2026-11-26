@@ -106,11 +106,11 @@ img,video{display:block;max-width:100%%}
 .mnav{position:fixed;z-index:19;left:0;right:0;top:var(--hh);height:calc(100dvh - var(--hh));overflow-y:auto;background:#262624;color:#ecebe8;padding:28px var(--m) 40px;
   display:flex;flex-direction:column;visibility:hidden;opacity:0;translate:0 -8px;transition:opacity .3s,translate .45s var(--ease),visibility 0s .45s}
 .mopen .mnav{visibility:visible;opacity:1;translate:0 0;transition:opacity .3s,translate .45s var(--ease)}
-.mnav .mh{color:#8a8983;margin:0 0 10px}
-.mcs a{display:flex;align-items:center;padding:.62em 0;border-bottom:1px solid rgba(236,235,232,.12)}
+
+.mcs{margin:14px 0 8px}.mcs a{display:flex;align-items:center;padding:.62em 0;border-bottom:1px solid rgba(236,235,232,.12)}.mcs a:first-child{border-top:1px solid rgba(236,235,232,.12)}
 .mcs a.on{color:#8a8983}
 .mcs .ar{width:1.5em;height:.9em}.mcs .ar svg{width:.9em;height:.9em;left:0;right:auto;transform:none}
-.mlk{margin-top:auto;padding-top:36px;display:flex;flex-direction:column;gap:6px}
+.mlk{padding-top:22px;display:flex;flex-direction:column;gap:6px}
 .big2{font-family:var(--serif);font-size:44px;line-height:1.05;letter-spacing:-.01em}.big2.on{color:#8a8983}
 .mopen .top::before{opacity:1}
 @media (max-width:700px){.top nav{display:none}.burg{display:block}}
@@ -765,8 +765,8 @@ def nav(cur):
 def mnav(cur):
     cs = "".join('<a href="%s"%s>%s<span>%s</span></a>' % (c["href"], ' class="on"' if cur == c["slug"] else '', ARROW, esc(c["title"])) for c in CASES)
     def a(h, t, k): return '<a class="big2%s" href="%s">%s</a>' % (" on" if k == cur else "", h, t)
-    return ('<div class="mnav" id="mnav" aria-hidden="true"><p class="lbl mh">Works</p><div class="mcs lbl">%s</div>'
-            '<div class="mlk">%s%s</div></div>') % (cs, a("about.html", "About", "about"), a("contact.html", "Contact", "contact"))
+    return ('<div class="mnav" id="mnav" aria-hidden="true">%s<div class="mcs lbl">%s</div>'
+            '<div class="mlk">%s%s</div></div>') % (a(HOME, "Works", "index"), cs, a("about.html", "About", "about"), a("contact.html", "Contact", "contact"))
 
 FOOT = '''  <footer class="foot">
     <span>© 2026</span>
