@@ -1150,7 +1150,7 @@ SR_CSS = """<style>
 .syn[data-p="1"]{--ac:#8fb3ff}
 .syn .tb{display:flex;align-items:center;gap:12px;padding:12px 12px 12px 20px;border-bottom:1px solid var(--kl)}
 .syn .tb b{font-weight:600}
-.syn .tb small{font-size:.86em;color:var(--kg)}
+.syn .tb small{font-size:.72em;font-weight:600;letter-spacing:.04em;line-height:1;color:#f5b641;background:rgba(245,182,65,.13);padding:.35em .55em;border-radius:5px}
 .syn .md{display:flex;gap:2px;margin-left:auto;white-space:nowrap;background:var(--k1);border-radius:10px;padding:3px}
 .syn .md button{padding:.4em .85em;border-radius:7px;color:var(--kg);font-size:.9em}
 .syn .md button:hover{color:var(--kt)}
@@ -1187,7 +1187,7 @@ SR_CSS = """<style>
  .syn .log{padding:18px 16px;max-height:none}.syn .sg{padding:0 16px 18px}.syn .cv{min-height:400px}
 }
 /* stages */
-.ch{margin-top:calc(10*var(--u))}
+.ch{margin-top:calc(56*var(--u))}
 .cb{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(14*var(--u));align-items:end;max-width:calc(560*var(--u))}
 .cb>div{position:relative;display:flex;flex-direction:column;justify-content:flex-end;outline:none}
 .cb i{display:block;width:calc(40*var(--u));min-width:28px;background:#b9b7b0;border-radius:4px 4px 0 0;transition:opacity .2s}
@@ -1255,7 +1255,7 @@ PULLS.update({
 })
 
 def profi_content():
-    syn = ('<div class="syn" id="syn"><div class="tb"><b>Synthetic respondents</b><small>on Claude</small><div class="md" role="group" aria-label="Session mode"></div></div>'
+    syn = ('<div class="syn" id="syn"><div class="tb"><b>Synthetic respondents</b><small>AI</small><div class="md" role="group" aria-label="Session mode"></div></div>'
            '<div class="bd"><div class="pp"></div><div class="cv"></div></div></div>'
            '<p class="lbl gray cap">Try it. Answers on this page paraphrase the personas’ prompts; the real tool runs live on Claude.</p>'
            + SR_JS.replace("__P__", json.dumps(PERSONAS, ensure_ascii=False)))
@@ -1283,8 +1283,8 @@ def profi_content():
                       "Tutoring is one of its biggest verticals. That’s where I worked, in the growth team."))) +
       role(body(ps("Senior Product Designer in the tutoring vertical. I owned the AI matching experience end to end on web, mobile web, and iOS, together with a product manager, analysts and engineers.",
                    "The work went from interviews and usability tests to A/B tests on the internal experiment platform, and prototypes I built in code with Claude and Claude Code."))) +
-      results(nums([("+23.5%", "Client-to-contact<mbr>conversion", ""), ("+21%", "First<mbr>shortlist", ""),
-                    ("4", "Design stages,<mbr>each A/B tested", ""), ("3", "Platforms: web, mobile<mbr>web, and iOS", "")], "four")) +
+      results(nums([("+23.5%", "Client-to-contact<br>conversion", ""), ("+21%", "First shortlist,<br>iteration I", ""),
+                    ("4", "Iterations, each<br>A/B tested", ""), ("3", "Platforms: web,<br>mobile web, and iOS", "")], "four")) +
       study('<p class="state">Teaching an LLM to pick a tutor, and earning the client’s trust in that pick</p>' +
             body(ps("A client posts a request and gets a stream of offers, often more than they can read. Many read a few and never write to anyone. The gap between interest in a specialist and the first message was the biggest drop in the funnel.",
                     "The idea was to let the product do the first round of choosing: show the best few offers for this task, say why each one fits, and let the client ask for others in plain words. It took four stages to get there. Before the first one, we went and listened."))) +
@@ -1295,9 +1295,8 @@ def profi_content():
       chapter("Iteration I: a shortlist of three above the offers", body(ps("When a request collects eight or more offers, the list opens with a block of three that have the best reviews on similar tasks. The rest of the list stays as it was.")) + pair(1, "a shortlist of three best-matched offers on top of the list")) +
       chapter("Iteration II: reasons from reviews and a form to ask for others", body(ps("Each pick shows what clients praise the tutor for, taken from reviews. The block gets a clear name, other offers fold under “More specialists”, and “Find other pros” opens a short form that starts a new search.")) + pair(2, "review highlights under each tutor and a form to find other pros")) +
       chapter("Iteration III: an LLM picks the three and explains why", body(ps("An LLM ranks the offers against the task the client wrote and adds “Why they fit you” to each pick. “Find other pros” becomes a prompt, prefilled from the order, so the client edits it and the LLM picks again.")) + pair(3, "LLM explanations on each card and a prompt to re-pick")) +
-      chapter("Iteration IV: the same LLM, grounded in the client’s criteria and reviews", body(ps("Same model. Each explanation now lists the client’s own criteria, budget, time, format, and one fact from reviews with its source. The shortlist sits on top of the full list, and re-picking gets hint chips next to the prefilled prompt.")) + pair(4, "explanations built from the client’s criteria and a sourced review fact") +
-               pvid("profi-repick", "Walkthrough: re-picking specialists with a hint and a prefilled request")) +
-      chapter("Outcome", chart + pvid("profi-match", "Walkthrough: AI shortlist with explanations, opening a chat"))
+      chapter("Iteration IV: the same LLM, grounded in the client’s criteria and reviews", body(ps("Same model. Each explanation now lists the client’s own criteria, budget, time, format, and one fact from reviews with its source. The shortlist sits on top of the full list, and re-picking gets hint chips next to the prefilled prompt.")) + pair(4, "explanations built from the client’s criteria and a sourced review fact")) +
+      chapter("Outcome", pvid("profi-match", "Walkthrough: AI shortlist with explanations, opening a chat") + chart)
     )
 
 def case(i):

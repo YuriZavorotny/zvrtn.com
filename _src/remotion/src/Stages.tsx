@@ -42,8 +42,8 @@ const Spot: React.FC<{ keys: string[] }> = ({ keys }) => {
         .filter((e) => keys.includes(e.dataset.hl || ""))
         .map((e) => {
           const b = e.getBoundingClientRect();
-          const pad = 5;
-          const br = parseFloat(getComputedStyle(e).borderTopLeftRadius) || 10;
+          const pad = Number(e.dataset.pad || 0);
+          const br = parseFloat(getComputedStyle(e).borderTopLeftRadius) || 0;
           return { x: (b.left - rb.left) / k - pad, y: (b.top - rb.top) / k - pad, w: b.width / k + pad * 2, h: b.height / k + pad * 2, r: br + pad };
         });
       setRects(rs);
@@ -60,8 +60,7 @@ const Spot: React.FC<{ keys: string[] }> = ({ keys }) => {
             {rects.map((r, i) => <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} rx={r.r} fill="#000" />)}
           </mask>
         </defs>
-        <rect width="100%" height="100%" fill="rgba(22,23,28,.5)" mask="url(#spotmask)" />
-        {rects.map((r, i) => <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} rx={r.r} fill="none" stroke="#f5a524" strokeWidth={2.5} />)}
+        <rect width="100%" height="100%" fill="rgba(22,23,28,.4)" mask="url(#spotmask)" />
       </svg>
     </div>
   );
@@ -110,7 +109,7 @@ const MENU: [string, string][] = [
   ["All specialists", "M9 4.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7zM2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.8a3.5 3.5 0 010 6.4M18.5 14.8c1.6.8 2.7 2.5 3 5.2"],
 ];
 const Repick: React.FC = () => (
-  <div data-hl="repick" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 60, borderRadius: 12 }}>
+  <div data-hl="repick" data-pad="10" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 60, borderRadius: 12 }}>
     <div>
       <div style={{ fontSize: 15.5, fontWeight: 600 }}>Find other pros</div>
       <div style={{ fontSize: 13.5, color: C.ink2, marginTop: 2 }}>Tell us what to change</div>
@@ -247,10 +246,10 @@ const desk1 = (
 );
 
 const desk2 = (
-  <DeskShell spot={["head", "praise", "more", "repick"]}
+  <DeskShell spot={["card2", "repick"]}
     side={<Repick />}
     mid={
-      <div style={{ background: "#fff", borderRadius: 24, padding: "22px 20px 10px" }}>
+      <div data-hl="card2" style={{ background: "#fff", borderRadius: 24, padding: "22px 20px 10px" }}>
         <Head t="Best fit for your task" s="Top by experience and reviews" />
         {ROWS.slice(0, 3).map((r, i) => <ListRow key={r.name} r={r} sel={i === 0} praise={PRAISE[i]} />)}
         <div data-hl="more" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: `1px solid ${C.line}`, margin: "10px 0 0", padding: "16px 2px 8px" }}>
@@ -328,9 +327,9 @@ const Btn: React.FC<{ t: string }> = ({ t }) => (
 
 const mob0 = (
   <Phone>
-    <div style={{ background: C.bg, padding: "12px 0" }}>
+    <div style={{ background: C.bg, padding: "12px 0 0", height: "100%", display: "flex", flexDirection: "column" }}>
       <div style={{ background: "#fff", padding: "14px 20px", borderRadius: "0 0 22px 22px" }}><Toggle /></div>
-      <div style={{ background: "#fff", borderRadius: 22, marginTop: 10, padding: "16px 20px" }}>
+      <div style={{ background: "#fff", borderRadius: "22px 22px 0 0", marginTop: 10, padding: "16px 20px", flex: 1 }}>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 17, fontWeight: 600, paddingBottom: 6 }}>Offers <span style={{ color: C.hint, fontWeight: 400 }}>9</span></div>
         {ROWS.map((r) => <ListRow key={r.name} r={r} m />)}
       </div>
@@ -340,9 +339,9 @@ const mob0 = (
 
 const mob1 = (
   <Phone spot={["block"]}>
-    <div style={{ background: C.bg, padding: "12px 0" }}>
+    <div style={{ background: C.bg, padding: "12px 0 0", height: "100%", display: "flex", flexDirection: "column" }}>
       <div style={{ background: "#fff", padding: "14px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", borderRadius: "0 0 22px 22px" }}><Toggle /></div>
-      <div style={{ background: "#fff", borderRadius: 22, marginTop: 10, padding: "16px 12px" }}>
+      <div style={{ background: "#fff", borderRadius: "22px 22px 0 0", marginTop: 10, padding: "16px 12px", flex: 1 }}>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 17, fontWeight: 600, padding: "0 8px 10px" }}>Offers <span style={{ color: C.hint, fontWeight: 400 }}>9</span></div>
         <div data-hl="block" style={{ background: C.ctl, borderRadius: 18, padding: "12px 12px 2px" }}>
           <div style={{ fontSize: 13, fontWeight: 600 }}>Best match for your task</div>
