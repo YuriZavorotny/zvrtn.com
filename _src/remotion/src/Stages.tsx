@@ -30,7 +30,7 @@ const WHY3 = [
 /* Spotlight: dims everything except elements marked data-hl with one of the given keys */
 const Spot: React.FC<{ keys: string[] }> = ({ keys }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [rects, setRects] = useState<{ x: number; y: number; w: number; h: number; r: number }[]>([]);
+  const [rects, setRects] = useState<{ x: number; y: number; w: number; h: number; rr: number[] }[]>([]);
   const [handle] = useState(() => delayRender("spot"));
   useLayoutEffect(() => {
     let done = false;
@@ -42,9 +42,10 @@ const Spot: React.FC<{ keys: string[] }> = ({ keys }) => {
         .filter((e) => keys.includes(e.dataset.hl || ""))
         .map((e) => {
           const b = e.getBoundingClientRect();
-          const pad = Number(e.dataset.pad || 0);
-          const br = parseFloat(getComputedStyle(e).borderTopLeftRadius) || 0;
-          return { x: (b.left - rb.left) / k - pad, y: (b.top - rb.top) / k - pad, w: b.width / k + pad * 2, h: b.height / k + pad * 2, r: br + pad };
+          const px = Number(e.dataset.padx || e.dataset.pad || 0), py = Number(e.dataset.pady || e.dataset.pad || 0);
+          const cs = getComputedStyle(e);
+          const rr = [cs.borderTopLeftRadius, cs.borderTopRightRadius, cs.borderBottomRightRadius, cs.borderBottomLeftRadius].map((v) => (parseFloat(v) || 0) + Math.min(px, py));
+          return { x: (b.left - rb.left) / k - px, y: (b.top - rb.top) / k - py, w: b.width / k + px * 2, h: b.height / k + py * 2, rr };
         });
       setRects(rs);
     };
@@ -57,7 +58,10 @@ const Spot: React.FC<{ keys: string[] }> = ({ keys }) => {
         <defs>
           <mask id="spotmask">
             <rect width="100%" height="100%" fill="#fff" />
-            {rects.map((r, i) => <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} rx={r.r} fill="#000" />)}
+            {rects.map((r, i) => {
+              const [a, b, c, d] = r.rr, x = r.x, y = r.y, w = r.w, h = r.h;
+              return <path key={i} fill="#000" d={`M${x + a},${y}H${x + w - b}Q${x + w},${y} ${x + w},${y + b}V${y + h - c}Q${x + w},${y + h} ${x + w - c},${y + h}H${x + d}Q${x},${y + h} ${x},${y + h - d}V${y + a}Q${x},${y} ${x + a},${y}Z`} />;
+            })}
           </mask>
         </defs>
         <rect width="100%" height="100%" fill="rgba(22,23,28,.4)" mask="url(#spotmask)" />
@@ -109,7 +113,7 @@ const MENU: [string, string][] = [
   ["All specialists", "M9 4.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7zM2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.8a3.5 3.5 0 010 6.4M18.5 14.8c1.6.8 2.7 2.5 3 5.2"],
 ];
 const Repick: React.FC = () => (
-  <div data-hl="repick" data-pad="10" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 60, borderRadius: 12 }}>
+  <div data-hl="repick" data-padx="18" data-pady="2" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 60, borderRadius: 12 }}>
     <div>
       <div style={{ fontSize: 15.5, fontWeight: 600 }}>Find other pros</div>
       <div style={{ fontSize: 13.5, color: C.ink2, marginTop: 2 }}>Tell us what to change</div>
@@ -276,16 +280,16 @@ const desk3 = (
 );
 
 const desk4 = (
-  <div style={{ position: "relative", width: 1366, height: 800 }}>
-    <Desktop s={{ set: 1, open: 1, reveal: 3, modal: 0, chip: 0, loading: null, typing: 1, msg: 1, shimmer: 0 }} height={800} />
+  <div style={{ position: "relative", width: 1366, height: 920 }}>
+    <Desktop s={{ set: 1, open: 1, reveal: 3, modal: 0, chip: 0, loading: null, typing: 1, msg: 1, shimmer: 0, openAll: true }} height={920} />
     <Spot keys={["why"]} />
   </div>
 );
 
 /* ---------- mobile web ---------- */
 const TABS: [string, string][] = [["Order", "M12 4a8 8 0 100 16 8 8 0 000-16z"], ["All pros", "M9 5a3 3 0 100 6 3 3 0 000-6zM3 19c.8-3 3.2-4.5 6-4.5s5.2 1.5 6 4.5M16 5.5a3 3 0 010 5.5M18 14.5c1.5.7 2.5 2 2.8 4.5"], ["Offers", "M4 5h16v11H9l-5 4z"], ["Support", "M12 3a9 9 0 100 18 9 9 0 000-18zM9.5 9.5a2.5 2.5 0 114 2c-1 .6-1.5 1.1-1.5 2.2M12 17h.01"]];
-const Phone: React.FC<{ children: React.ReactNode; overlay?: React.ReactNode; bg?: string; spot?: string[] }> = ({ children, overlay, bg = "#fff", spot }) => (
-  <div style={{ position: "relative", width: 393, height: 852, background: bg, fontFamily: "Inter", color: C.ink, overflow: "hidden", fontFeatureSettings: '"cv11","ss03"' }}>
+const Phone: React.FC<{ children: React.ReactNode; overlay?: React.ReactNode; bg?: string; spot?: string[]; h?: number }> = ({ children, overlay, bg = "#fff", spot, h = 852 }) => (
+  <div style={{ position: "relative", width: 393, height: h, background: bg, fontFamily: "Inter", color: C.ink, overflow: "hidden", fontFeatureSettings: '"cv11","ss03"' }}>
     <div style={{ height: 54, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px 0 40px", fontSize: 16, fontWeight: 600, background: "#fff" }}>
       9:41
       <span style={{ display: "flex", gap: 6, alignItems: "center" }}>
@@ -402,10 +406,10 @@ const mob3 = (
 
 const T4: Tutor = SET1[0];
 const mob4 = (
-  <Phone spot={["why"]} bg={C.bg}>
+  <Phone h={982} spot={["why"]} bg={C.bg}>
     <div style={{ padding: "14px 12px" }}>
       <div style={{ padding: "4px 8px 12px" }}><Head t="Best fit for your task" s="Picked by AI from 12 offers" ai /></div>
-      {SET1.slice(0, 2).map((t, i) => (
+      {SET1.map((t, i) => (
         <div key={t.id} style={{ background: "#fff", borderRadius: 22, padding: 18, marginBottom: 10 }}>
           <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
             <Avatar img={t.img} size={48} online />
@@ -414,7 +418,7 @@ const mob4 = (
               <div style={{ fontFamily: "InterD", fontSize: 21, fontWeight: 600, letterSpacing: "-0.02em" }}>{t.price} ₽ <span style={{ fontFamily: "Inter", fontSize: 13, fontWeight: 400, color: C.ink2 }}>per hour</span></div>
             </div>
           </div>
-          <div style={{ marginTop: 12 }}><Why t={t} open={i === 0 ? 1 : 0} compact /></div>
+          <div style={{ marginTop: 12 }}><Why t={t} open={1} compact /></div>
           <div style={{ fontSize: 14, marginTop: 12 }}>{t.msg}</div>
         </div>
       ))}

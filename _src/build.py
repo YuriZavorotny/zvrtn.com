@@ -1260,7 +1260,7 @@ def profi_content():
            '<p class="lbl gray cap">Try it. Answers on this page paraphrase the personas’ prompts; the real tool runs live on Claude.</p>'
            + SR_JS.replace("__P__", json.dumps(PERSONAS, ensure_ascii=False)))
     pipe = ('<ol class="pipe" aria-label="How a synthetic respondent is built">'
-            '<li><em>Research</em><b>Interviews</b><span>Nine in-depth interviews</span></li>'
+            '<li><em>Research</em><b>Interviews</b><span>9 in-depth interviews</span></li>'
             '<li class="ai"><em><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l2.2 6.3 6.3 2.2-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-2.2z"/></svg>AI persona</em><b>Persona prompt</b><span>Quotes, habits and deal-breakers turned into a system prompt</span></li>'
             '<li class="ai"><em><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l2.2 6.3 6.3 2.2-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-2.2z"/></svg>AI session</em><b>Session mode</b><span>Interview, prototype test or hypothesis check</span></li>'
             '<li class="ai"><em><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l2.2 6.3 6.3 2.2-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-2.2z"/></svg>LLM</em><b>Claude</b><span>Answers in the persona’s voice and pushes back</span></li>'
@@ -1275,7 +1275,7 @@ def profi_content():
     chart = ('<figure class="ch" aria-label="Client-to-contact conversion lift by iteration"><div class="cb">' +
              "".join('<div class="c%s" tabindex="0"><span class="v">%s</span><i style="height:calc(%s * var(--u))"></i><b>%s</b><span class="n">%s</span>'
                      '<span class="tt">Iteration %s: %s. %s</span></div>' % (" fin" if k == "IV" else "", t, round(v / 25 * 230, 1) if v else 6, k, esc(n), k, esc(n), "client-to-contact conversion " + t + " against variant A") for k, n, v, t in bars) +
-             '</div><figcaption class="lbl gray cap">Lift in client-to-contact conversion. Each iteration was variant B in an A/B test against the original design, variant A</figcaption>'
+             '</div><figcaption class="lbl gray cap">Conversion lift of each iteration vs the original</figcaption>'
              '<table class="vh"><caption>Conversion lift by iteration</caption><tr><th>Iteration</th><th>Lift</th></tr>' +
              "".join('<tr><td>%s</td><td>%s</td></tr>' % (k, t) for k, n, v, t in bars) + '</table></figure>')
     return (
@@ -1283,13 +1283,15 @@ def profi_content():
                       "Tutoring is one of its biggest verticals. That’s where I worked, in the growth team."))) +
       role(body(ps("Senior Product Designer in the tutoring vertical. I owned the AI matching experience end to end on web, mobile web, and iOS, together with a product manager, analysts and engineers.",
                    "The work went from interviews and usability tests to A/B tests on the internal experiment platform, and prototypes I built in code with Claude and Claude Code."))) +
-      results(nums([("+23.5%", "Client-to-contact<br>conversion", ""), ("+21%", "First shortlist,<br>iteration I", ""),
-                    ("4", "Iterations, each<br>A/B tested", ""), ("3", "Platforms: web,<br>mobile web, and iOS", "")], "four")) +
+      results(nums([("+23.5%", "Client-to-contact<br>conversion, final design", ""), ("+21%", "First shortlist,<br>iteration I", ""),
+                    ("+18%", "LLM shortlist,<br>iteration III", ""), ("4", "Iterations, each A/B<br>tested vs original", ""),
+                    ("9", "In-depth<br>interviews", ""), ("2", "Synthetic respondents<br>built on AI", ""),
+                    ("5+", "A/B tests<br>in 6 months", ""), ("3", "Platforms: web,<br>mobile web, and iOS", "")], "four")) +
       study('<p class="state">Teaching an LLM to pick a tutor, and earning the client’s trust in that pick</p>' +
             body(ps("A client posts a request and gets a stream of offers, often more than they can read. Many read a few and never write to anyone. The gap between interest in a specialist and the first message was the biggest drop in the funnel.",
                     "The idea was to let the product do the first round of choosing: show the best few offers for this task, say why each one fits, and let the client ask for others in plain words. It took four stages to get there. Before the first one, we went and listened."))) +
       SR_CSS +
-      chapter("Synthetic respondents", body(ps("Before the first iteration we ran nine in-depth interviews with parents and students who had looked for a tutor on Profi, and turned two of them into synthetic respondents: AI personas on Claude, each with a system prompt built from interview quotes, habits and contradictions.",
+      chapter("Synthetic respondents", body(ps("Before the first iteration we ran 9 in-depth interviews with parents and students who had looked for a tutor on Profi, and turned two of them into synthetic respondents: AI personas on Claude, each with a system prompt built from interview quotes, habits and contradictions.",
                  "There were always more hypotheses than A/B slots. The personas let us cut weak ideas in a chat window before they took a test, in three modes: interview, prototype test and hypothesis check. I later packaged the approach as a reusable Claude skill.")) + pipe + syn) +
       chapter("Variant A: the original list", body(ps("Every offer in the order it arrived, with no ranking and no hints. Every iteration below was variant B, tested in an A/B test against this original.")) + pair(0, "the original list of offers")) +
       chapter("Iteration I: a shortlist of three above the offers", body(ps("When a request collects eight or more offers, the list opens with a block of three that have the best reviews on similar tasks. The rest of the list stays as it was.")) + pair(1, "a shortlist of three best-matched offers on top of the list")) +

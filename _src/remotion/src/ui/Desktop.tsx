@@ -16,6 +16,7 @@ export type DesktopState = {
   draft?: number;
   sent?: number;
   reply?: number;
+  openAll?: boolean;
 };
 
 const W = 1366;
@@ -232,7 +233,7 @@ export const Desktop: React.FC<{ s: DesktopState; height: number; children?: Rea
         ) : (
           set.map((t, i) => {
             const k = Math.max(0, Math.min(1, s.reveal - i));
-            return <Card key={t.id} t={t} open={i === 0 ? s.open : 0} style={{ opacity: k, translate: `0 ${(1 - k) * 18}px` }} />;
+            return <Card key={t.id} t={t} open={i === 0 || s.openAll ? s.open : 0} style={{ opacity: k, translate: `0 ${(1 - k) * 18}px` }} />;
           })
         )}
       </div>
