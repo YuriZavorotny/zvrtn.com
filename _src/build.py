@@ -1310,7 +1310,7 @@ function reply(q,a,note,src){log.appendChild(turn('q','You',q,1));var d=turn('a'
 fm.onsubmit=function(ev){ev.preventDefault();var q=inp.value.trim();if(!q)return;inp.value='';
  var SW=' about would could their there which think these those where what when your with from have that this then like just them they does into very much more some only also than make want need'.split(' '),W=function(t){return (t.toLowerCase().match(/[a-z]{4,}/g)||[]).filter(function(x){return SW.indexOf(x)<0})},qw=W(q),best=null,bs=0;
  Object.keys(p.modes).forEach(function(m){p.modes[m].forEach(function(qa){var w=W(qa[0]+' '+qa[1]),sc=0;qw.forEach(function(x){if(w.indexOf(x)>-1)sc++});if(sc>bs){bs=sc;best=qa}})});
- if(best&&bs>0)reply(q,best[1],0,best[2]);else reply(q,'This page answers from a fixed set of interview-based replies. The live tool on Claude answers any question. Try asking about tutors, offers, reviews or price.',1)};
+ if(best&&bs>0){[].forEach.call(sg.querySelectorAll('button'),function(x){if(x.textContent===best[0])x.remove()});reply(q,best[1],0,best[2])}else reply(q,'This page answers from a fixed set of interview-based replies. The live tool on Claude answers any question. Try asking about tutors, offers, reviews or price.',1)};
 p.modes[mode].forEach(function(qa,n){
  if(n==0){log.appendChild(turn('q','You',qa[0]));log.appendChild(turn('a',p.name,qa[1],0,qa[2]));return}
  var b=el('button',null,qa[0]);b.type='button';b.onclick=function(){b.remove();reply(qa[0],qa[1],0,qa[2])};sg.appendChild(b)});}
