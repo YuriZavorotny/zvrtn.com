@@ -31,7 +31,7 @@ export const L = {
 };
 L.whyCenter.y = L.cardsY + 24 + 56 + 16 + 22;
 
-const Card: React.FC<{ t: Tutor; open: number; style?: React.CSSProperties }> = ({ t, open, style }) => (
+const Card: React.FC<{ t: Tutor; open: number; tags?: boolean; style?: React.CSSProperties }> = ({ t, open, tags, style }) => (
   <div style={{ background: "#fff", borderRadius: 24, padding: 24, marginBottom: 10, ...style }}>
     <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
       <Avatar img={t.img} size={56} online />
@@ -50,13 +50,14 @@ const Card: React.FC<{ t: Tutor; open: number; style?: React.CSSProperties }> = 
       </div>
     </div>
     <div style={{ marginTop: 16 }}>
-      <Why t={t} open={open} />
+      <Why t={t} open={open} tags={tags} />
     </div>
     <div style={{ display: "flex", justifyContent: "space-between", gap: 12, marginTop: 16, fontSize: 14.5, lineHeight: "20px" }}>
       <span>{t.msg}</span>
       <span style={{ fontSize: 12.5, color: C.hint }}>{t.time}</span>
     </div>
-    <div style={{ marginTop: 16, height: 46, borderRadius: 14, background: C.ctl, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, fontWeight: 600 }}>Reply</div>
+    {tags === undefined || open > 0.5 && !tags ? null : null}
+    {tags !== undefined ? null : <div style={{ marginTop: 16, height: 46, borderRadius: 14, background: C.ctl, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, fontWeight: 600 }}>Reply</div>}
   </div>
 );
 
@@ -233,7 +234,7 @@ export const Desktop: React.FC<{ s: DesktopState; height: number; children?: Rea
         ) : (
           set.map((t, i) => {
             const k = Math.max(0, Math.min(1, s.reveal - i));
-            return <Card key={t.id} t={t} open={i === 0 || s.openAll ? s.open : 0} style={{ opacity: k, translate: `0 ${(1 - k) * 18}px` }} />;
+            return <Card key={t.id} t={t} open={i === 0 ? s.open : 0} tags={s.openAll ? i > 0 : undefined} style={{ opacity: k, translate: `0 ${(1 - k) * 18}px` }} />;
           })
         )}
       </div>

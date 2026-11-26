@@ -33,8 +33,8 @@ export const RemotionRoot: React.FC = () => {
       <Still id="S2m" component={StageStill} width={393} height={852} defaultProps={{ stage: 2, kind: "m" as const }} />
       <Still id="S3d" component={StageStill} width={1366} height={800} defaultProps={{ stage: 3, kind: "d" as const }} />
       <Still id="S3m" component={StageStill} width={393} height={852} defaultProps={{ stage: 3, kind: "m" as const }} />
-      <Still id="S4d" component={StageStill} width={1366} height={920} defaultProps={{ stage: 4, kind: "d" as const }} />
-      <Still id="S4m" component={StageStill} width={393} height={982} defaultProps={{ stage: 4, kind: "m" as const }} />
+      <Still id="S4d" component={StageStill} width={1366} height={800} defaultProps={{ stage: 4, kind: "d" as const }} />
+      <Still id="S4m" component={StageStill} width={393} height={852} defaultProps={{ stage: 4, kind: "m" as const }} />
       <Composition id="PhoneStill" component={PhoneStill} durationInFrames={1} fps={FPS} width={824} height={1460} />
     </>
   );

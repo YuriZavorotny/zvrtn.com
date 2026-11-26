@@ -1283,10 +1283,8 @@ def profi_content():
                       "Tutoring is one of its biggest verticals. That’s where I worked, in the growth team."))) +
       role(body(ps("Senior Product Designer in the tutoring vertical. I owned the AI matching experience end to end on web, mobile web, and iOS, together with a product manager, analysts and engineers.",
                    "The work went from interviews and usability tests to A/B tests on the internal experiment platform, and prototypes I built in code with Claude and Claude Code."))) +
-      results(nums([("+23.5%", "Client-to-contact<br>conversion, final design", ""), ("+21%", "First shortlist,<br>iteration I", ""),
-                    ("+18%", "LLM shortlist,<br>iteration III", ""), ("4", "Iterations, each A/B<br>tested vs original", ""),
-                    ("9", "In-depth<br>interviews", ""), ("2", "Synthetic respondents<br>built on AI", ""),
-                    ("5+", "A/B tests<br>in 6 months", ""), ("3", "Platforms: web,<br>mobile web, and iOS", "")], "four")) +
+      results(nums([("+23.5%", "Client-to-contact<br>conversion, final design", ""), ("4", "Iterations, each A/B<br>tested vs original", ""),
+                    ("9", "In-depth<br>interviews", ""), ("5+", "A/B tests<br>in 6 months", "")], "four")) +
       study('<p class="state">Teaching an LLM to pick a tutor, and earning the client’s trust in that pick</p>' +
             body(ps("A client posts a request and gets a stream of offers, often more than they can read. Many read a few and never write to anyone. The gap between interest in a specialist and the first message was the biggest drop in the funnel.",
                     "The idea was to let the product do the first round of choosing: show the best few offers for this task, say why each one fits, and let the client ask for others in plain words. It took four stages to get there. Before the first one, we went and listened."))) +

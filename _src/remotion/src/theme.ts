@@ -39,7 +39,7 @@ export type Tutor = {
 
 export const SET1: Tutor[] = [
   { id: "a", name: "Olivia M.", img: "olivia", rating: "5.0", reviews: 54, price: "2,200", why: "Asks about your goal for the exam and where you get stuck, then builds lessons around the gaps.", crit: ["Within budget", "Weekday evenings", "Online"], src: "From 54 reviews: “explains the hardest topics step by step”", msg: "Happy to start with a short call to plan your prep", time: "07:20" },
-  { id: "b", name: "Victoria B.", img: "victoria", rating: "4.8", reviews: 43, price: "2,100", why: "13 years preparing students for the biology exam, works through past papers in every lesson.", crit: ["Within budget", "Online"], src: "From 43 reviews: “clear plan from the first lesson”", msg: "Let’s set up a call to go through your task", time: "06:20" },
+  { id: "b", name: "Victoria B.", img: "victoria", rating: "4.8", reviews: 43, price: "2,100", why: "13 years preparing students for the biology exam, works through past papers in every lesson.", crit: ["Exam prep", "Past papers", "Tue and Thu"], src: "From 43 reviews: “clear plan from the first lesson”", msg: "Let’s set up a call to go through your task", time: "06:20" },
   { id: "c", name: "Anna F.", img: "anna", rating: "4.9", reviews: 133, price: "2,400", why: "Finds out what is hard for you before the first lesson and doesn’t push extra hours.", crit: ["Within budget", "Weekday evenings"], src: "From 133 reviews: “patient and well prepared”", msg: "Ready to meet and talk through your request", time: "05:20" },
 ];
 

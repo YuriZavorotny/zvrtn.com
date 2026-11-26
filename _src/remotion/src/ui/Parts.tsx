@@ -24,7 +24,7 @@ export const Avatar: React.FC<{ img: string; size: number; online?: boolean }> =
 );
 
 /** AI explanation block. open: 0..1 (animated height of details) */
-export const Why: React.FC<{ t: Tutor; open: number; compact?: boolean }> = ({ t, open, compact }) => {
+export const Why: React.FC<{ t: Tutor; open: number; compact?: boolean; tags?: boolean }> = ({ t, open, compact, tags }) => {
   const fs = compact ? 13 : 14.5;
   const lh = compact ? 18 : 21;
   const extra = interpolate(open, [0, 1], [0, compact ? 70 : 150]);
@@ -35,6 +35,16 @@ export const Why: React.FC<{ t: Tutor; open: number; compact?: boolean }> = ({ t
         Why they fit you
       </div>
       <div style={{ fontSize: fs, lineHeight: `${lh}px`, marginTop: 4, paddingRight: 22, maxHeight: lh * (2 + open), overflow: "hidden", ...(open < 0.02 ? { display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const } : {}) }}>{t.why}</div>
+      {tags && open < 0.02 ? (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10 }}>
+          {t.crit.map((c) => (
+            <span key={c} style={{ background: "#fff", borderRadius: 8, padding: compact ? "3px 8px" : "5px 10px", fontSize: compact ? 11.5 : 13, display: "inline-flex", alignItems: "center", gap: 6 }}>
+              <Check s={compact ? 10 : 12} />
+              {c}
+            </span>
+          ))}
+        </div>
+      ) : null}
       <div style={{ maxHeight: extra, overflow: "hidden" }}>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10, opacity: open }}>
           {t.crit.map((c) => (

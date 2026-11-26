@@ -280,8 +280,8 @@ const desk3 = (
 );
 
 const desk4 = (
-  <div style={{ position: "relative", width: 1366, height: 920 }}>
-    <Desktop s={{ set: 1, open: 1, reveal: 3, modal: 0, chip: 0, loading: null, typing: 1, msg: 1, shimmer: 0, openAll: true }} height={920} />
+  <div style={{ position: "relative", width: 1366, height: 800 }}>
+    <Desktop s={{ set: 1, open: 1, reveal: 3, modal: 0, chip: 0, loading: null, typing: 1, msg: 1, shimmer: 0, openAll: true }} height={800} />
     <Spot keys={["why"]} />
   </div>
 );
@@ -406,7 +406,7 @@ const mob3 = (
 
 const T4: Tutor = SET1[0];
 const mob4 = (
-  <Phone h={982} spot={["why"]} bg={C.bg}>
+  <Phone spot={["why"]} bg={C.bg}>
     <div style={{ padding: "14px 12px" }}>
       <div style={{ padding: "4px 8px 12px" }}><Head t="Best fit for your task" s="Picked by AI from 12 offers" ai /></div>
       {SET1.map((t, i) => (
@@ -418,7 +418,7 @@ const mob4 = (
               <div style={{ fontFamily: "InterD", fontSize: 21, fontWeight: 600, letterSpacing: "-0.02em" }}>{t.price} ₽ <span style={{ fontFamily: "Inter", fontSize: 13, fontWeight: 400, color: C.ink2 }}>per hour</span></div>
             </div>
           </div>
-          <div style={{ marginTop: 12 }}><Why t={t} open={1} compact /></div>
+          <div style={{ marginTop: 12 }}><Why t={t} open={i === 0 ? 1 : 0} tags={i > 0} compact /></div>
           <div style={{ fontSize: 14, marginTop: 12 }}>{t.msg}</div>
         </div>
       ))}
