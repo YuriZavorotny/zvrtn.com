@@ -1238,7 +1238,7 @@ def pvid(n, label):
 def pair(n, alt):
     return ('<figure class="pair"><img class="m" src="big/profi-s%dm.jpg" alt="Iteration %d on mobile web" loading="lazy" decoding="async">'
             '<img src="big/profi-s%dd.jpg" alt="Iteration %d on desktop: %s" loading="lazy" decoding="async"></figure>'
-            '<p class="lbl gray cap">%s</p>') % (n, n, n, n, esc(alt), "Mobile web and desktop. Redrawn in English with sample data" if n == 0 else "Mobile web and desktop. What changed is highlighted")
+            '') % (n, n, n, n, esc(alt))
 
 def kv(*rows):
     return '<dl class="kv">%s</dl>' % "".join('<dt>%s</dt><dd%s>%s</dd>' % (esc(k), ' class="ai"' if k == "AI" else "", esc(v)) for k, v in rows)
@@ -1252,6 +1252,15 @@ PULLS.update({
   "An LLM explains the pick": "The model was fine. What we built around it was not.",
   "Same model, better frame": "The AI became a highlight on top of the full list, not a filter that hid it.",
   "Where AI ended up": "",
+})
+
+PULLS.update({
+  "Variant A: the original list": "Every offer in arrival order. No ranking, no reasons",
+  "Iteration I: a shortlist of three above the offers": "A block of three best-reviewed offers on top of the list",
+  "Iteration II: reasons from reviews and a form to ask for others": "“Praised for” tags from reviews and a form to find other pros",
+  "Iteration III: an LLM picks the three and explains why": "An LLM picks three and writes “Why they fit you”",
+  "Iteration IV: the same LLM, grounded in the client’s criteria and reviews": "Explanations built from the client’s criteria and a sourced review fact",
+  "Outcome": "Same model, better frame: +18% became +23.5%",
 })
 
 def profi_content():
@@ -1291,12 +1300,18 @@ def profi_content():
       SR_CSS +
       chapter("Synthetic respondents", body(ps("Before the first iteration we ran 9 in-depth interviews with parents and students who had looked for a tutor on Profi, and turned two of them into synthetic respondents: AI personas on Claude, each with a system prompt built from interview quotes, habits and contradictions.",
                  "There were always more hypotheses than A/B slots. The personas let us cut weak ideas in a chat window before they took a test, in three modes: interview, prototype test and hypothesis check. I later packaged the approach as a reusable Claude skill.")) + pipe + syn) +
-      chapter("Variant A: the original list", body(ps("Every offer in the order it arrived, with no ranking and no hints. Every iteration below was variant B, tested in an A/B test against this original.")) + pair(0, "the original list of offers")) +
-      chapter("Iteration I: a shortlist of three above the offers", body(ps("When a request collects eight or more offers, the list opens with a block of three that have the best reviews on similar tasks. The rest of the list stays as it was.")) + pair(1, "a shortlist of three best-matched offers on top of the list")) +
-      chapter("Iteration II: reasons from reviews and a form to ask for others", body(ps("Each pick shows what clients praise the tutor for, taken from reviews. The block gets a clear name, other offers fold under “More specialists”, and “Find other pros” opens a short form that starts a new search.")) + pair(2, "review highlights under each tutor and a form to find other pros")) +
-      chapter("Iteration III: an LLM picks the three and explains why", body(ps("An LLM ranks the offers against the task the client wrote and adds “Why they fit you” to each pick. “Find other pros” becomes a prompt, prefilled from the order, so the client edits it and the LLM picks again.")) + pair(3, "LLM explanations on each card and a prompt to re-pick")) +
-      chapter("Iteration IV: the same LLM, grounded in the client’s criteria and reviews", body(ps("Same model. Each explanation now lists the client’s own criteria, budget, time, format, and one fact from reviews with its source. The shortlist sits on top of the full list, and re-picking gets hint chips next to the prefilled prompt.")) + pair(4, "explanations built from the client’s criteria and a sourced review fact")) +
-      chapter("Outcome", pvid("profi-match", "Walkthrough: AI shortlist with explanations, opening a chat") + chart)
+      chapter("Variant A: the original list", body(ps("A client posts a request and offers arrive one by one, in the order specialists replied. Nothing is ranked, nothing explains why one tutor fits better than another, and with a dozen offers people read a few and stop.",
+                 "On desktop the offers sit in a column next to the open chat. On mobile web they fill the Offers tab as a long list. This is variant A: every iteration below ran as variant B in an A/B test against it.")) + pair(0, "the original list of offers")) +
+      chapter("Iteration I: a shortlist of three above the offers", body(ps("When a request collects eight or more offers, the list opens with a block of three that have the best reviews on similar tasks. Below eight there is no block: a shortlist of three out of five is noise. The rest of the list stays as it was, and pinned chats stay pinned.",
+                 "On desktop the block sits at the top of the offers column. On mobile web it takes the first screen under the Offers tab, so the client sees the three before scrolling. Client-to-contact conversion grew by 21%: clients want the product to do the first round of choosing.")) + pair(1, "a shortlist of three best-matched offers on top of the list")) +
+      chapter("Iteration II: reasons from reviews and a form to ask for others", body(ps("The shortlist got a reason. Under each tutor we show what clients praise them for, taken from reviews, and the block got a name the client understands: best fit for your task. The rest of the offers fold under “More specialists”.",
+                 "If none of the three fit, “Find other pros” opens a short form: wishes, price, tutor, where to study. On mobile web it is a bottom sheet over the list. Submitting starts a new search and moves the old offers down. Conversion grew by 13%: the reasons helped, but the fixed form only caught what we had thought to ask.")) + pair(2, "review highlights under each tutor and a form to find other pros")) +
+      chapter("Iteration III: an LLM picks the three and explains why", body(ps("An LLM took over the pick. It reads the task the client wrote in the order wizard, ranks the offers against it and writes a short “Why they fit you” for each of the three. Picks appear one by one while it reads reviews, with no skeletons.",
+                 "“Find other pros” turned into a prompt prefilled from the order: the client edits a sentence and the LLM picks again. On mobile web the prompt opens as a bottom sheet with the keyboard up, like writing a message. Conversion grew by 18%. Usability sessions showed why not more: explanations read as generic AI text, and the other offers felt hidden.")) + pair(3, "LLM explanations on each card and a prompt to re-pick")) +
+      chapter("Iteration IV: the same LLM, grounded in the client’s criteria and reviews", body(ps("We kept the model and rebuilt the frame. Each explanation now starts from the client’s own criteria, budget, time, format, shown as tags, and ends with one fact from reviews with its source. Two picks of the same task can no longer sound the same.",
+                 "The shortlist became a highlight on top of the full list, so nothing is hidden. Re-picking got hint chips next to the prefilled prompt, and the loader says what the AI is doing. On mobile web the tags fit inside the card without opening it. Conversion grew by 23.5%, the best result of the four.")) + pair(4, "explanations built from the client’s criteria and a sourced review fact")) +
+      chapter("Outcome", body(ps("Four iterations, each tested against the same original. The LLM in iteration III and iteration IV was the same model; the difference between +18% and +23.5% is design: what the explanation is built from, what stays visible and how the client asks for another pick.",
+                 "By the end AI did four jobs in the product: it reads the task, ranks the offers, explains each pick with the client’s criteria and a sourced fact, and turns the order into an editable prompt. And two jobs in the process: synthetic respondents on Claude to cut weak ideas before an A/B slot, and prototypes built in code with Claude and Claude Code.")) + pvid("profi-match", "Walkthrough: AI shortlist with explanations, opening a chat") + '<p class="lbl gray cap">The final design: the client opens an explanation and writes to the first tutor</p>' + chart)
     )
 
 def case(i):
