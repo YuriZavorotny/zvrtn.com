@@ -1280,6 +1280,9 @@ SR_CSS = """<style>
 .cb .n{font-size:max(13px,calc(9.4*var(--u)));line-height:1.35;color:var(--soft)}
 .cb .tt{position:absolute;left:0;bottom:100%%;margin-bottom:8px;width:max-content;max-width:16em;background:var(--ink);color:#fff;font-size:13px;line-height:1.35;padding:.5em .7em;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .15s;z-index:2}
 .cb>div:hover .tt,.cb>div:focus-visible .tt{opacity:1}
+.cb>div:nth-child(n+3) .tt{left:auto;right:0}
+.tap{display:none;margin-top:10px}
+.cb .vw{position:relative;display:block}.cb .vw .v{display:block}
 .cb>div:focus-visible i{outline:2px solid var(--ink);outline-offset:2px}
 .cb:hover>div:not(:hover) i{opacity:.35}
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -1295,7 +1298,7 @@ SR_CSS = """<style>
 .kv dt{font-family:var(--mono);font-weight:500;font-size:var(--lbl);text-transform:uppercase;letter-spacing:.04em;color:var(--gray);padding-top:.25em}
 .kv dd{margin:0;font-size:max(15.5px,calc(11*var(--u)));line-height:1.5}
 .kv dd.ai{border-left:2px solid #f5a524;padding-left:.8em}
-@media (max-width:700px){.pair{grid-template-columns:1fr;gap:16px}.pair img.m{width:100%%;order:2}.cb{column-gap:10px;max-width:none;grid-template-rows:minmax(190px,1fr) auto auto}.ch .cap{margin-top:14px}.cb i{width:100%%;min-width:0}.ch .n{font-size:12px}.track{padding:0;grid-template-columns:1fr 1fr;row-gap:24px;margin-top:56px}.kv{grid-template-columns:1fr;gap:.2em}.kv dd{margin-bottom:.8em}}
+@media (max-width:700px){.pair{grid-template-columns:1366fr 368fr;gap:8px}.pair img.m{order:2}.pair+.tap{display:block}.cb{column-gap:10px;max-width:none;grid-template-rows:minmax(190px,1fr) auto auto}.ch .cap{margin-top:14px}.cb i{width:100%%;min-width:0}.ch .n{font-size:12px}.track{padding:0;grid-template-columns:1fr 1fr;row-gap:24px;margin-top:56px}.kv{grid-template-columns:1fr;gap:.2em}.kv dd{margin-bottom:.8em}}
 </style>""".replace("%%", "%")
 
 SR_JS = """<script>(function(){var P=__P__,COL=['#f5b641','#8fb3ff'],M=[['interview','Interview'],['prototype','Prototype test'],['hypothesis','Hypothesis check']],
@@ -1335,7 +1338,7 @@ def pvid(n, label):
 def pair(n, alt):
     return ('<figure class="pair"><img class="m" src="big/profi-s%dm.jpg" alt="Iteration %d on mobile web" loading="lazy" decoding="async">'
             '<img src="big/profi-s%dd.jpg" alt="Iteration %d on desktop: %s" loading="lazy" decoding="async"></figure>'
-            '') % (n, n, n, n, esc(alt))
+            '<p class="lbl gray cap tap">Tap a screen to enlarge</p>') % (n, n, n, n, esc(alt))
 
 def kv(*rows):
     return '<dl class="kv">%s</dl>' % "".join('<dt>%s</dt><dd%s>%s</dd>' % (esc(k), ' class="ai"' if k == "AI" else "", esc(v)) for k, v in rows)
@@ -1379,8 +1382,8 @@ def profi_content():
            '<p class="lbl gray cap">A check of the kind we ran between releases. Quotes paraphrase the personas’ prompts</p>')
     bars = [("I", "Shortlist of three", 21, "+21%"), ("II", "Review highlights", 13, "+13%"), ("III", "LLM picks and explains", 18, "+18%"), ("IV", "Same LLM, grounded", 23.5, "+23.5%")]
     chart = ('<figure class="ch" aria-label="Client-to-contact conversion lift by iteration"><div class="cb">' +
-             "".join('<div class="c%s" tabindex="0"><span class="bw"><span class="v" data-v="%s">%s</span><i style="--h:calc(%s * var(--u))"></i></span><b>%s</b><span class="n">%s</span>'
-                     '<span class="tt">Iteration %s: %s. %s</span></div>' % (" fin" if k == "IV" else "", v, t, round(v / 25 * 230, 1) if v else 6, k, esc(n), k, esc(n), "client-to-contact conversion " + t + " against variant A") for k, n, v, t in bars) +
+             "".join('<div class="c%s" tabindex="0"><span class="bw"><span class="vw"><span class="v" data-v="%s">%s</span><span class="tt">Iteration %s: %s. %s</span></span><i style="--h:calc(%s * var(--u))"></i></span><b>%s</b><span class="n">%s</span></div>'
+                     % (" fin" if k == "IV" else "", v, t, k, esc(n), "Client-to-contact conversion " + t + " against variant A", round(v / 25 * 230, 1) if v else 6, k, esc(n)) for k, n, v, t in bars) +
              '</div><figcaption class="lbl gray cap">Conversion lift of each iteration vs the original</figcaption>'
              '<table class="vh"><caption>Conversion lift by iteration</caption><tr><th>Iteration</th><th>Lift</th></tr>' +
              "".join('<tr><td>%s</td><td>%s</td></tr>' % (k, t) for k, n, v, t in bars) + '</table></figure>' + CH_JS)
