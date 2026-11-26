@@ -80,6 +80,22 @@ img,video{display:block;max-width:100%}
 .ddp a:hover .ar svg{transform:none}
 .ddp .ar{height:.9em}.ddp .ar svg{width:.9em;height:.9em}
 .ddp a.on{color:#8a8983}
+.burg{display:none;position:relative;width:28px;height:28px;margin-right:-4px}
+.burg i{position:absolute;left:4px;right:4px;height:1.5px;background:currentColor;transition:transform .45s var(--ease),top .45s var(--ease)}
+.burg i:first-child{top:10px}.burg i:last-child{top:17px}
+.mopen .burg i:first-child{top:13.5px;transform:rotate(45deg)}.mopen .burg i:last-child{top:13.5px;transform:rotate(-45deg)}
+.mnav{position:fixed;z-index:19;left:0;right:0;top:var(--hh);height:calc(100dvh - var(--hh));overflow-y:auto;background:#262624;color:#ecebe8;padding:28px var(--m) 40px;
+  display:flex;flex-direction:column;visibility:hidden;opacity:0;translate:0 -8px;transition:opacity .3s,translate .45s var(--ease),visibility 0s .45s}
+.mopen .mnav{visibility:visible;opacity:1;translate:0 0;transition:opacity .3s,translate .45s var(--ease)}
+.mnav .mh{color:#8a8983;margin:0 0 10px}
+.mcs a{display:flex;align-items:center;padding:.62em 0;border-bottom:1px solid rgba(236,235,232,.12)}
+.mcs a.on{color:#8a8983}
+.mcs .ar{width:1.5em;height:.9em}.mcs .ar svg{width:.9em;height:.9em;left:0;right:auto;transform:none}
+.mlk{margin-top:auto;padding-top:36px;display:flex;flex-direction:column;gap:6px}
+.big2{font-family:var(--serif);font-size:44px;line-height:1.05;letter-spacing:-.01em}.big2.on{color:#8a8983}
+.mopen .top::before{opacity:1}
+@media (max-width:700px){.top nav{display:none}.burg{display:block}}
+@media (min-width:701px){.mnav{display:none}}
 
 /* ---------- каркас ---------- */
 .stage,.page{position:relative;z-index:1;width:100%;max-width:1741px;margin:0 auto}
@@ -364,7 +380,7 @@ html.vt .item.gl-on .asset video{opacity:1!important}
 /* увеличение скриншотов */
 .lb{position:fixed;inset:0;z-index:50;background:rgba(236,235,232,.96);display:none;align-items:center;justify-content:center;cursor:zoom-out}
 .lb.on{display:flex}
-.lb img{max-width:calc(100vw - 2*var(--m));max-height:calc(100vh - 110px);box-shadow:0 0 0 1px var(--line)}
+.lb img,.lb video{max-width:calc(100vw - 2*var(--m));max-height:calc(100dvh - 110px);box-shadow:0 0 0 1px var(--line);display:block}
 .lb .bar{position:absolute;left:var(--m);right:var(--m);bottom:20px;display:flex;justify-content:space-between;align-items:center}
 .lb .bar nav{display:flex;gap:2em}
 
@@ -419,7 +435,9 @@ html.vt .item.gl-on .asset video{opacity:1!important}
 <header class="top">
   <a class="me" href="index.html">Yuri Zavorotny</a>
   <nav><div class="dd on"><button class="ddb" type="button" aria-expanded="false" aria-haspopup="true"><span class="t">Works</span><span class="car" aria-hidden="true"></span></button><div class="ddp lbl"><a href="case-profi.html"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span>Profi</span></a><a href="case-sweed.html"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span>Sweed</span></a><a href="case-juro.html" class="on"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span>Juro</span></a><a href="case-microsoft-azure.html"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span>Microsoft Azure</span></a><a href="case-real-time-tech.html"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span>Real Time Tech</span></a><a href="case-it-test.html"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span>IT Test</span></a><a href="case-inter-rao.html"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span>Inter RAO</span></a></div></div><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+  <button class="burg" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mnav"><i></i><i></i></button>
 </header>
+<div class="mnav" id="mnav" aria-hidden="true"><p class="lbl mh">Works</p><div class="mcs lbl"><a href="case-profi.html"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span>Profi</span></a><a href="case-sweed.html"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span>Sweed</span></a><a href="case-juro.html" class="on"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span>Juro</span></a><a href="case-microsoft-azure.html"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span>Microsoft Azure</span></a><a href="case-real-time-tech.html"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span>Real Time Tech</span></a><a href="case-it-test.html"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span>IT Test</span></a><a href="case-inter-rao.html"><span class="ar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="butt" stroke-linejoin="miter"><path d="M1 12H22"/><path d="M15 5l7 7-7 7"/></svg></span><span>Inter RAO</span></a></div><div class="mlk"><a class="big2" href="about.html">About</a><a class="big2" href="contact.html">Contact</a></div></div>
 <main class="page">
   <div class="phead"><p class="lbl gray" data-scr>Juro · Contract editor, legal tech SaaS</p></div>
   <header class="chead">
@@ -922,6 +940,13 @@ list.forEach(function(el){io.observe(el)});
 <script>
 /* шапка: подложка появляется при прокрутке */
 (function(){var t=document.querySelector(".top");function f(){t.classList.toggle("sc",scrollY>12)}f();addEventListener("scroll",f,{passive:true})})();
+/* бургер на мобилке */
+(function(){var b=document.querySelector(".burg"),m=document.getElementById("mnav");if(!b||!m)return;var h=document.documentElement;
+function set(o){h.classList.toggle("mopen",o);b.setAttribute("aria-expanded",o?"true":"false");m.setAttribute("aria-hidden",o?"false":"true");h.style.overflow=o?"hidden":""}
+b.addEventListener("click",function(){set(!h.classList.contains("mopen"))});
+m.addEventListener("click",function(e){if(e.target.closest("a"))set(false)});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")set(false)});
+addEventListener("resize",function(){if(innerWidth>700)set(false)})})();
 /* меню Works */
 (function(){
 var dd=document.querySelector(".dd"); if(!dd) return;
@@ -1010,17 +1035,25 @@ var red=matchMedia("(prefers-reduced-motion: reduce)").matches;
 })();
 /* увеличение скриншотов по клику */
 (function(){
-var figs=[].slice.call(document.querySelectorAll(".shots figure, .mq figure:not([aria-hidden])")).filter(function(f){return !f.closest(".ndaw")}); if(!figs.length) return;
-var lb=document.createElement("div");lb.className="lb";lb.innerHTML='<img alt=""><div class="bar"><span class="lbl gray" id="lbc"></span><nav><button class="lbl" data-d="-1">Prev</button><button class="lbl" data-d="1">Next</button><button class="lbl" data-d="0">Close</button></nav></div>';
+function ok(e){return !e.closest(".ndaw,.lb,a,.cmp,header,nav,footer,.mq figure[aria-hidden]")}
+var figs=[].slice.call(document.querySelectorAll(".shots figure, .mq figure:not([aria-hidden]), main video, main img")).filter(function(e){
+  if(!ok(e))return false;if(e.tagName!=="FIGURE"&&e.closest(".shots figure, .mq figure"))return false;return true});
+if(!figs.length) return;
+figs.forEach(function(f){f.style.cursor="zoom-in"});
+var lb=document.createElement("div");lb.className="lb";lb.innerHTML='<img alt=""><video muted loop playsinline autoplay disablepictureinpicture></video><div class="bar"><span class="lbl gray" id="lbc"></span><nav><button class="lbl" data-d="-1">Prev</button><button class="lbl" data-d="1">Next</button><button class="lbl" data-d="0">Close</button></nav></div>';
 document.body.appendChild(lb);
-var im=lb.querySelector("img"),cn=lb.querySelector("#lbc"),i=0;
-function show(k){i=(k+figs.length)%figs.length;var f=figs[i],src=f.querySelector("img");
-  var c=f.querySelector("figcaption");cn.textContent=(i+1)+" / "+figs.length+(c?"  "+c.textContent:"");
-  im.src=src.src;lb.classList.add("on");document.documentElement.style.overflow="hidden"}
-function hide(){lb.classList.remove("on");document.documentElement.style.overflow=""}
-document.addEventListener("click",function(e){var f=e.target.closest&&e.target.closest(".shots figure, .mq figure");if(!f||f.closest(".ndaw")||lb.contains(f))return;
-  var o=f;if(f.classList.contains("cl")){o=[].filter.call(f.parentNode.children,function(x){return !x.classList.contains("cl")&&x.dataset.k===f.dataset.k})[0]}
-  var k=figs.indexOf(o);if(k>=0)show(k)});
+var im=lb.querySelector("img"),vd=lb.querySelector("video"),cn=lb.querySelector("#lbc"),i=0;
+function media(f){return f.tagName==="FIGURE"?(f.querySelector("img,video")):f}
+function show(k){i=(k+figs.length)%figs.length;var f=figs[i],m=media(f);
+  var c=f.tagName==="FIGURE"?f.querySelector("figcaption"):null;cn.textContent=(i+1)+" / "+figs.length+(c?"  "+c.textContent:"");
+  if(m.tagName==="VIDEO"){im.style.display="none";vd.style.display="";if(vd.getAttribute("src")!==(m.getAttribute("src")||m.currentSrc)){vd.src=m.getAttribute("src")||m.currentSrc;vd.poster=m.poster||""}vd.play&&vd.play().catch(function(){})}
+  else{vd.pause();vd.style.display="none";im.style.display="";im.src=m.currentSrc||m.src}
+  lb.classList.add("on");document.documentElement.style.overflow="hidden"}
+function hide(){lb.classList.remove("on");vd.pause();document.documentElement.style.overflow=""}
+document.addEventListener("click",function(e){if(lb.contains(e.target))return;var t=e.target.closest&&e.target.closest(".shots figure, .mq figure, main video, main img");if(!t)return;
+  var f=t.closest(".shots figure, .mq figure")||t;
+  if(f.classList.contains("cl")){f=[].filter.call(f.parentNode.children,function(x){return !x.classList.contains("cl")&&x.dataset.k===f.dataset.k})[0]}
+  var k=figs.indexOf(f);if(k>=0){e.preventDefault();show(k)}});
 lb.addEventListener("click",function(e){var d=e.target.dataset&&e.target.dataset.d;if(d==="1"||d==="-1"){e.stopPropagation();show(i+ +d)}else hide()});
 document.addEventListener("keydown",function(e){if(!lb.classList.contains("on"))return;if(e.key==="Escape")hide();if(e.key==="ArrowRight")show(i+1);if(e.key==="ArrowLeft")show(i-1)});
 })();

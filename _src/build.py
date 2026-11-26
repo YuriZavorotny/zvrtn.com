@@ -99,6 +99,22 @@ img,video{display:block;max-width:100%%}
 .ddp a:hover .ar svg{transform:none}
 .ddp .ar{height:.9em}.ddp .ar svg{width:.9em;height:.9em}
 .ddp a.on{color:#8a8983}
+.burg{display:none;position:relative;width:28px;height:28px;margin-right:-4px}
+.burg i{position:absolute;left:4px;right:4px;height:1.5px;background:currentColor;transition:transform .45s var(--ease),top .45s var(--ease)}
+.burg i:first-child{top:10px}.burg i:last-child{top:17px}
+.mopen .burg i:first-child{top:13.5px;transform:rotate(45deg)}.mopen .burg i:last-child{top:13.5px;transform:rotate(-45deg)}
+.mnav{position:fixed;z-index:19;left:0;right:0;top:var(--hh);height:calc(100dvh - var(--hh));overflow-y:auto;background:#262624;color:#ecebe8;padding:28px var(--m) 40px;
+  display:flex;flex-direction:column;visibility:hidden;opacity:0;translate:0 -8px;transition:opacity .3s,translate .45s var(--ease),visibility 0s .45s}
+.mopen .mnav{visibility:visible;opacity:1;translate:0 0;transition:opacity .3s,translate .45s var(--ease)}
+.mnav .mh{color:#8a8983;margin:0 0 10px}
+.mcs a{display:flex;align-items:center;padding:.62em 0;border-bottom:1px solid rgba(236,235,232,.12)}
+.mcs a.on{color:#8a8983}
+.mcs .ar{width:1.5em;height:.9em}.mcs .ar svg{width:.9em;height:.9em;left:0;right:auto;transform:none}
+.mlk{margin-top:auto;padding-top:36px;display:flex;flex-direction:column;gap:6px}
+.big2{font-family:var(--serif);font-size:44px;line-height:1.05;letter-spacing:-.01em}.big2.on{color:#8a8983}
+.mopen .top::before{opacity:1}
+@media (max-width:700px){.top nav{display:none}.burg{display:block}}
+@media (min-width:701px){.mnav{display:none}}
 
 /* ---------- каркас ---------- */
 .stage,.page{position:relative;z-index:1;width:100%%;max-width:1741px;margin:0 auto}
@@ -383,7 +399,7 @@ html.vt .item.gl-on .asset video{opacity:1!important}
 /* увеличение скриншотов */
 .lb{position:fixed;inset:0;z-index:50;background:rgba(236,235,232,.96);display:none;align-items:center;justify-content:center;cursor:zoom-out}
 .lb.on{display:flex}
-.lb img{max-width:calc(100vw - 2*var(--m));max-height:calc(100vh - 110px);box-shadow:0 0 0 1px var(--line)}
+.lb img,.lb video{max-width:calc(100vw - 2*var(--m));max-height:calc(100dvh - 110px);box-shadow:0 0 0 1px var(--line);display:block}
 .lb .bar{position:absolute;left:var(--m);right:var(--m);bottom:20px;display:flex;justify-content:space-between;align-items:center}
 .lb .bar nav{display:flex;gap:2em}
 
@@ -445,6 +461,13 @@ assert 'window.__scr' in SCRAMBLE
 COMMON_JS = r'''
 /* шапка: подложка появляется при прокрутке */
 (function(){var t=document.querySelector(".top");function f(){t.classList.toggle("sc",scrollY>12)}f();addEventListener("scroll",f,{passive:true})})();
+/* бургер на мобилке */
+(function(){var b=document.querySelector(".burg"),m=document.getElementById("mnav");if(!b||!m)return;var h=document.documentElement;
+function set(o){h.classList.toggle("mopen",o);b.setAttribute("aria-expanded",o?"true":"false");m.setAttribute("aria-hidden",o?"false":"true");h.style.overflow=o?"hidden":""}
+b.addEventListener("click",function(){set(!h.classList.contains("mopen"))});
+m.addEventListener("click",function(e){if(e.target.closest("a"))set(false)});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")set(false)});
+addEventListener("resize",function(){if(innerWidth>700)set(false)})})();
 /* меню Works */
 (function(){
 var dd=document.querySelector(".dd"); if(!dd) return;
@@ -533,17 +556,25 @@ var red=matchMedia("(prefers-reduced-motion: reduce)").matches;
 })();
 /* увеличение скриншотов по клику */
 (function(){
-var figs=[].slice.call(document.querySelectorAll(".shots figure, .mq figure:not([aria-hidden])")).filter(function(f){return !f.closest(".ndaw")}); if(!figs.length) return;
-var lb=document.createElement("div");lb.className="lb";lb.innerHTML='<img alt=""><div class="bar"><span class="lbl gray" id="lbc"></span><nav><button class="lbl" data-d="-1">Prev</button><button class="lbl" data-d="1">Next</button><button class="lbl" data-d="0">Close</button></nav></div>';
+function ok(e){return !e.closest(".ndaw,.lb,a,.cmp,header,nav,footer,.mq figure[aria-hidden]")}
+var figs=[].slice.call(document.querySelectorAll(".shots figure, .mq figure:not([aria-hidden]), main video, main img")).filter(function(e){
+  if(!ok(e))return false;if(e.tagName!=="FIGURE"&&e.closest(".shots figure, .mq figure"))return false;return true});
+if(!figs.length) return;
+figs.forEach(function(f){f.style.cursor="zoom-in"});
+var lb=document.createElement("div");lb.className="lb";lb.innerHTML='<img alt=""><video muted loop playsinline autoplay disablepictureinpicture></video><div class="bar"><span class="lbl gray" id="lbc"></span><nav><button class="lbl" data-d="-1">Prev</button><button class="lbl" data-d="1">Next</button><button class="lbl" data-d="0">Close</button></nav></div>';
 document.body.appendChild(lb);
-var im=lb.querySelector("img"),cn=lb.querySelector("#lbc"),i=0;
-function show(k){i=(k+figs.length)%figs.length;var f=figs[i],src=f.querySelector("img");
-  var c=f.querySelector("figcaption");cn.textContent=(i+1)+" / "+figs.length+(c?"  "+c.textContent:"");
-  im.src=src.src;lb.classList.add("on");document.documentElement.style.overflow="hidden"}
-function hide(){lb.classList.remove("on");document.documentElement.style.overflow=""}
-document.addEventListener("click",function(e){var f=e.target.closest&&e.target.closest(".shots figure, .mq figure");if(!f||f.closest(".ndaw")||lb.contains(f))return;
-  var o=f;if(f.classList.contains("cl")){o=[].filter.call(f.parentNode.children,function(x){return !x.classList.contains("cl")&&x.dataset.k===f.dataset.k})[0]}
-  var k=figs.indexOf(o);if(k>=0)show(k)});
+var im=lb.querySelector("img"),vd=lb.querySelector("video"),cn=lb.querySelector("#lbc"),i=0;
+function media(f){return f.tagName==="FIGURE"?(f.querySelector("img,video")):f}
+function show(k){i=(k+figs.length)%figs.length;var f=figs[i],m=media(f);
+  var c=f.tagName==="FIGURE"?f.querySelector("figcaption"):null;cn.textContent=(i+1)+" / "+figs.length+(c?"  "+c.textContent:"");
+  if(m.tagName==="VIDEO"){im.style.display="none";vd.style.display="";if(vd.getAttribute("src")!==(m.getAttribute("src")||m.currentSrc)){vd.src=m.getAttribute("src")||m.currentSrc;vd.poster=m.poster||""}vd.play&&vd.play().catch(function(){})}
+  else{vd.pause();vd.style.display="none";im.style.display="";im.src=m.currentSrc||m.src}
+  lb.classList.add("on");document.documentElement.style.overflow="hidden"}
+function hide(){lb.classList.remove("on");vd.pause();document.documentElement.style.overflow=""}
+document.addEventListener("click",function(e){if(lb.contains(e.target))return;var t=e.target.closest&&e.target.closest(".shots figure, .mq figure, main video, main img");if(!t)return;
+  var f=t.closest(".shots figure, .mq figure")||t;
+  if(f.classList.contains("cl")){f=[].filter.call(f.parentNode.children,function(x){return !x.classList.contains("cl")&&x.dataset.k===f.dataset.k})[0]}
+  var k=figs.indexOf(f);if(k>=0){e.preventDefault();show(k)}});
 lb.addEventListener("click",function(e){var d=e.target.dataset&&e.target.dataset.d;if(d==="1"||d==="-1"){e.stopPropagation();show(i+ +d)}else hide()});
 document.addEventListener("keydown",function(e){if(!lb.classList.contains("on"))return;if(e.key==="Escape")hide();if(e.key==="ArrowRight")show(i+1);if(e.key==="ArrowLeft")show(i-1)});
 })();
@@ -731,6 +762,12 @@ def nav(cur):
     return ('<div class="dd%s"><button class="ddb" type="button" aria-expanded="false" aria-haspopup="true"><span class="t">Works</span><span class="car" aria-hidden="true"></span></button>'
             '<div class="ddp lbl">%s</div></div>%s%s') % (on, dd, a("about.html", "About", "about"), a("contact.html", "Contact", "contact"))
 
+def mnav(cur):
+    cs = "".join('<a href="%s"%s>%s<span>%s</span></a>' % (c["href"], ' class="on"' if cur == c["slug"] else '', ARROW, esc(c["title"])) for c in CASES)
+    def a(h, t, k): return '<a class="big2%s" href="%s">%s</a>' % (" on" if k == cur else "", h, t)
+    return ('<div class="mnav" id="mnav" aria-hidden="true"><p class="lbl mh">Works</p><div class="mcs lbl">%s</div>'
+            '<div class="mlk">%s%s</div></div>') % (cs, a("about.html", "About", "about"), a("contact.html", "Contact", "contact"))
+
 FOOT = '''  <footer class="foot">
     <span>© 2026</span>
     <nav>
@@ -774,7 +811,9 @@ def shell(cur, title, main, scripts="", pre="", main_cls="page", body_cls=""):
 {pre}<header class="top">
   <a class="me" href="{HOME}">Yuri Zavorotny</a>
   <nav>{nav(cur)}</nav>
+  <button class="burg" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mnav"><i></i><i></i></button>
 </header>
+{mnav(cur)}
 <main class="{main_cls}">
 {main}
 {FOOT}
@@ -924,7 +963,7 @@ PULLS.update({
 })
 
 
-AB_FLOW = '<div class="abflow" id="abflow"><div class="abhd"><p class="lbl gray abcap"><span class="n">01</span><span class="t">Test: 30% of the segment gets three variants</span></p></div><div class="abst"><svg viewBox="0 28 760 236" role="img" aria-label="An email step splits a test group across three variants, two drafted by Sweed AI. Variant 2 brings the most orders and goes to the rest of the segment."><path class="bs tr" d="M118 150H150"/><path class="fx tr" d="M118 150H150" pathLength="100"/><path class="bs tr" d="M268 150H300"/><path class="fx tr" d="M268 150H300" pathLength="100"/><path class="bs ln0" d="M418 150C444 150 444 70 470 70"/><path class="fx ln0" d="M418 150C444 150 444 70 470 70" pathLength="100"/><path class="bs ln1 ai" d="M418 150H470"/><path class="fx ln1 ai" d="M418 150H470" pathLength="100"/><path class="bs ln2 ai" d="M418 150C444 150 444 230 470 230"/><path class="fx ln2 ai" d="M418 150C444 150 444 230 470 230" pathLength="100"/><path class="bs rl" d="M580 150H626"/><path class="fx rl" d="M580 150H626" pathLength="100"/><g class="nodes"><g transform="translate(0,124)"><rect width="118" height="52" rx="10"/><text class="nt" x="14" y="24">Audience</text><text class="ns" x="14" y="40">LAPSED 30+ DAYS</text></g><g transform="translate(150,124)"><rect width="118" height="52" rx="10"/><text class="nt" x="14" y="24">Delay</text><text class="ns" x="14" y="40">FRI, 5 PM</text></g><g transform="translate(300,124)"><rect width="118" height="52" rx="10"/><text class="nt" x="14" y="24">Email</text><text class="ns" x="14" y="40">A/B TEST</text></g></g><g class="v v0" transform="translate(470,52)"><rect width="110" height="36" rx="18"/><text class="nt" x="18" y="23">Variant 1</text></g><g class="v v1 ai" transform="translate(470,132)"><rect width="110" height="36" rx="18"/><text class="nt" x="18" y="23">Variant 2</text></g><g class="v v2 ai" transform="translate(470,212)"><rect width="110" height="36" rx="18"/><text class="nt" x="18" y="23">Variant 3</text></g><g class="bars"><text class="ns" x="596" y="32">ORDER RATE</text><g class="b b0" transform="translate(596,66)"><rect class="tk" width="112" height="8" rx="4"/><rect class="fl" width="0" height="8" rx="4"/><text class="pc" x="0" y="-6">0%</text></g><g class="b b1" transform="translate(596,146)"><rect class="tk" width="112" height="8" rx="4"/><rect class="fl ai" width="0" height="8" rx="4"/><text class="pc" x="0" y="-6">0%</text></g><g class="b b2" transform="translate(596,226)"><rect class="tk" width="112" height="8" rx="4"/><rect class="fl ai" width="0" height="8" rx="4"/><text class="pc" x="0" y="-6">0%</text></g></g><text class="ns win" x="470" y="124">WINNER</text><g class="rest" transform="translate(626,130)"><rect width="134" height="40" rx="20"/><text class="nt" x="18" y="25">Rest of segment</text></g></svg></div><p class="lbl gray abkey"><b></b>Drafted by Sweed AI</p></div><script>(()=>{const W=document.getElementById("abflow");if(!W)return;\nconst cap=W.querySelector(".abcap"),cN=cap.querySelector(".n"),cT=cap.querySelector(".t");\nconst B=[...W.querySelectorAll(".bars .b")].map(g=>({f:g.querySelector("rect:nth-child(2)"),t:g.querySelector(".pc")}));\nconst PCT=[8.7,14.1,10.4],MAX=16,BW=112,T1=7.5,T2=10,T3=16.5,T4=18.6;\nconst CAP=[["01","Test: 30% of the segment gets three variants"],["02","Sweed AI variant 2 brings the most orders"],["03","The winner goes to the other 70%"]];\nconst ease=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;\nlet ph=-1,t0=0,run=false,raf=0;\nfunction cp(p){if(p===ph)return;ph=p;W.classList.toggle("abw",p>=1);W.classList.toggle("abroll",p===2);cap.classList.add("abs");\n setTimeout(()=>{cN.textContent=CAP[p][0];cT.textContent=CAP[p][1];cap.classList.remove("abs")},450)}\nfunction bars(k){B.forEach((b,i)=>{const v=PCT[i]*ease(Math.min(1,k));b.f.setAttribute("width",BW*v/MAX);b.t.textContent=v.toFixed(1)+"%"})}\nfunction tick(n){if(!run)return;const t=(n-t0)/1000;\n const hid=t>T3+1;cp(hid||t<T1?0:t<T2?1:2);bars(hid?0:Math.max(0,(t-.8)/(T1-1.8)));\n W.classList.toggle("abfo",t>T3);\n if(t>T4){W.classList.remove("abfo");ph=-1;t0=n}\n raf=requestAnimationFrame(tick)}\nfunction start(){if(run)return;run=true;t0=performance.now();ph=-1;raf=requestAnimationFrame(tick)}\nfunction stop(){run=false;cancelAnimationFrame(raf)}\nif(matchMedia("(prefers-reduced-motion: reduce)").matches){bars(1);cp(1);return}\nbars(0);new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting?start():stop()),{threshold:.35}).observe(W);\n})();</script>'
+AB_FLOW = '<div class="abflow" id="abflow"><div class="abhd"><p class="lbl gray abcap"><span class="n">01</span><span class="t">Test: 30% of the segment gets three variants</span></p></div><div class="abst"><svg viewBox="0 28 760 236" role="img" aria-label="An email step splits a test group across three variants, two drafted by Sweed AI. Variant 2 brings the most orders and goes to the rest of the segment."><path class="bs tr" d="M118 150H150"/><path class="fx tr" d="M118 150H150" pathLength="100"/><path class="bs tr" d="M268 150H300"/><path class="fx tr" d="M268 150H300" pathLength="100"/><path class="bs ln0" d="M418 150C444 150 444 70 470 70"/><path class="fx ln0" d="M418 150C444 150 444 70 470 70" pathLength="100"/><path class="bs ln1 ai" d="M418 150H470"/><path class="fx ln1 ai" d="M418 150H470" pathLength="100"/><path class="bs ln2 ai" d="M418 150C444 150 444 230 470 230"/><path class="fx ln2 ai" d="M418 150C444 150 444 230 470 230" pathLength="100"/><path class="bs rl" d="M580 150H626"/><path class="fx rl" d="M580 150H626" pathLength="100"/><g class="nodes"><g transform="translate(0,124)"><rect width="118" height="52" rx="10"/><text class="nt" x="14" y="24">Audience</text><text class="ns" x="14" y="40">LAPSED 30+ DAYS</text></g><g transform="translate(150,124)"><rect width="118" height="52" rx="10"/><text class="nt" x="14" y="24">Delay</text><text class="ns" x="14" y="40">FRI, 5 PM</text></g><g transform="translate(300,124)"><rect width="118" height="52" rx="10"/><text class="nt" x="14" y="24">Email</text><text class="ns" x="14" y="40">A/B TEST</text></g></g><g class="v v0" transform="translate(470,52)"><rect width="110" height="36" rx="18"/><text class="nt" x="18" y="23">Variant 1</text></g><g class="v v1 ai" transform="translate(470,132)"><rect width="110" height="36" rx="18"/><text class="nt" x="18" y="23">Variant 2</text></g><g class="v v2 ai" transform="translate(470,212)"><rect width="110" height="36" rx="18"/><text class="nt" x="18" y="23">Variant 3</text></g><g class="bars"><text class="ns" x="596" y="32">ORDER RATE</text><g class="b b0" transform="translate(596,66)"><rect class="tk" width="112" height="8" rx="4"/><rect class="fl" width="0" height="8" rx="4"/><text class="pc" x="0" y="-6">0%</text></g><g class="b b1" transform="translate(596,146)"><rect class="tk" width="112" height="8" rx="4"/><rect class="fl ai" width="0" height="8" rx="4"/><text class="pc" x="0" y="-6">0%</text></g><g class="b b2" transform="translate(596,226)"><rect class="tk" width="112" height="8" rx="4"/><rect class="fl ai" width="0" height="8" rx="4"/><text class="pc" x="0" y="-6">0%</text></g></g><text class="ns win" x="470" y="124">WINNER</text><g class="rest" transform="translate(626,130)"><rect width="134" height="40" rx="20"/><text class="nt" x="18" y="25">Rest of segment</text></g></svg></div><p class="lbl gray abkey"><b></b>Drafted by Sweed AI</p></div><script>(()=>{const W=document.getElementById("abflow");if(!W)return;\nconst cap=W.querySelector(".abcap"),cN=cap.querySelector(".n"),cT=cap.querySelector(".t");\nconst B=[...W.querySelectorAll(".bars .b")].map(g=>({f:g.querySelector("rect:nth-child(2)"),t:g.querySelector(".pc")}));\nconst PCT=[8.7,14.1,10.4],MAX=16,BW=112,T1=7.5,T2=10,T3=16.5,T4=18.6;\nconst CAP=[["01","Test: 30% of the segment gets three variants"],["02","Sweed AI variant 2 brings the most orders"],["03","The winner goes to the other 70%"]];\nconst ease=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;\nlet ph=-1,t0=0,run=false,raf=0;\nfunction sc(x){if(W.scrollWidth>W.clientWidth+4)W.scrollTo({left:x?W.scrollWidth:0,behavior:"smooth"})}\nfunction cp(p){if(p===ph)return;ph=p;W.classList.toggle("abw",p>=1);W.classList.toggle("abroll",p===2);cap.classList.add("abs");\n setTimeout(()=>{cN.textContent=CAP[p][0];cT.textContent=CAP[p][1];cap.classList.remove("abs")},450)}\nfunction bars(k){B.forEach((b,i)=>{const v=PCT[i]*ease(Math.min(1,k));b.f.setAttribute("width",BW*v/MAX);b.t.textContent=v.toFixed(1)+"%"})}\nfunction tick(n){if(!run)return;const t=(n-t0)/1000;\n const hid=t>T3+1;cp(hid||t<T1?0:t<T2?1:2);bars(hid?0:Math.max(0,(t-.8)/(T1-1.8)));\n W.classList.toggle("abfo",t>T3);\n if(t>T4){W.classList.remove("abfo");ph=-1;t0=n;sc(0);W._sc=0}\n if(!W._sc&&t>1.6&&t<T3){W._sc=1;sc(1)}\n raf=requestAnimationFrame(tick)}\nfunction start(){if(run)return;run=true;t0=performance.now();ph=-1;raf=requestAnimationFrame(tick)}\nfunction stop(){run=false;cancelAnimationFrame(raf)}\nif(matchMedia("(prefers-reduced-motion: reduce)").matches){bars(1);cp(1);return}\nbars(0);new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting?start():stop()),{threshold:.35}).observe(W);\n})();</script>'
 
 def ab_bars(rows):
     out = ""
@@ -949,7 +988,7 @@ new IntersectionObserver((es,o)=>{if(!es.some(e=>e.isIntersecting))return;o.disc
  (function f(n){let done=true;T.forEach(t=>{const k=Math.max(0,Math.min(1,((n-s)/1000-t.at)/1.5));if(k<1)done=false;set(t,ease(k))});if(!done)requestAnimationFrame(f)})(s)},{threshold:.4}).observe(W);
 })();</script>'''
 
-AB_CSS = ('<style>'+'.abflow{margin-top:calc(40*var(--u));background:rgba(255,255,255,.45);padding:calc(30*var(--u)) calc(32*var(--u)) calc(34*var(--u));overflow-x:auto}.abhd{margin-bottom:calc(18*var(--u))}.abhd .lbl{margin:0}.abflow .abkey{margin:calc(20*var(--u)) 0 0}.abcap .n{color:#000;margin-right:.9em}.abcap .t{display:inline-block;transition:opacity .5s,translate .5s}.abcap.abs .t{opacity:0;translate:0 4px}.abkey b{display:inline-block;width:.8em;height:.8em;border-radius:50%;background:#a682ff;margin-right:.6em;vertical-align:-.05em}.abst{transition:opacity .9s ease}.abflow.abfo .abst{opacity:0}.abflow svg{display:block;width:100%;min-width:560px;height:auto;overflow:visible}.abflow .bs{fill:none;stroke:rgba(0,0,0,.16);stroke-width:1.2}.abflow .fx{fill:none;stroke:rgba(0,0,0,.55);stroke-width:2;stroke-linecap:round;stroke-dasharray:18 82;animation:abfx 3.4s linear infinite;transition:opacity .9s}.abflow .fx.ai{stroke:#a682ff}@keyframes abfx{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}.abflow .nodes rect,.abflow .v rect{fill:#fff}.abflow .v.ai rect{fill:#a682ff}.abflow .v.ai .nt{fill:#fff}.abflow .nt{font-family:var(--grot);font-weight:500;font-size:14px;fill:#000}.abflow .ns{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;fill:#86857f}.abflow .pc{font-family:var(--grot);font-weight:500;font-size:12px;fill:#000}.abflow .tk{fill:rgba(0,0,0,.07)}.abflow .bars rect[class^=fl]{fill:rgba(0,0,0,.55)}.abflow .bars .fl.ai{fill:#a682ff}.abflow .v,.abflow .b,.abflow .bs,.abflow .bars,.abflow .win,.abflow .rest{transition:opacity .9s ease}.abflow .v rect{transition:stroke-width .6s}.abflow .win,.abflow .rest,.abflow .rl{opacity:0}.abflow .rest rect{fill:#000}.abflow .rest .nt{fill:#fff}.abflow.abw .v1 rect{stroke:#000;stroke-width:2}.abflow.abw .win{opacity:1}.abflow.abw .v0,.abflow.abw .v2,.abflow.abw .b0,.abflow.abw .b2,.abflow.abw .bs.ln0,.abflow.abw .bs.ln2{opacity:.22}.abflow.abw .fx.ln0,.abflow.abw .fx.ln2{opacity:0}.abflow.abroll .bars{opacity:0}.abflow.abroll .rest,.abflow.abroll .rl{opacity:1}.abflow.abroll .fx.ln1{stroke:#a682ff}@media (prefers-reduced-motion:reduce){.abflow .fx{animation:none;opacity:0}}'+
+AB_CSS = ('<style>'+'.abflow{box-sizing:border-box;width:100%;max-width:calc(100vw - 2*var(--m));min-width:0;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;margin-top:calc(40*var(--u));background:rgba(255,255,255,.45);padding:calc(30*var(--u)) calc(32*var(--u)) calc(34*var(--u));overflow-x:auto}.abhd{margin-bottom:calc(18*var(--u))}.abhd .lbl{margin:0}.abflow .abkey{margin:calc(20*var(--u)) 0 0}.abcap .n{color:#000;margin-right:.9em}.abcap .t{display:inline-block;transition:opacity .5s,translate .5s}.abcap.abs .t{opacity:0;translate:0 4px}.abkey b{display:inline-block;width:.8em;height:.8em;border-radius:50%;background:#a682ff;margin-right:.6em;vertical-align:-.05em}.abst{transition:opacity .9s ease}.abflow.abfo .abst{opacity:0}.abflow svg{display:block;width:100%;min-width:560px;height:auto;overflow:visible}.abflow .bs{fill:none;stroke:rgba(0,0,0,.16);stroke-width:1.2}.abflow .fx{fill:none;stroke:rgba(0,0,0,.55);stroke-width:2;stroke-linecap:round;stroke-dasharray:18 82;animation:abfx 3.4s linear infinite;transition:opacity .9s}.abflow .fx.ai{stroke:#a682ff}@keyframes abfx{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}.abflow .nodes rect,.abflow .v rect{fill:#fff}.abflow .v.ai rect{fill:#a682ff}.abflow .v.ai .nt{fill:#fff}.abflow .nt{font-family:var(--grot);font-weight:500;font-size:14px;fill:#000}.abflow .ns{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;fill:#86857f}.abflow .pc{font-family:var(--grot);font-weight:500;font-size:12px;fill:#000}.abflow .tk{fill:rgba(0,0,0,.07)}.abflow .bars rect[class^=fl]{fill:rgba(0,0,0,.55)}.abflow .bars .fl.ai{fill:#a682ff}.abflow .v,.abflow .b,.abflow .bs,.abflow .bars,.abflow .win,.abflow .rest{transition:opacity .9s ease}.abflow .v rect{transition:stroke-width .6s}.abflow .win,.abflow .rest,.abflow .rl{opacity:0}.abflow .rest rect{fill:#000}.abflow .rest .nt{fill:#fff}.abflow.abw .v1 rect{stroke:#000;stroke-width:2}.abflow.abw .win{opacity:1}.abflow.abw .v0,.abflow.abw .v2,.abflow.abw .b0,.abflow.abw .b2,.abflow.abw .bs.ln0,.abflow.abw .bs.ln2{opacity:.22}.abflow.abw .fx.ln0,.abflow.abw .fx.ln2{opacity:0}.abflow.abroll .bars{opacity:0}.abflow.abroll .rest,.abflow.abroll .rl{opacity:1}.abflow.abroll .fx.ln1{stroke:#a682ff}@media (prefers-reduced-motion:reduce){.abflow .fx{animation:none;opacity:0}}'+
   '.abbars{margin-top:calc(40*var(--u));display:grid;gap:calc(26*var(--u))}.abr{display:grid;gap:8px}.abt{position:relative;height:calc(20*var(--u));min-height:20px;display:flex;align-items:center}'
   '.abt i{position:absolute;left:0;top:0;bottom:0;background:rgba(0,0,0,.13);border-radius:4px}.abt.b i{background:#000}.abl{font-family:var(--grot);font-weight:450;font-size:max(15px,calc(10.2*var(--u)));line-height:1.3}'
   '.abt em{position:absolute;top:50%;translate:0 -50%;font-style:normal;font-family:var(--mono);font-size:max(13px,calc(10*var(--u)));color:#000;white-space:nowrap}'
