@@ -937,7 +937,7 @@ AB_CSS = ('<style>'+'.abflow{margin-top:calc(40*var(--u));background:rgba(255,25
   '.abbars{margin-top:calc(40*var(--u));display:grid;gap:calc(22*var(--u))}.abr{display:grid;gap:6px}.abt{position:relative;height:calc(20*var(--u));min-height:20px;display:flex;align-items:center}'
   '.abt i{position:absolute;left:0;top:0;bottom:0;background:rgba(0,0,0,.13);border-radius:4px}.abt.b i{background:#000}'
   '.abt em{position:relative;font-style:normal;font-family:var(--grot);font-weight:600;font-size:max(12px,calc(10*var(--u)));padding-left:8px}.abt.b em{color:#fff}'
-  '.abk{display:flex;gap:20px}.abk i{display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(0,0,0,.13);margin-right:6px;vertical-align:-1px}.abk i.b{background:#000}'
+  '.abk{display:flex;gap:20px}.abk i{display:inline-block;width:.8em;height:.8em;border-radius:50%;background:rgba(0,0,0,.13);margin-right:.6em;vertical-align:-.05em}.abk i.b{background:#000}'
   '</style>')
 
 AB_AI = (
