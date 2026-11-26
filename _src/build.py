@@ -929,14 +929,30 @@ AB_FLOW = '<div class="abflow" id="abflow"><div class="abhd"><p class="lbl gray 
 def ab_bars(rows):
     out = ""
     for lab, a, b, va, vb in rows:
-        out += ('<div class="abr"><span class="lbl gray">%s</span><div class="abt"><i style="width:%.1f%%"></i><em>%s</em></div>'
-                '<div class="abt b"><i style="width:100%%"></i><em>%s</em></div></div>' % (lab, a / b * 100, va, vb))
-    return '<div class="abbars"><div class="abk lbl gray"><span><i></i>Before</span><span><i class="b"></i>With A/B testing</span></div>' + out + '</div>'
+        def bar(cls, w, v):
+            pre = "~" if v.startswith("~") else ("$" if "$" in v else "")
+            num = v.replace("~", "").replace("$", "").replace("%", "")
+            suf = "%" if v.endswith("%") else ""
+            dec = len(num.split(".")[1]) if "." in num else 0
+            return ('<div class="abt%s" data-w="%.1f" data-v="%s" data-p="%s" data-s="%s" data-d="%d"><i style="width:%.1f%%%%"></i>'
+                    '<em style="left:calc(%.1f%%%% + 10px)">%s</em></div>') % (cls, w, num, pre, suf, dec, w, w, v)
+        out += '<div class="abr"><span class="abl">%s</span>%s%s</div>' % (lab, bar("", a / b * 84, va), bar(" b", 84, vb))
+    return ('<div class="abbars" id="abbars"><div class="abk lbl gray"><span><i></i>Before</span><span><i class="b"></i>With A/B testing</span></div>' + out + '</div>'
+            + AB_BARS_JS)
+
+AB_BARS_JS = r'''<script>(()=>{const W=document.getElementById("abbars");if(!W||matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+const T=[...W.querySelectorAll(".abt")].map((e,i)=>({e,i:e.querySelector("i"),m:e.querySelector("em"),w:+e.dataset.w,v:+e.dataset.v,p:e.dataset.p,s:e.dataset.s,d:+e.dataset.d,
+ at:Math.floor(i/2)*.22+(i%2)*.3}));
+const set=(t,k)=>{const w=t.w*k;t.i.style.width=w+"%";t.m.style.left="calc("+w+"% + 10px)";t.m.textContent=t.p+(t.v*k).toFixed(t.d)+t.s};
+T.forEach(t=>set(t,0));const ease=k=>1-Math.pow(1-k,3);
+new IntersectionObserver((es,o)=>{if(!es.some(e=>e.isIntersecting))return;o.disconnect();const s=performance.now();
+ (function f(n){let done=true;T.forEach(t=>{const k=Math.max(0,Math.min(1,((n-s)/1000-t.at)/1.5));if(k<1)done=false;set(t,ease(k))});if(!done)requestAnimationFrame(f)})(s)},{threshold:.4}).observe(W);
+})();</script>'''
 
 AB_CSS = ('<style>'+'.abflow{margin-top:calc(40*var(--u));background:rgba(255,255,255,.45);padding:calc(30*var(--u)) calc(32*var(--u)) calc(34*var(--u));overflow-x:auto}.abhd{margin-bottom:calc(18*var(--u))}.abhd .lbl{margin:0}.abflow .abkey{margin:calc(20*var(--u)) 0 0}.abcap .n{color:#000;margin-right:.9em}.abcap .t{display:inline-block;transition:opacity .5s,translate .5s}.abcap.abs .t{opacity:0;translate:0 4px}.abkey b{display:inline-block;width:.8em;height:.8em;border-radius:50%;background:#a682ff;margin-right:.6em;vertical-align:-.05em}.abst{transition:opacity .9s ease}.abflow.abfo .abst{opacity:0}.abflow svg{display:block;width:100%;min-width:560px;height:auto;overflow:visible}.abflow .bs{fill:none;stroke:rgba(0,0,0,.16);stroke-width:1.2}.abflow .fx{fill:none;stroke:rgba(0,0,0,.55);stroke-width:2;stroke-linecap:round;stroke-dasharray:18 82;animation:abfx 3.4s linear infinite;transition:opacity .9s}.abflow .fx.ai{stroke:#a682ff}@keyframes abfx{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}.abflow .nodes rect,.abflow .v rect{fill:#fff}.abflow .v.ai rect{fill:#a682ff}.abflow .v.ai .nt{fill:#fff}.abflow .nt{font-family:var(--grot);font-weight:500;font-size:14px;fill:#000}.abflow .ns{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;fill:#86857f}.abflow .pc{font-family:var(--grot);font-weight:500;font-size:12px;fill:#000}.abflow .tk{fill:rgba(0,0,0,.07)}.abflow .bars rect[class^=fl]{fill:rgba(0,0,0,.55)}.abflow .bars .fl.ai{fill:#a682ff}.abflow .v,.abflow .b,.abflow .bs,.abflow .bars,.abflow .win,.abflow .rest{transition:opacity .9s ease}.abflow .v rect{transition:stroke-width .6s}.abflow .win,.abflow .rest,.abflow .rl{opacity:0}.abflow .rest rect{fill:#000}.abflow .rest .nt{fill:#fff}.abflow.abw .v1 rect{stroke:#000;stroke-width:2}.abflow.abw .win{opacity:1}.abflow.abw .v0,.abflow.abw .v2,.abflow.abw .b0,.abflow.abw .b2,.abflow.abw .bs.ln0,.abflow.abw .bs.ln2{opacity:.22}.abflow.abw .fx.ln0,.abflow.abw .fx.ln2{opacity:0}.abflow.abroll .bars{opacity:0}.abflow.abroll .rest,.abflow.abroll .rl{opacity:1}.abflow.abroll .fx.ln1{stroke:#a682ff}@media (prefers-reduced-motion:reduce){.abflow .fx{animation:none;opacity:0}}'+
-  '.abbars{margin-top:calc(40*var(--u));display:grid;gap:calc(22*var(--u))}.abr{display:grid;gap:6px}.abt{position:relative;height:calc(20*var(--u));min-height:20px;display:flex;align-items:center}'
-  '.abt i{position:absolute;left:0;top:0;bottom:0;background:rgba(0,0,0,.13);border-radius:4px}.abt.b i{background:#000}'
-  '.abt em{position:relative;font-style:normal;font-family:var(--grot);font-weight:600;font-size:max(12px,calc(10*var(--u)));padding-left:8px}.abt.b em{color:#fff}'
+  '.abbars{margin-top:calc(40*var(--u));display:grid;gap:calc(26*var(--u))}.abr{display:grid;gap:8px}.abt{position:relative;height:calc(20*var(--u));min-height:20px;display:flex;align-items:center}'
+  '.abt i{position:absolute;left:0;top:0;bottom:0;background:rgba(0,0,0,.13);border-radius:4px}.abt.b i{background:#000}.abl{font-family:var(--grot);font-weight:450;font-size:max(15px,calc(10.2*var(--u)));line-height:1.3}'
+  '.abt em{position:absolute;top:50%;translate:0 -50%;font-style:normal;font-family:var(--mono);font-size:max(13px,calc(10*var(--u)));color:#000;white-space:nowrap}'
   '.abk{display:flex;gap:20px}.abk i{display:inline-block;width:.8em;height:.8em;border-radius:50%;background:rgba(0,0,0,.13);margin-right:.6em;vertical-align:-.05em}.abk i.b{background:#000}'
   '</style>')
 
