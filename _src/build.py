@@ -1187,7 +1187,8 @@ SR_CSS = """<style>
  .syn .log{padding:18px 16px;max-height:none}.syn .sg{padding:0 16px 18px}.syn .cv{min-height:400px}
 }
 /* stages */
-.ch{margin-top:calc(56*var(--u))}
+.chb{margin-top:calc(56*var(--u))}
+.ch{margin-top:calc(36*var(--u))}
 .cb{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(14*var(--u));align-items:end;max-width:calc(560*var(--u))}
 .cb>div{position:relative;display:flex;flex-direction:column;justify-content:flex-end;outline:none}
 .cb i{display:block;width:calc(40*var(--u));min-width:28px;background:#b9b7b0;border-radius:4px 4px 0 0;transition:opacity .2s}
@@ -1311,7 +1312,7 @@ def profi_content():
       chapter("Iteration IV: the same LLM, grounded in the client’s criteria and reviews", body(ps("We kept the model and rebuilt the frame. Each explanation now starts from the client’s own criteria, budget, time, format, shown as tags, and ends with one fact from reviews with its source. Two picks of the same task can no longer sound the same.",
                  "The shortlist became a highlight on top of the full list, so nothing is hidden. Re-picking got hint chips next to the prefilled prompt, and the loader says what the AI is doing. On mobile web the tags fit inside the card without opening it. Conversion grew by 23.5%, the best result of the four.")) + pair(4, "explanations built from the client’s criteria and a sourced review fact")) +
       chapter("Outcome", body(ps("Four iterations, each tested against the same original. The LLM in iteration III and iteration IV was the same model; the difference between +18% and +23.5% is design: what the explanation is built from, what stays visible and how the client asks for another pick.",
-                 "By the end AI did four jobs in the product: it reads the task, ranks the offers, explains each pick with the client’s criteria and a sourced fact, and turns the order into an editable prompt. And two jobs in the process: synthetic respondents on Claude to cut weak ideas before an A/B slot, and prototypes built in code with Claude and Claude Code.")) + pvid("profi-match", "Walkthrough: AI shortlist with explanations, opening a chat") + '<p class="lbl gray cap">The final design: the client opens an explanation and writes to the first tutor</p>' + chart)
+                 "By the end AI did four jobs in the product: it reads the task, ranks the offers, explains each pick with the client’s criteria and a sourced fact, and turns the order into an editable prompt. And two jobs in the process: synthetic respondents on Claude to cut weak ideas before an A/B slot, and prototypes built in code with Claude and Claude Code.")) + pvid("profi-match", "Walkthrough: AI shortlist with explanations, opening a chat") + '<p class="lbl gray cap">The final design: the client opens an explanation and writes to the first tutor</p>' + '<div class="chb"><p class="pull">Four iterations, one original: how conversion moved</p><div class="body">' + ps("Each iteration ran against the same original list, so the bars compare like with like. The shortlist alone lifted conversion by 21%. Reasons from reviews and a fixed form gave less, 13%, and showed that people want to say what they need in their own words. The LLM pick brought it back to 18%. The same LLM, grounded in the client’s criteria and a sourced review fact, reached 23.5%.") + '</div></div>' + chart)
     )
 
 def case(i):
