@@ -1114,6 +1114,12 @@ PERSONAS = [
      "Honestly? The dream is a friend handing me one: here, take this one. We went through three or four tutors before we found ours, my daughter kept saying she was falling asleep. So now I want to see everyone at once, not just the ones who replied. The last word is hers."),
     ("What do you think of the offers tutors send you?",
      "I barely read them. It’s dead information, he didn’t write it himself. Feels like you’re chatting with a bot."),
+    ("Did you read the offers at all?", "I didn’t pay any attention to the offers at all.", "i"),
+    ("What matters most in a tutor?", "The main thing is that the child’s eyes light up.", "i"),
+    ("What would make choosing easier?", "It would be nicest of all if someone just brought it to me on a plate.", "i"),
+    ("Do you trust reviews?", "One review? Maybe a friend wrote it.", "i"),
+    ("Is it hard to switch tutors?", "I’m not afraid to change them.", "i"),
+    ("How many tutors do you want to see?", "I want to look through all 16,000 of them, right now.", "i"),
    ],
    "prototype": [
     ("Here’s a new screen: three tutors on top, each with “Why they fit you”. What do you do first?",
@@ -1131,6 +1137,11 @@ PERSONAS = [
      "Systematically. Reviews and rating first, then who they are and their education, then price, then experience, photo last. About five profiles in fifteen minutes."),
     ("Why don’t you open the offers?",
      "Eight people wrote within a minute. Obviously an auto-reply."),
+    ("What does a 4.9 rating tell you?", "If he has a 4.9, he has character.", "i"),
+    ("What do you think of young tutors?", "A young tutor is a pig in a poke, fifty-fifty.", "i"),
+    ("What proof do you want to see?", "I need this: came with 65, three months later passed with 89.", "i"),
+    ("What would your ideal lessons be like?", "I’d make every single lesson unique.", "i"),
+    ("Would you notice if lessons don’t work?", "Naturally, I can tell on my own that something needs to change.", "i"),
    ],
    "prototype": [
     ("Here’s the same screen on mobile. What do you look at?",
@@ -1199,6 +1210,7 @@ SR_CSS = """<style>
 .syn .ask input{flex:1;min-width:0;background:none;border:0;outline:none;color:var(--kt);font:inherit;font-size:16px}
 .syn .ask input::placeholder{color:var(--kg)}
 .syn .ask button{padding:.45em .9em;border-radius:8px;background:var(--kt);color:var(--k0);font-weight:600;font-size:.9em}
+.syn .t small .src{font-style:normal;font-weight:500;color:var(--kg);margin-left:.7em;padding:.1em .45em;border:1px solid var(--kl);border-radius:5px;font-size:.92em}
 .syn .t.nt small{color:var(--kg)}.syn .t.nt p{color:var(--kg);font-size:.95em}
 .syn button:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.syn .dots i,.syn .t.in{animation:none}}
@@ -1248,21 +1260,21 @@ SR_CSS = """<style>
 SR_JS = """<script>(function(){var P=__P__,COL=['#f5b641','#8fb3ff'],M=[['interview','Interview'],['prototype','Prototype test'],['hypothesis','Hypothesis check']],
 r=document.getElementById('syn'),pp=r.querySelector('.pp'),cv=r.querySelector('.cv'),md=r.querySelector('.md'),cur=0,mode='hypothesis',RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
-function turn(k,who,txt,anim){var d=el('div','t '+k+(anim?' in':''));d.appendChild(el('small',null,who));d.appendChild(el('p',null,txt));return d}
+function turn(k,who,txt,anim,src){var d=el('div','t '+k+(anim?' in':''));var sm=el('small',null,who);if(src){sm.appendChild(el('em','src','From the interview'))}d.appendChild(sm);d.appendChild(el('p',null,txt));return d}
 function show(){var p=P[cur];r.dataset.p=cur;
 [].forEach.call(pp.querySelectorAll('button'),function(b,k){b.classList.toggle('on',k==cur);b.setAttribute('aria-pressed',k==cur)});
 [].forEach.call(md.querySelectorAll('button'),function(b){var on=b.dataset.m==mode;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
 cv.innerHTML='';var log=el('div','log');log.setAttribute('aria-live','polite');cv.appendChild(log);var sg=el('div','sg');cv.appendChild(sg);
 var fm=el('form','ask');var inp=el('input');inp.type='text';inp.placeholder='Ask '+p.name+' a question';inp.setAttribute('aria-label','Ask '+p.name+' a question');var sb=el('button',null,'Send');sb.type='submit';fm.appendChild(inp);fm.appendChild(sb);cv.appendChild(fm);
-function reply(q,a,note){log.appendChild(turn('q','You',q,1));var d=turn('a'+(note?' nt':''),note?'Demo':p.name,'',1);d.lastChild.className='dots';d.lastChild.innerHTML='<i></i><i></i><i></i>';log.appendChild(d);log.scrollTop=log.scrollHeight;
+function reply(q,a,note,src){log.appendChild(turn('q','You',q,1));var d=turn('a'+(note?' nt':''),note?'Demo':p.name,'',1,src);d.lastChild.className='dots';d.lastChild.innerHTML='<i></i><i></i><i></i>';log.appendChild(d);log.scrollTop=log.scrollHeight;
  setTimeout(function(){d.lastChild.className='';d.lastChild.textContent=a;log.scrollTop=log.scrollHeight},RM?0:1100)}
 fm.onsubmit=function(ev){ev.preventDefault();var q=inp.value.trim();if(!q)return;inp.value='';
  var SW=' about would could their there which think these those where what when your with from have that this then like just them they does into very much more some only also than make want need'.split(' '),W=function(t){return (t.toLowerCase().match(/[a-z]{4,}/g)||[]).filter(function(x){return SW.indexOf(x)<0})},qw=W(q),best=null,bs=0;
  Object.keys(p.modes).forEach(function(m){p.modes[m].forEach(function(qa){var w=W(qa[0]+' '+qa[1]),sc=0;qw.forEach(function(x){if(w.indexOf(x)>-1)sc++});if(sc>bs){bs=sc;best=qa}})});
- if(best&&bs>0)reply(q,best[1]);else reply(q,'This page answers from a fixed set of interview-based replies. The live tool on Claude answers any question. Try asking about tutors, offers, reviews or price.',1)};
+ if(best&&bs>0)reply(q,best[1],0,best[2]);else reply(q,'This page answers from a fixed set of interview-based replies. The live tool on Claude answers any question. Try asking about tutors, offers, reviews or price.',1)};
 p.modes[mode].forEach(function(qa,n){
- if(n==0){log.appendChild(turn('q','You',qa[0]));log.appendChild(turn('a',p.name,qa[1]));return}
- var b=el('button',null,qa[0]);b.type='button';b.onclick=function(){b.remove();reply(qa[0],qa[1])};sg.appendChild(b)});}
+ if(n==0){log.appendChild(turn('q','You',qa[0]));log.appendChild(turn('a',p.name,qa[1],0,qa[2]));return}
+ var b=el('button',null,qa[0]);b.type='button';b.onclick=function(){b.remove();reply(qa[0],qa[1],0,qa[2])};sg.appendChild(b)});}
 M.forEach(function(m){var b=el('button',null,m[1]);b.type='button';b.dataset.m=m[0];b.onclick=function(){mode=m[0];show()};md.appendChild(b)});
 P.forEach(function(p,i){var b=el('button');b.type='button';var a=el('i','av',p.name[0]);a.style.background=COL[i];b.appendChild(a);var w=el('div');w.appendChild(el('b',null,p.name));w.appendChild(el('span',null,p.seg));b.appendChild(w);b.onclick=function(){cur=i;show()};pp.appendChild(b)});
 show()})();</script>"""
@@ -1310,7 +1322,7 @@ PULLS.update({
 def profi_content():
     syn = ('<div class="syn" id="syn"><div class="tb"><b>Synthetic respondents</b><small>AI</small><div class="md" role="group" aria-label="Session mode"></div></div>'
            '<div class="bd"><div class="pp"></div><div class="cv"></div></div></div>'
-           '<p class="lbl gray cap">Try it: pick a question or type your own. Answers on this page paraphrase the personas’ prompts; the real tool runs live on Claude.</p>'
+           '<p class="lbl gray cap">Try it: pick a question or type your own. Replies marked “From the interview” are real quotes, translated; the rest paraphrase the personas’ prompts. The real tool runs live on Claude.</p>'
            + SR_JS.replace("__P__", json.dumps(PERSONAS, ensure_ascii=False)))
     pipe = ('<ol class="pipe" aria-label="How a synthetic respondent is built">'
             '<li><em>Research</em><b>Interviews</b><span>9 in-depth interviews</span></li>'
