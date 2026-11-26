@@ -1128,12 +1128,15 @@ PERSONAS = [
 
 SR_CSS = """<style>
 /* research diagrams, light */
-.pipe{list-style:none;margin:calc(40*var(--u)) 0 0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:calc(6*var(--u));counter-reset:p}
-.pipe li{background:var(--panel);padding:max(14px,calc(14*var(--u))) max(14px,calc(14*var(--u))) max(16px,calc(16*var(--u)));display:flex;flex-direction:column;gap:.5em;position:relative}
-.pipe li:before{counter-increment:p;content:counter(p,decimal-leading-zero);font-family:var(--mono);font-size:var(--lbs);color:var(--gray)}
-.pipe b{font-family:var(--grot);font-weight:700;font-size:max(15px,calc(11.5*var(--u)));letter-spacing:-.01em}
-.pipe span{font-size:max(13.5px,calc(9.6*var(--u)));line-height:1.45;color:var(--soft)}
-.pipe li.ai{background:#16171c;color:#fff}.pipe li.ai span{color:#a4a6b0}.pipe li.ai b{color:#f5b641}.pipe li.ai:before{color:#6d6f79}
+.pipe{list-style:none;margin:calc(36*var(--u)) 0 0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);background:var(--panel);border-radius:0;overflow:hidden;font-family:var(--grot)}
+.pipe li{padding:max(12px,calc(12*var(--u))) max(12px,calc(13*var(--u))) max(14px,calc(14*var(--u)));display:flex;flex-direction:column;gap:.4em;position:relative}
+.pipe li+li{border-left:1px solid var(--line)}
+.pipe em{font-style:normal;font-family:var(--mono);font-weight:500;font-size:max(10px,calc(7.4*var(--u)));text-transform:uppercase;letter-spacing:.06em;color:var(--gray);display:flex;align-items:center;gap:5px}
+.pipe b{font-weight:700;font-size:max(14px,calc(10.6*var(--u)));letter-spacing:-.01em}
+.pipe span{font-size:max(12.5px,calc(8.8*var(--u)));line-height:1.4;color:var(--soft)}
+.pipe li.ai{background:#fff3d6}.pipe li.ai em{color:#b06d00}
+.pipe li.ai em svg{width:11px;height:11px;fill:#e09a13}
+.pipe+.pcap{margin-top:calc(10*var(--u))}
 .hyp{margin-top:calc(40*var(--u));display:grid;grid-template-columns:1fr 1fr;gap:calc(6*var(--u))}
 .hyp>div{background:var(--panel);padding:max(18px,calc(20*var(--u))) max(18px,calc(22*var(--u)))}
 .hyp .q,.hyp .dc{grid-column:1/-1}
@@ -1142,70 +1145,53 @@ SR_CSS = """<style>
 .hyp .dc{background:#fff4dc}
 .hyp .dc p:not(.lbl){font-size:max(15.5px,calc(11.2*var(--u)));line-height:1.5;margin-top:.5em;max-width:40em}
 /* synthetic respondents console */
-.syn{--k0:#101114;--k1:#17181d;--k2:#1f2127;--kl:rgba(255,255,255,.08);--kt:#ecebe6;--kg:#8d8f99;--ac:#f5b641;
- margin-top:calc(40*var(--u));background:var(--k0);color:var(--kt);border-radius:calc(14*var(--u));overflow:hidden;font-family:var(--grot);font-size:max(14.5px,calc(10.4*var(--u)));
- box-shadow:0 30px 80px -30px rgba(0,0,0,.45)}
+.syn{--k0:#111216;--k1:#17181d;--k2:#202228;--kl:rgba(255,255,255,.08);--kt:#ecebe6;--kg:#8d8f99;--ac:#f5b641;
+ margin-top:calc(36*var(--u));background:var(--k0);color:var(--kt);border-radius:0;overflow:hidden;font-family:var(--grot);font-size:max(15px,calc(10.6*var(--u)));line-height:1.5}
 .syn[data-p="1"]{--ac:#8fb3ff}
-.syn .tb{display:flex;align-items:center;gap:14px;padding:12px 14px 12px 18px;border-bottom:1px solid var(--kl)}
-.syn .tb b{font-weight:600;letter-spacing:-.01em}
-.syn .live{display:inline-flex;align-items:center;gap:7px;color:var(--kg);font-size:.88em}
-.syn .live:before{content:"";width:7px;height:7px;border-radius:50%;background:#3ccf8e;box-shadow:0 0 0 3px rgba(60,207,142,.18)}
-.syn .md{display:flex;gap:2px;margin-left:auto;white-space:nowrap;background:var(--k1);border:1px solid var(--kl);border-radius:11px;padding:3px}
-.syn .md button{padding:.45em .9em;border-radius:8px;color:var(--kg);font-size:.9em;transition:background .2s,color .2s}
+.syn .tb{display:flex;align-items:center;gap:12px;padding:12px 12px 12px 20px;border-bottom:1px solid var(--kl)}
+.syn .tb b{font-weight:600}
+.syn .tb small{font-size:.86em;color:var(--kg)}
+.syn .md{display:flex;gap:2px;margin-left:auto;white-space:nowrap;background:var(--k1);border-radius:10px;padding:3px}
+.syn .md button{padding:.4em .85em;border-radius:7px;color:var(--kg);font-size:.9em}
 .syn .md button:hover{color:var(--kt)}
-.syn .md button.on{background:var(--kt);color:var(--k0)}
-.syn .bd{display:grid;grid-template-columns:calc(232*var(--u)) 1fr}
-.syn .pp{display:flex;flex-direction:column;gap:8px;padding:14px;border-right:1px solid var(--kl);background:var(--k1)}
-.syn .pp button{display:block;width:100%%;text-align:left;padding:14px;border-radius:12px;border:1px solid transparent;color:var(--kt);transition:background .2s,border-color .2s}
+.syn .md button.on{background:var(--k2);color:var(--kt)}
+.syn .bd{display:grid;grid-template-columns:calc(200*var(--u)) 1fr}
+.syn .pp{display:flex;flex-direction:column;gap:4px;padding:12px;border-right:1px solid var(--kl)}
+.syn .pp button{display:flex;align-items:center;gap:11px;width:100%%;text-align:left;padding:10px;border-radius:10px;color:var(--kt)}
 .syn .pp button:hover{background:rgba(255,255,255,.03)}
-.syn .pp button.on{background:var(--k2);border-color:var(--kl)}
-.syn .pp .hd{display:flex;align-items:center;gap:11px}
-.syn .av{font-style:normal;flex:none;width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:var(--k0);font-family:var(--serif);font-size:22px;line-height:1}
-.syn .pp b{display:block;font-weight:600}.syn .pp .hd span{display:block;color:var(--kg);font-size:.86em;margin-top:1px}
-.syn .tr{display:none;margin:12px 0 0;padding:0;list-style:none;font-size:.86em;line-height:1.4}
-.syn .pp button.on .tr{display:block}
-.syn .tr li{display:grid;grid-template-columns:4.2em 1fr;gap:8px;padding:6px 0;border-top:1px solid var(--kl)}
-.syn .tr em{font-style:normal;color:var(--kg)}
-.syn .cv{display:flex;flex-direction:column;min-height:calc(440*var(--u));position:relative}
-.syn .phd{padding:20px 26px 16px;border-bottom:1px solid var(--kl);display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-.syn .phd h5{margin:0;font-family:var(--serif);font-weight:400;font-size:max(28px,calc(24*var(--u)));line-height:1;letter-spacing:-.01em}
-.syn .phd p{color:var(--kg);font-size:.92em;flex:1;min-width:14em}
-.syn .log{flex:1;display:flex;flex-direction:column;gap:22px;padding:22px 26px 26px;overflow:auto;max-height:calc(520*var(--u))}
-.syn .t{max-width:38em}
-.syn .t small{display:block;font-family:var(--mono);font-size:max(10.5px,calc(7.6*var(--u)));text-transform:uppercase;letter-spacing:.06em;color:var(--kg);margin-bottom:6px}
-.syn .t.q p{color:#c9c8c2;line-height:1.5}
-.syn .t.a{border-left:2px solid var(--ac);padding-left:16px}
+.syn .pp button.on{background:var(--k2)}
+.syn .av{font-style:normal;flex:none;width:34px;height:34px;border-radius:50%%;display:flex;align-items:center;justify-content:center;color:var(--k0);font-weight:600;font-size:14px}
+.syn .pp b{display:block;font-weight:600;line-height:1.3}.syn .pp span{display:block;color:var(--kg);font-size:.87em;line-height:1.3}
+.syn .cv{display:flex;flex-direction:column;min-height:calc(360*var(--u))}
+.syn .log{flex:1;display:flex;flex-direction:column;gap:18px;padding:22px 24px;overflow:auto;max-height:calc(480*var(--u))}
+.syn .t{max-width:36em}
+.syn .t small{display:block;font-size:.85em;font-weight:600;color:var(--kg);margin-bottom:3px}
+.syn .t.q p{color:var(--kg)}
 .syn .t.a small{color:var(--ac)}
-.syn .t.a p{font-family:var(--serif);font-size:max(20px,calc(15.6*var(--u)));line-height:1.28;letter-spacing:-.003em;color:var(--kt)}
-.syn .t.in{animation:si .5s cubic-bezier(.16,1,.3,1) both}
-@keyframes si{from{opacity:0;transform:translateY(8px)}}
+.syn .t.a p{font-size:1.1em;line-height:1.5;color:var(--kt)}
+.syn .t.in{animation:si .45s cubic-bezier(.16,1,.3,1) both}
+@keyframes si{from{opacity:0;transform:translateY(6px)}}
 .syn .dots{display:inline-flex;gap:5px;padding:.5em 0}.syn .dots i{width:6px;height:6px;border-radius:50%%;background:var(--ac);animation:sd 1s infinite}.syn .dots i:nth-child(2){animation-delay:.15s}.syn .dots i:nth-child(3){animation-delay:.3s}
 @keyframes sd{0%%,100%%{opacity:.25}50%%{opacity:1}}
-.syn .cmp{border-top:1px solid var(--kl);padding:14px 18px 18px;background:var(--k1)}
-.syn .sg{display:flex;flex-wrap:wrap;gap:6px}
-.syn .sg button{text-align:left;border:1px solid var(--kl);border-radius:10px;padding:.55em .9em;color:var(--kt);background:var(--k2);line-height:1.35;transition:border-color .2s}
+.syn .sg{display:flex;flex-wrap:wrap;gap:6px;padding:0 24px 22px}
+.syn .sg:empty{display:none}
+.syn .sg button{text-align:left;border:1px solid var(--kl);border-radius:10px;padding:.5em .85em;color:var(--kt);line-height:1.35}
 .syn .sg button:hover{border-color:var(--ac)}
 .syn .sg button[disabled]{display:none}
-.syn .in2{margin-top:10px;display:flex;align-items:center;gap:10px;border:1px solid var(--kl);border-radius:12px;padding:10px 10px 10px 14px;color:var(--kg);font-size:.95em}
-.syn .in2 span{flex:1}
-.syn .in2 i{width:30px;height:30px;border-radius:9px;background:var(--k2);display:flex;align-items:center;justify-content:center}
-.syn .done{color:var(--kg);font-size:.9em;padding:.3em 0}
 .syn button:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.syn .dots i,.syn .t.in{animation:none}}
 @media (max-width:700px){
- .pipe{grid-template-columns:1fr}.hyp{grid-template-columns:1fr}
- .syn{border-radius:12px}
- .syn .tb{flex-wrap:wrap;padding:12px}.syn .md{margin-left:0;width:100%%}.syn .md button{flex:1;padding:.55em .2em;font-size:.84em}
- .syn .bd{grid-template-columns:1fr}.syn .pp{flex-direction:row;border-right:0;border-bottom:1px solid var(--kl);padding:10px}
- .syn .pp button{padding:10px}.syn .pp button.on .tr{display:none}
- .syn .phd{display:block}.syn .phd p{margin-top:8px}.syn .phd,.syn .log{padding-left:16px;padding-right:16px}.syn .cv{min-height:460px}.syn .log{max-height:none}
+ .pipe{grid-template-columns:1fr}
+ .syn .tb{flex-wrap:wrap;padding:12px}.syn .md{margin-left:0;width:100%%}.syn .md button{flex:1;padding:.5em .2em;font-size:.84em}
+ .syn .bd{grid-template-columns:1fr}.syn .pp{flex-direction:row;border-right:0;border-bottom:1px solid var(--kl);padding:8px}
+ .syn .log{padding:18px 16px;max-height:none}.syn .sg{padding:0 16px 18px}.syn .cv{min-height:400px}
 }
 /* stages */
 .ch{margin-top:calc(10*var(--u))}
 .cb{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(14*var(--u));align-items:end;max-width:calc(560*var(--u))}
 .cb>div{position:relative;display:flex;flex-direction:column;justify-content:flex-end;outline:none}
-.cb i{display:block;width:calc(40*var(--u));min-width:28px;background:var(--ink);border-radius:4px 4px 0 0;transition:opacity .2s}
-.cb .lr i{background:transparent;border:1px dashed var(--gray);border-bottom:0}
+.cb i{display:block;width:calc(40*var(--u));min-width:28px;background:#b9b7b0;border-radius:4px 4px 0 0;transition:opacity .2s}
+.cb .fin i{background:var(--ink)}
 .cb .v{font-family:var(--serif);font-size:max(30px,calc(30*var(--u)));line-height:1;margin-bottom:.25em}
 .cb .lr .v{font-family:var(--mono);font-weight:500;font-size:var(--lbs);text-transform:uppercase;letter-spacing:.04em;color:var(--gray)}
 .cb b{border-top:1px solid var(--line);padding-top:.6em;font-family:var(--grot);font-weight:700;font-size:max(15px,calc(11*var(--u)))}
@@ -1216,7 +1202,7 @@ SR_CSS = """<style>
 .cb:hover>div:not(:hover) i{opacity:.35}
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .pair{display:grid;grid-template-columns:368fr 1366fr;gap:calc(14*var(--u));align-items:end;margin-top:calc(40*var(--u))}
-.pair img{display:block;width:100%%;height:auto;border-radius:calc(10*var(--u));box-shadow:0 1px 2px rgba(0,0,0,.06),0 12px 40px -12px rgba(0,0,0,.18)}
+.pair img{display:block;width:100%%;height:auto;border-radius:0;box-shadow:0 1px 2px rgba(0,0,0,.06),0 12px 40px -12px rgba(0,0,0,.18)}
 .track{list-style:none;margin:calc(84*var(--u)) var(--m) 0;padding:0 0 0 calc(310*var(--u));display:grid;grid-template-columns:repeat(5,1fr);gap:calc(12*var(--u))}
 .track li{border-top:2px solid var(--ink);padding-top:max(12px,calc(12*var(--u)));display:flex;flex-direction:column;gap:.35em}
 .track li.dim{border-top-color:var(--line)}
@@ -1237,19 +1223,13 @@ function turn(k,who,txt,anim){var d=el('div','t '+k+(anim?' in':''));d.appendChi
 function show(){var p=P[cur];r.dataset.p=cur;
 [].forEach.call(pp.querySelectorAll('button'),function(b,k){b.classList.toggle('on',k==cur);b.setAttribute('aria-pressed',k==cur)});
 [].forEach.call(md.querySelectorAll('button'),function(b){var on=b.dataset.m==mode;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
-cv.innerHTML='';var ph=el('div','phd');ph.appendChild(el('h5',null,p.name));ph.appendChild(el('p',null,p.seg+'. '+p.ctx));cv.appendChild(ph);
-var log=el('div','log');log.setAttribute('aria-live','polite');cv.appendChild(log);
-var cm=el('div','cmp'),sg=el('div','sg');cm.appendChild(sg);var ib=el('div','in2');ib.appendChild(el('span',null,'Free questions work in the live tool'));ib.insertAdjacentHTML('beforeend','<i aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5" fill="none" stroke="#8d8f99" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></i>');cm.appendChild(ib);cv.appendChild(cm);
-var qs=p.modes[mode];
-function left(){if(!sg.querySelector('button:not([disabled])')){sg.innerHTML='';sg.appendChild(el('span','done','Switch the mode or the persona for more questions'))}}
-qs.forEach(function(qa,n){var b=el('button',null,qa[0]);b.type='button';b.onclick=function(){
- b.disabled=true;left();log.appendChild(turn('q','You',qa[0],1));var d=turn('a',p.name,'',1);d.lastChild.className='dots';d.lastChild.innerHTML='<i></i><i></i><i></i>';log.appendChild(d);log.scrollTop=log.scrollHeight;
- setTimeout(function(){d.lastChild.className='';d.lastChild.textContent=qa[1];log.scrollTop=log.scrollHeight},RM?0:1100)};sg.appendChild(b);
- if(n==0){b.disabled=true;log.appendChild(turn('q','You',qa[0]));log.appendChild(turn('a',p.name,qa[1]))}});left();}
+cv.innerHTML='';var log=el('div','log');log.setAttribute('aria-live','polite');cv.appendChild(log);var sg=el('div','sg');cv.appendChild(sg);
+p.modes[mode].forEach(function(qa,n){
+ if(n==0){log.appendChild(turn('q','You',qa[0]));log.appendChild(turn('a',p.name,qa[1]));return}
+ var b=el('button',null,qa[0]);b.type='button';b.onclick=function(){b.remove();log.appendChild(turn('q','You',qa[0],1));var d=turn('a',p.name,'',1);d.lastChild.className='dots';d.lastChild.innerHTML='<i></i><i></i><i></i>';log.appendChild(d);
+ setTimeout(function(){d.lastChild.className='';d.lastChild.textContent=qa[1];log.scrollTop=log.scrollHeight},RM?0:1100)};sg.appendChild(b)});}
 M.forEach(function(m){var b=el('button',null,m[1]);b.type='button';b.dataset.m=m[0];b.onclick=function(){mode=m[0];show()};md.appendChild(b)});
-P.forEach(function(p,i){var b=el('button');b.type='button';var h=el('div','hd'),a=el('i','av',p.name[0]);a.style.background=COL[i];h.appendChild(a);var w=el('div');w.appendChild(el('b',null,p.name));w.appendChild(el('span',null,p.seg));h.appendChild(w);b.appendChild(h);
- var tr=el('ul','tr');p.traits.forEach(function(t){var li=el('li');li.appendChild(el('em',null,t[0]));li.appendChild(el('span',null,t[1]));tr.appendChild(li)});b.appendChild(tr);
- b.onclick=function(){cur=i;show()};pp.appendChild(b)});
+P.forEach(function(p,i){var b=el('button');b.type='button';var a=el('i','av',p.name[0]);a.style.background=COL[i];b.appendChild(a);var w=el('div');w.appendChild(el('b',null,p.name));w.appendChild(el('span',null,p.seg));b.appendChild(w);b.onclick=function(){cur=i;show()};pp.appendChild(b)});
 show()})();</script>"""
 
 def pvid(n, label):
@@ -1258,7 +1238,7 @@ def pvid(n, label):
 def pair(n, alt):
     return ('<figure class="pair"><img class="m" src="big/profi-s%dm.jpg" alt="Iteration %d on mobile web" loading="lazy" decoding="async">'
             '<img src="big/profi-s%dd.jpg" alt="Iteration %d on desktop: %s" loading="lazy" decoding="async"></figure>'
-            '<p class="lbl gray cap">Mobile web and desktop. Redrawn in English with sample data</p>') % (n, n, n, n, esc(alt))
+            '<p class="lbl gray cap">%s</p>') % (n, n, n, n, esc(alt), "Mobile web and desktop. Redrawn in English with sample data" if n == 0 else "Mobile web and desktop. What changed is highlighted")
 
 def kv(*rows):
     return '<dl class="kv">%s</dl>' % "".join('<dt>%s</dt><dd%s>%s</dd>' % (esc(k), ' class="ai"' if k == "AI" else "", esc(v)) for k, v in rows)
@@ -1275,26 +1255,27 @@ PULLS.update({
 })
 
 def profi_content():
-    syn = ('<div class="syn" id="syn"><div class="tb"><b>Synthetic respondents</b><span class="live">Runs on Claude</span><div class="md" role="group" aria-label="Session mode"></div></div>'
+    syn = ('<div class="syn" id="syn"><div class="tb"><b>Synthetic respondents</b><small>on Claude</small><div class="md" role="group" aria-label="Session mode"></div></div>'
            '<div class="bd"><div class="pp"></div><div class="cv"></div></div></div>'
            '<p class="lbl gray cap">Try it. Answers on this page paraphrase the personas’ prompts; the real tool runs live on Claude.</p>'
            + SR_JS.replace("__P__", json.dumps(PERSONAS, ensure_ascii=False)))
     pipe = ('<ol class="pipe" aria-label="How a synthetic respondent is built">'
-            '<li><b>Interviews</b><span>Nine in-depth interviews with parents and students</span></li>'
-            '<li><b>Persona prompt</b><span>Who they are, how they talk, how they search, what puts them off, their own phrases</span></li>'
-            '<li><b>Session mode</b><span>Interview, prototype test or hypothesis check</span></li>'
-            '<li class="ai"><b>Claude</b><span>Answers in the persona’s voice and pushes back when an idea doesn’t solve their problem</span></li>'
-            '<li><b>Decision</b><span>Cut, change or send to an A/B test</span></li></ol>')
+            '<li><em>Research</em><b>Interviews</b><span>Nine in-depth interviews</span></li>'
+            '<li class="ai"><em><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l2.2 6.3 6.3 2.2-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-2.2z"/></svg>AI persona</em><b>Persona prompt</b><span>Quotes, habits and deal-breakers turned into a system prompt</span></li>'
+            '<li class="ai"><em><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l2.2 6.3 6.3 2.2-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-2.2z"/></svg>AI session</em><b>Session mode</b><span>Interview, prototype test or hypothesis check</span></li>'
+            '<li class="ai"><em><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l2.2 6.3 6.3 2.2-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-2.2z"/></svg>LLM</em><b>Claude</b><span>Answers in the persona’s voice and pushes back</span></li>'
+            '<li><em>Team</em><b>Decision</b><span>Cut, change or send to A/B</span></li></ol>'
+            '<p class="lbl gray cap pcap">Built with AI end to end: three of five steps run on Claude</p>')
     hyp = ('<div class="hyp"><div class="q"><p class="lbl gray">Hypothesis check</p><p class="h">An AI note on why each tutor fits will make clients write first</p></div>'
            '<div><p class="lbl gray">Oksana, parent</p><blockquote>“If the note says something real, education, reviews, how they are with kids, then yes. If it says ‘a perfect fit for you’, I scroll past.”</blockquote></div>'
            '<div><p class="lbl gray">Roman, student</p><blockquote>“‘Explains clearly’ tells me nothing. ‘Came with 65, passed with 89’ is a reason to write. And show where it’s from.”</blockquote></div>'
            '<div class="dc"><p class="lbl">What it changed</p><p>Generic praise reads as AI filler. Ground every explanation in the client’s own criteria and one concrete fact from reviews, with its source.</p></div></div>'
            '<p class="lbl gray cap">A check of the kind we ran between releases. Quotes paraphrase the personas’ prompts</p>')
-    bars = [("I", "Shortlist of three", 21, "+21%"), ("II", "Review highlights", None, "Learning"), ("III", "LLM picks and explains", None, "Learning"), ("IV", "Same LLM, grounded", 23.5, "+23.5%")]
+    bars = [("I", "Shortlist of three", 21, "+21%"), ("II", "Review highlights", 13, "+13%"), ("III", "LLM picks and explains", 18, "+18%"), ("IV", "Same LLM, grounded", 23.5, "+23.5%")]
     chart = ('<figure class="ch" aria-label="Client-to-contact conversion lift by iteration"><div class="cb">' +
              "".join('<div class="c%s" tabindex="0"><span class="v">%s</span><i style="height:calc(%s * var(--u))"></i><b>%s</b><span class="n">%s</span>'
-                     '<span class="tt">Iteration %s: %s. %s</span></div>' % ("" if v else " lr", t, round(v / 25 * 230, 1) if v else 6, k, esc(n), k, esc(n), ("Client-to-contact conversion " + t) if v else "Its findings shaped the next design") for k, n, v, t in bars) +
-             '</div><figcaption class="lbl gray cap">Lift in client-to-contact conversion in A/B tests. Iterations II and III were learning steps: their findings shaped the next design</figcaption>'
+                     '<span class="tt">Iteration %s: %s. %s</span></div>' % (" fin" if k == "IV" else "", t, round(v / 25 * 230, 1) if v else 6, k, esc(n), k, esc(n), "client-to-contact conversion " + t + " against variant A") for k, n, v, t in bars) +
+             '</div><figcaption class="lbl gray cap">Lift in client-to-contact conversion. Each iteration was variant B in an A/B test against the original design, variant A</figcaption>'
              '<table class="vh"><caption>Conversion lift by iteration</caption><tr><th>Iteration</th><th>Lift</th></tr>' +
              "".join('<tr><td>%s</td><td>%s</td></tr>' % (k, t) for k, n, v, t in bars) + '</table></figure>')
     return (
@@ -1309,13 +1290,14 @@ def profi_content():
                     "The idea was to let the product do the first round of choosing: show the best few offers for this task, say why each one fits, and let the client ask for others in plain words. It took four stages to get there. Before the first one, we went and listened."))) +
       SR_CSS +
       chapter("Synthetic respondents", body(ps("Before the first iteration we ran nine in-depth interviews with parents and students who had looked for a tutor on Profi, and turned two of them into synthetic respondents: AI personas on Claude, each with a system prompt built from interview quotes, habits and contradictions.",
-                 "There were always more hypotheses than A/B slots. The personas let us cut weak ideas in a chat window before they took a test, in three modes: interview, prototype test and hypothesis check. I later packaged the approach as a reusable Claude skill.")) + pipe + syn + hyp) +
-      chapter("Iteration I: a shortlist of three above the offers", pair(1, "a shortlist of three best-matched offers on top of the list")) +
-      chapter("Iteration II: reasons from reviews and a form to ask for others", pair(2, "review highlights under each tutor and a form to find other pros")) +
-      chapter("Iteration III: an LLM picks the three and explains why", pair(3, "LLM explanations on each card and a prompt to re-pick")) +
-      chapter("Iteration IV: the same LLM, grounded in the client’s criteria and reviews", pair(4, "explanations built from the client’s criteria and a sourced review fact") +
-               pvid("profi-match", "Walkthrough: AI shortlist with explanations, opening a chat") + pvid("profi-repick", "Walkthrough: re-picking specialists with a hint and a prefilled request")) +
-      chapter("Outcome", chart)
+                 "There were always more hypotheses than A/B slots. The personas let us cut weak ideas in a chat window before they took a test, in three modes: interview, prototype test and hypothesis check. I later packaged the approach as a reusable Claude skill.")) + pipe + syn) +
+      chapter("Variant A: the original list", body(ps("Every offer in the order it arrived, with no ranking and no hints. Every iteration below was variant B, tested in an A/B test against this original.")) + pair(0, "the original list of offers")) +
+      chapter("Iteration I: a shortlist of three above the offers", body(ps("When a request collects eight or more offers, the list opens with a block of three that have the best reviews on similar tasks. The rest of the list stays as it was.")) + pair(1, "a shortlist of three best-matched offers on top of the list")) +
+      chapter("Iteration II: reasons from reviews and a form to ask for others", body(ps("Each pick shows what clients praise the tutor for, taken from reviews. The block gets a clear name, other offers fold under “More specialists”, and “Find other pros” opens a short form that starts a new search.")) + pair(2, "review highlights under each tutor and a form to find other pros")) +
+      chapter("Iteration III: an LLM picks the three and explains why", body(ps("An LLM ranks the offers against the task the client wrote and adds “Why they fit you” to each pick. “Find other pros” becomes a prompt, prefilled from the order, so the client edits it and the LLM picks again.")) + pair(3, "LLM explanations on each card and a prompt to re-pick")) +
+      chapter("Iteration IV: the same LLM, grounded in the client’s criteria and reviews", body(ps("Same model. Each explanation now lists the client’s own criteria, budget, time, format, and one fact from reviews with its source. The shortlist sits on top of the full list, and re-picking gets hint chips next to the prefilled prompt.")) + pair(4, "explanations built from the client’s criteria and a sourced review fact") +
+               pvid("profi-repick", "Walkthrough: re-picking specialists with a hint and a prefilled request")) +
+      chapter("Outcome", chart + pvid("profi-match", "Walkthrough: AI shortlist with explanations, opening a chat"))
     )
 
 def case(i):

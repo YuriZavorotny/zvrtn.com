@@ -25,6 +25,8 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="ProfiRepick" component={CaseClip} defaultProps={{ intro: false }} durationInFrames={Math.round(14.6 * FPS)} fps={FPS} width={2000} height={1196} />
       <Composition id="ProfiMobile" component={MobileClip} durationInFrames={Math.round(8.4 * FPS)} fps={FPS} width={2000} height={1196} />
       <Composition id="PhoneSplash" component={PhoneSplash} durationInFrames={40} fps={25} width={412} height={730} />
+      <Still id="S0d" component={StageStill} width={1366} height={800} defaultProps={{ stage: 0, kind: "d" as const }} />
+      <Still id="S0m" component={StageStill} width={393} height={852} defaultProps={{ stage: 0, kind: "m" as const }} />
       <Still id="S1d" component={StageStill} width={1366} height={800} defaultProps={{ stage: 1, kind: "d" as const }} />
       <Still id="S1m" component={StageStill} width={393} height={852} defaultProps={{ stage: 1, kind: "m" as const }} />
       <Still id="S2d" component={StageStill} width={1366} height={800} defaultProps={{ stage: 2, kind: "d" as const }} />

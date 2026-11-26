@@ -29,7 +29,7 @@ export const Why: React.FC<{ t: Tutor; open: number; compact?: boolean }> = ({ t
   const lh = compact ? 18 : 21;
   const extra = interpolate(open, [0, 1], [0, compact ? 70 : 150]);
   return (
-    <div style={{ background: C.ai, borderRadius: compact ? 12 : 14, padding: compact ? "10px 12px" : "13px 16px 14px", position: "relative" }}>
+    <div data-hl="why" style={{ background: C.ai, borderRadius: compact ? 12 : 14, padding: compact ? "10px 12px" : "13px 16px 14px", position: "relative" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 7, fontWeight: 600, fontSize: compact ? 13.5 : 15, letterSpacing: "-0.01em" }}>
         <Spark s={compact ? 13 : 15} />
         Why they fit you

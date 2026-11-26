@@ -1,5 +1,5 @@
-import React from "react";
-import { AbsoluteFill } from "remotion";
+import React, { useLayoutEffect, useRef, useState } from "react";
+import { AbsoluteFill, continueRender, delayRender } from "remotion";
 import { C, SET1, Tutor, fontCss } from "./theme";
 import { Avatar, Check, Spark, Star, Why } from "./ui/Parts";
 import { Desktop } from "./ui/Desktop";
@@ -26,6 +26,47 @@ const WHY3 = [
   "Suggests clarifying what is hard for you before lessons start. Doesn’t push a ready-made programme.",
 ];
 
+
+/* Spotlight: dims everything except elements marked data-hl with one of the given keys */
+const Spot: React.FC<{ keys: string[] }> = ({ keys }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [rects, setRects] = useState<{ x: number; y: number; w: number; h: number; r: number }[]>([]);
+  const [handle] = useState(() => delayRender("spot"));
+  useLayoutEffect(() => {
+    let done = false;
+    const measure = () => {
+      const root = ref.current!.parentElement!;
+      const rb = root.getBoundingClientRect();
+      const k = rb.width / root.offsetWidth;
+      const rs = Array.from(root.querySelectorAll<HTMLElement>("[data-hl]"))
+        .filter((e) => keys.includes(e.dataset.hl || ""))
+        .map((e) => {
+          const b = e.getBoundingClientRect();
+          const pad = 5;
+          const br = parseFloat(getComputedStyle(e).borderTopLeftRadius) || 10;
+          return { x: (b.left - rb.left) / k - pad, y: (b.top - rb.top) / k - pad, w: b.width / k + pad * 2, h: b.height / k + pad * 2, r: br + pad };
+        });
+      setRects(rs);
+    };
+    const imgs = Array.from(document.images).filter((i) => !i.complete).map((i) => new Promise((r) => { i.onload = i.onerror = r; }));
+    Promise.all([document.fonts.ready, ...imgs]).then(() => setTimeout(() => { measure(); setTimeout(() => { if (!done) { done = true; continueRender(handle); } }, 100); }, 150));
+  }, []);
+  return (
+    <div ref={ref} style={{ position: "absolute", inset: 0, zIndex: 60, pointerEvents: "none" }}>
+      <svg width="100%" height="100%" style={{ display: "block" }}>
+        <defs>
+          <mask id="spotmask">
+            <rect width="100%" height="100%" fill="#fff" />
+            {rects.map((r, i) => <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} rx={r.r} fill="#000" />)}
+          </mask>
+        </defs>
+        <rect width="100%" height="100%" fill="rgba(22,23,28,.5)" mask="url(#spotmask)" />
+        {rects.map((r, i) => <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} rx={r.r} fill="none" stroke="#f5a524" strokeWidth={2.5} />)}
+      </svg>
+    </div>
+  );
+};
+
 const Badge: React.FC<{ n: number }> = ({ n }) => (
   <span style={{ background: C.brand, color: "#fff", fontSize: 11.5, fontWeight: 600, minWidth: 20, height: 20, borderRadius: 10, display: "inline-flex", alignItems: "center", justifyContent: "center", flex: "none" }}>{n}</span>
 );
@@ -50,7 +91,7 @@ const ListRow: React.FC<{ r: Row; sel?: boolean; m?: boolean; praise?: string[] 
       </div>
       <div style={{ marginTop: 2 }}><Meta r={r} /></div>
       {praise ? (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 7, alignItems: "center" }}>
+        <div data-hl="praise" style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 7, alignItems: "center", borderRadius: 8 }}>
           <span style={{ fontSize: 12.5, color: C.ink2, marginRight: 2 }}>Praised for</span>
           {praise.map((p) => <span key={p} style={{ fontSize: 12, padding: "3px 8px", borderRadius: 7, background: "#e7f6ee", color: "#0f7a4c" }}>{p}</span>)}
         </div>
@@ -69,7 +110,7 @@ const MENU: [string, string][] = [
   ["All specialists", "M9 4.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7zM2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.8a3.5 3.5 0 010 6.4M18.5 14.8c1.6.8 2.7 2.5 3 5.2"],
 ];
 const Repick: React.FC = () => (
-  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 60 }}>
+  <div data-hl="repick" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 60, borderRadius: 12 }}>
     <div>
       <div style={{ fontSize: 15.5, fontWeight: 600 }}>Find other pros</div>
       <div style={{ fontSize: 13.5, color: C.ink2, marginTop: 2 }}>Tell us what to change</div>
@@ -109,7 +150,7 @@ const ChatPane: React.FC<{ r: Row; text: string }> = ({ r, text }) => (
   </div>
 );
 
-const DeskShell: React.FC<{ side: React.ReactNode; mid: React.ReactNode; right: React.ReactNode; overlay?: React.ReactNode }> = ({ side, mid, right, overlay }) => (
+const DeskShell: React.FC<{ side: React.ReactNode; mid: React.ReactNode; right: React.ReactNode; overlay?: React.ReactNode; spot?: string[] }> = ({ side, mid, right, overlay, spot }) => (
   <div style={{ position: "relative", width: 1366, height: 800, background: C.bg, fontFamily: "Inter", color: C.ink, overflow: "hidden", fontFeatureSettings: '"cv11","ss03"' }}>
     <div style={{ position: "absolute", left: 120, top: 32, fontFamily: "Mont", fontWeight: 700, fontSize: 22, color: C.brand }}>PROFI</div>
     <div style={{ position: "absolute", right: 120, top: 24, display: "flex", alignItems: "center", gap: 10, fontSize: 14.5 }}>
@@ -131,11 +172,12 @@ const DeskShell: React.FC<{ side: React.ReactNode; mid: React.ReactNode; right: 
     <div style={{ position: "absolute", left: 412, top: 98, width: 440, height: 702, overflow: "hidden" }}>{mid}</div>
     <div style={{ position: "absolute", left: 868, top: 98, width: 378 }}>{right}</div>
     {overlay}
+    {spot ? <Spot keys={spot} /> : null}
   </div>
 );
 
 const Head: React.FC<{ t: string; s: string; ai?: boolean; n?: string }> = ({ t, s, ai, n }) => (
-  <div style={{ marginBottom: 14 }}>
+  <div data-hl="head" style={{ marginBottom: 14, borderRadius: 8 }}>
     <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", fontFamily: "InterD", fontSize: 22, fontWeight: 600, letterSpacing: "-0.015em" }}>
       {t}
       {n ? <span style={{ fontFamily: "Inter", fontSize: 16, fontWeight: 400, color: C.hint }}>{n}</span> : null}
@@ -158,7 +200,7 @@ const LlmCard: React.FC<{ r: Row; why: string; m?: boolean }> = ({ r, why, m }) 
         </div>
       </div>
     </div>
-    <div style={{ background: C.ai, borderRadius: 14, padding: "12px 14px", marginTop: 14 }}>
+    <div data-hl="why" style={{ background: C.ai, borderRadius: 14, padding: "12px 14px", marginTop: 14 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 7, fontWeight: 600, fontSize: 14.5 }}><Spark s={14} />Why they fit you</div>
       <div style={{ fontSize: 14, lineHeight: "20px", marginTop: 4, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{why}</div>
     </div>
@@ -168,13 +210,26 @@ const LlmCard: React.FC<{ r: Row; why: string; m?: boolean }> = ({ r, why, m }) 
 );
 
 /* ---------- desktop per stage ---------- */
-const desk1 = (
+const desk0 = (
   <DeskShell
     side={<Toggle />}
     mid={
       <div style={{ background: "#fff", borderRadius: 24, padding: "20px 20px 8px" }}>
         <div style={{ fontFamily: "InterD", fontSize: 20, fontWeight: 600, marginBottom: 12 }}>Offers <span style={{ color: C.hint, fontFamily: "Inter", fontWeight: 400 }}>9</span></div>
-        <div style={{ background: C.ctl, borderRadius: 18, padding: "12px 8px 6px", marginBottom: 6 }}>
+        {ROWS.map((r, i) => <ListRow key={r.name} r={r} sel={i === 0} />)}
+      </div>
+    }
+    right={<ChatPane r={ROWS[0]} text="Happy to start with a short call to plan your prep. When is the exam?" />}
+  />
+);
+
+const desk1 = (
+  <DeskShell spot={["block"]}
+    side={<Toggle />}
+    mid={
+      <div style={{ background: "#fff", borderRadius: 24, padding: "20px 20px 8px" }}>
+        <div style={{ fontFamily: "InterD", fontSize: 20, fontWeight: 600, marginBottom: 12 }}>Offers <span style={{ color: C.hint, fontFamily: "Inter", fontWeight: 400 }}>9</span></div>
+        <div data-hl="block" style={{ background: C.ctl, borderRadius: 18, padding: "12px 8px 6px", marginBottom: 6 }}>
           <div style={{ display: "flex", justifyContent: "space-between", padding: "0 8px 4px" }}>
             <div>
               <div style={{ fontSize: 13.5, fontWeight: 600 }}>Best match for your task</div>
@@ -192,13 +247,13 @@ const desk1 = (
 );
 
 const desk2 = (
-  <DeskShell
+  <DeskShell spot={["head", "praise", "more", "repick"]}
     side={<Repick />}
     mid={
       <div style={{ background: "#fff", borderRadius: 24, padding: "22px 20px 10px" }}>
         <Head t="Best fit for your task" s="Top by experience and reviews" />
         {ROWS.slice(0, 3).map((r, i) => <ListRow key={r.name} r={r} sel={i === 0} praise={PRAISE[i]} />)}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: `1px solid ${C.line}`, margin: "10px 0 0", padding: "16px 2px 8px" }}>
+        <div data-hl="more" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: `1px solid ${C.line}`, margin: "10px 0 0", padding: "16px 2px 8px" }}>
           <span style={{ fontSize: 15.5, fontWeight: 600 }}>More specialists</span>
           <span style={{ fontSize: 13.5, fontWeight: 600, background: C.ctl, borderRadius: 10, padding: "7px 12px" }}>Show 6</span>
         </div>
@@ -209,7 +264,7 @@ const desk2 = (
 );
 
 const desk3 = (
-  <DeskShell
+  <DeskShell spot={["why", "repick"]}
     side={<Repick />}
     mid={
       <>
@@ -221,11 +276,16 @@ const desk3 = (
   />
 );
 
-const desk4 = <Desktop s={{ set: 1, open: 1, reveal: 3, modal: 0, chip: 0, loading: null, typing: 1, msg: 1, shimmer: 0 }} height={800} />;
+const desk4 = (
+  <div style={{ position: "relative", width: 1366, height: 800 }}>
+    <Desktop s={{ set: 1, open: 1, reveal: 3, modal: 0, chip: 0, loading: null, typing: 1, msg: 1, shimmer: 0 }} height={800} />
+    <Spot keys={["why"]} />
+  </div>
+);
 
 /* ---------- mobile web ---------- */
 const TABS: [string, string][] = [["Order", "M12 4a8 8 0 100 16 8 8 0 000-16z"], ["All pros", "M9 5a3 3 0 100 6 3 3 0 000-6zM3 19c.8-3 3.2-4.5 6-4.5s5.2 1.5 6 4.5M16 5.5a3 3 0 010 5.5M18 14.5c1.5.7 2.5 2 2.8 4.5"], ["Offers", "M4 5h16v11H9l-5 4z"], ["Support", "M12 3a9 9 0 100 18 9 9 0 000-18zM9.5 9.5a2.5 2.5 0 114 2c-1 .6-1.5 1.1-1.5 2.2M12 17h.01"]];
-const Phone: React.FC<{ children: React.ReactNode; overlay?: React.ReactNode; bg?: string }> = ({ children, overlay, bg = "#fff" }) => (
+const Phone: React.FC<{ children: React.ReactNode; overlay?: React.ReactNode; bg?: string; spot?: string[] }> = ({ children, overlay, bg = "#fff", spot }) => (
   <div style={{ position: "relative", width: 393, height: 852, background: bg, fontFamily: "Inter", color: C.ink, overflow: "hidden", fontFeatureSettings: '"cv11","ss03"' }}>
     <div style={{ height: 54, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px 0 40px", fontSize: 16, fontWeight: 600, background: "#fff" }}>
       9:41
@@ -250,12 +310,13 @@ const Phone: React.FC<{ children: React.ReactNode; overlay?: React.ReactNode; bg
     </div>
     <div style={{ position: "absolute", left: 0, right: 0, top: 150, bottom: 0, overflow: "hidden" }}>{children}</div>
     {overlay}
+    {spot ? <Spot keys={spot} /> : null}
   </div>
 );
 
 const Sheet: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div style={{ position: "absolute", inset: 0, background: "rgba(24,24,24,.45)", display: "flex", alignItems: "flex-end" }}>
-    <div style={{ width: "100%", background: "#fff", borderRadius: "28px 28px 0 0", padding: "14px 20px 34px" }}>
+    <div data-hl="sheet" style={{ width: "100%", background: "#fff", borderRadius: "28px 28px 0 0", padding: "14px 20px 34px" }}>
       <div style={{ width: 40, height: 5, borderRadius: 3, background: "#dfe1ea", margin: "0 auto 18px" }} />
       {children}
     </div>
@@ -265,13 +326,25 @@ const Btn: React.FC<{ t: string }> = ({ t }) => (
   <div style={{ marginTop: 20, height: 52, borderRadius: 16, background: C.brand, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, fontWeight: 600 }}>{t}</div>
 );
 
-const mob1 = (
+const mob0 = (
   <Phone>
+    <div style={{ background: C.bg, padding: "12px 0" }}>
+      <div style={{ background: "#fff", padding: "14px 20px", borderRadius: "0 0 22px 22px" }}><Toggle /></div>
+      <div style={{ background: "#fff", borderRadius: 22, marginTop: 10, padding: "16px 20px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 17, fontWeight: 600, paddingBottom: 6 }}>Offers <span style={{ color: C.hint, fontWeight: 400 }}>9</span></div>
+        {ROWS.map((r) => <ListRow key={r.name} r={r} m />)}
+      </div>
+    </div>
+  </Phone>
+);
+
+const mob1 = (
+  <Phone spot={["block"]}>
     <div style={{ background: C.bg, padding: "12px 0" }}>
       <div style={{ background: "#fff", padding: "14px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", borderRadius: "0 0 22px 22px" }}><Toggle /></div>
       <div style={{ background: "#fff", borderRadius: 22, marginTop: 10, padding: "16px 12px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 17, fontWeight: 600, padding: "0 8px 10px" }}>Offers <span style={{ color: C.hint, fontWeight: 400 }}>9</span></div>
-        <div style={{ background: C.ctl, borderRadius: 18, padding: "12px 12px 2px" }}>
+        <div data-hl="block" style={{ background: C.ctl, borderRadius: 18, padding: "12px 12px 2px" }}>
           <div style={{ fontSize: 13, fontWeight: 600 }}>Best match for your task</div>
           <div style={{ fontSize: 12, color: C.ink2, marginTop: 1 }}>Great reviews on similar tasks</div>
           {ROWS.slice(0, 3).map((r) => <ListRow key={r.name} r={r} m />)}
@@ -283,7 +356,7 @@ const mob1 = (
 );
 
 const mob2 = (
-  <Phone
+  <Phone spot={["sheet"]}
     overlay={
       <Sheet>
         <div style={{ fontFamily: "InterD", fontSize: 22, fontWeight: 600, letterSpacing: "-0.02em" }}>What would you like to change?</div>
@@ -306,7 +379,7 @@ const mob2 = (
 );
 
 const mob3 = (
-  <Phone
+  <Phone spot={["sheet", "why"]}
     bg={C.bg}
     overlay={
       <Sheet>
@@ -330,7 +403,7 @@ const mob3 = (
 
 const T4: Tutor = SET1[0];
 const mob4 = (
-  <Phone bg={C.bg}>
+  <Phone spot={["why"]} bg={C.bg}>
     <div style={{ padding: "14px 12px" }}>
       <div style={{ padding: "4px 8px 12px" }}><Head t="Best fit for your task" s="Picked by AI from 12 offers" ai /></div>
       {SET1.slice(0, 2).map((t, i) => (
@@ -351,11 +424,11 @@ const mob4 = (
 );
 void T4; void Check;
 
-const DESK = [desk1, desk2, desk3, desk4];
-const MOB = [mob1, mob2, mob3, mob4];
+const DESK = [desk0, desk1, desk2, desk3, desk4];
+const MOB = [mob0, mob1, mob2, mob3, mob4];
 export const StageStill: React.FC<{ stage: number; kind: "d" | "m" }> = ({ stage, kind }) => (
   <AbsoluteFill style={{ background: "transparent" }}>
     <style>{fontCss}</style>
-    {(kind === "d" ? DESK : MOB)[stage - 1]}
+    {(kind === "d" ? DESK : MOB)[stage]}
   </AbsoluteFill>
 );
