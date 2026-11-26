@@ -924,27 +924,59 @@ PULLS.update({
 })
 
 
+AB_FLOW = ('<div class="abflow"><svg viewBox="0 0 640 250" role="img" aria-label="Before: one email for everyone. With A/B testing: three variants, the winner goes to the rest of the audience">'
+  '<style>.abflow text{font-family:var(--grot);font-size:13px;fill:#000}.abflow .m{font-family:var(--mono);font-size:11px;fill:#86857f;letter-spacing:.04em}.abflow .w{fill:#fff;font-weight:600}.abflow .ln{stroke:rgba(0,0,0,.28);stroke-width:1.2;fill:none}</style>'
+  '<text class="m" x="0" y="14">BEFORE</text>'
+  + "".join('<g transform="translate(%d,28)"><rect width="104" height="38" rx="7" fill="#fff"/><rect width="104" height="6" rx="3" fill="%s"/><text x="12" y="27">%s</text></g>' % (x, c, t) for x, c, t in [(0, "#5bba6f", "Audience"), (136, "#06aed5", "Delay"), (272, "#c200fb", "Email")])
+  + '<path class="ln" d="M104 47h32M240 47h32M376 47h32"/><text x="418" y="51" style="fill:#86857f">same email for everyone</text>'
+  '<text class="m" x="0" y="122">WITH A/B TESTING</text>'
+  + "".join('<g transform="translate(%d,136)"><rect width="104" height="38" rx="7" fill="#fff"/><rect width="104" height="6" rx="3" fill="%s"/><text x="12" y="27">%s</text></g>' % (x, c, t) for x, c, t in [(0, "#5bba6f", "Audience"), (136, "#06aed5", "Delay"), (272, "#c200fb", "Email A/B")])
+  + '<path class="ln" d="M104 155h32M240 155h32"/>'
+  + "".join('<path class="ln" d="M376 155C392 155 392 %d 410 %d"/><g transform="translate(410,%d)"><rect width="74" height="26" rx="13" fill="%s"/><text x="13" y="17.5" style="font-size:12px%s">%s</text></g><path class="ln" d="M484 %dC500 %d 500 155 516 155"/>' % (y + 13, y + 13, y, f, tc, t, y + 13, y + 13) for y, f, tc, t in [(110, "#fff", "", "Variant 1"), (142, "#a682ff", ";fill:#fff", "Variant 2"), (174, "#a682ff", ";fill:#fff", "Variant 3")])
+  + '<g transform="translate(516,140)"><rect width="124" height="30" rx="15" fill="#000"/><text class="w" x="14" y="20" style="font-size:12px">Winner to 70%</text></g>'
+  '<text class="m" x="410" y="228">PURPLE: DRAFTED BY SWEED AI</text></svg></div>')
+
+def ab_bars(rows):
+    out = ""
+    for lab, a, b, va, vb in rows:
+        out += ('<div class="abr"><span class="lbl gray">%s</span><div class="abt"><i style="width:%.1f%%"></i><em>%s</em></div>'
+                '<div class="abt b"><i style="width:100%%"></i><em>%s</em></div></div>' % (lab, a / b * 100, va, vb))
+    return '<div class="abbars"><div class="abk lbl gray"><span><i></i>Before</span><span><i class="b"></i>With A/B testing</span></div>' + out + '</div>'
+
+AB_CSS = ('<style>.abflow{margin-top:calc(40*var(--u));background:rgba(255,255,255,.45);border-radius:calc(14*var(--u));padding:calc(28*var(--u))}.abflow svg{display:block;width:100%;height:auto}'
+  '.abbars{margin-top:calc(40*var(--u));display:grid;gap:calc(22*var(--u))}.abr{display:grid;gap:6px}.abt{position:relative;height:calc(20*var(--u));min-height:20px;display:flex;align-items:center}'
+  '.abt i{position:absolute;left:0;top:0;bottom:0;background:rgba(0,0,0,.13);border-radius:4px}.abt.b i{background:#000}'
+  '.abt em{position:relative;font-style:normal;font-family:var(--grot);font-weight:600;font-size:max(12px,calc(10*var(--u)));padding-left:8px}.abt.b em{color:#fff}'
+  '.abk{display:flex;gap:20px}.abk i{display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(0,0,0,.13);margin-right:6px;vertical-align:-1px}.abk i.b{background:#000}'
+  '.shots.abui{grid-template-columns:312fr 438fr;gap:0}</style>')
+
 AB_AI = (
+  AB_CSS +
   study('<p class="state">A/B testing with Sweed AI, built into Workflows</p>' +
         body(ps("Workflows is the canvas where dispensary marketers build automated campaigns: an audience, a delay, an email, a condition. I designed the A/B testing layer for it and the Sweed AI tools that live inside that layer.",
                 "Sweed AI is the AI layer of the whole platform: product recommendations at the register, dynamic customer segments, on-screen help for budtenders, and in marketing it drafts banners, emails and survey insights. In Workflows I designed how Sweed AI works inside an A/B test.",
                 "The idea is simple. AI is good at producing options and has no way of knowing which one will sell. So Sweed AI drafts, tunes and checks the variants, and the test decides.")), "Case study") +
+  chapter("Sweed AI drafts, the test decides",
+      '<div class="vshot" style="margin-top:0"><video src="v/sweed-ai.mp4" poster="v/sweed-ai.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="Walkthrough: generating variants with Sweed AI, starting the test and reading the result" style="aspect-ratio:2000/1248"></video></div>'
+      + '<div style="margin-top:calc(40*var(--u))">' + body(ps("Sweed AI sits inside the test, not in front of it. Every suggestion is labeled and reversible, and nothing goes out until the marketer starts the test."),
+      ul("Tunes the setup: suggests test share, metric and duration from the segment size and the campaign goal, and says why",
+         "Drafts variants: the marketer describes the goal, AI writes subject lines and content from the store catalog, active promos and each customer\'s past purchases",
+         "Checks compliance: every draft is checked against cannabis advertising rules before it can join the test, with a one-click rewrite",
+         "Explains the result: after the test, AI says why the winner won and what to test next")) + '</div>') +
   chapter("One email and a guess", body(ps("A step in Workflows could send only one version of an email. Marketers had no way to compare subject lines or content, so campaign performance was unpredictable and hard to improve."),
       ul("Built in: testing had to live inside the flow builder, with no redirects and no external tools",
          "Flexible: marketers needed control over test size, the winning metric and how the winner is chosen",
-         "Light: setup and monitoring had to feel native and usable by any team, not only by analysts"))) +
+         "Light: setup and monitoring had to feel native and usable by any team, not only by analysts")) + AB_FLOW) +
   chapter("A test is a property of the step", body(ps("Instead of a separate tool, A/B testing became a checkbox on the email step. Turning it on opens the settings right in the side panel: the share of the segment that gets the test, the winning metric such as order placed rate, the test duration, and what the rest of the audience receives.",
-      "Variants sit in a table below the settings, and the canvas marks the step as a test, so it reads at a glance even in a long flow."))) +
-  chapter("What changed", body(ps("Curaleaf, one of the largest cannabis retailers in the US, ran its email campaigns with A/B testing in November and December 2024.",
-      "Order-placed rate went from 9% to 26%, open rate from about 18% to 21.5%, and median revenue per user from $140 to $167. Click-through rate grew by 12%."))) +
-  chapter("Sweed AI drafts, the test decides", body(ps("Sweed AI sits inside the test, not in front of it. Every suggestion is labeled and reversible, and nothing goes out until the marketer starts the test."),
-      ul("Tunes the setup: suggests test share, metric and duration from the segment size and the campaign goal, and says why",
-         "Drafts variants: the marketer describes the goal, AI writes subject lines and content from the store catalog, active promos and each customer's past purchases",
-         "Checks compliance: every draft is checked against cannabis advertising rules before it can join the test, with a one-click rewrite",
-         "Explains the result: after the test, AI says why the winner won and what to test next")) +
-      '<div class="vshot"><video src="v/sweed-ai.mp4" poster="v/sweed-ai.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="Walkthrough: generating variants with Sweed AI, starting the test and reading the result" style="aspect-ratio:2000/1248"></video></div>'
-      '<p class="lbl gray cap">Numbers in the prototype are illustrative</p>')
+      "Variants sit in a table below the settings, and the canvas marks the step as a test, so it reads at a glance even in a long flow.")) + shots("sweedai", [1, 2], "abui")) +
+  chapter("What changed", body(ps("Curaleaf, one of the largest cannabis retailers in the US, ran its email campaigns with A/B testing in November and December 2024. Click-through rate grew by 12%.")) +
+      ab_bars([("Order-placed rate", 9, 26, "9%", "26%"), ("Open rate", 18, 21.5, "~18%", "21.5%"), ("Median revenue per user", 140, 167, "$140", "$167")]))
 )
+
+PULLS.update({
+  "One email and a guess": "Every campaign was a single bet, and nobody could tell why it won or lost.",
+  "A test is a property of the step": "No new tool to learn: a checkbox on the step marketers already use.",
+})
 
 def content(slug):
     _n[0] = 0; _pc[0] = 0
