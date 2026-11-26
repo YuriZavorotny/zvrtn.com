@@ -1205,11 +1205,15 @@ SR_CSS = """<style>
 /* stages */
 .chb{margin-top:calc(56*var(--u))}
 .ch{margin-top:calc(36*var(--u))}
-.cb{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(14*var(--u));align-items:end;max-width:calc(560*var(--u))}
+.cb{display:grid;grid-template-columns:repeat(4,1fr);min-height:calc(300*var(--u));gap:calc(14*var(--u));align-items:end;max-width:calc(560*var(--u))}
 .cb>div{position:relative;display:flex;flex-direction:column;justify-content:flex-end;outline:none}
 .cb i{display:block;width:calc(40*var(--u));min-width:28px;background:#b9b7b0;border-radius:4px 4px 0 0;transition:opacity .2s}
 .cb .fin i{background:var(--ink)}
-.cb .v{font-family:var(--serif);font-size:max(30px,calc(30*var(--u)));line-height:1;margin-bottom:.25em}
+.cb .v{font-family:var(--mono);font-weight:500;font-size:var(--lbl);line-height:1;letter-spacing:.04em;font-variant-numeric:tabular-nums;margin-bottom:.7em}
+.cb i{height:var(--h)}
+.ch.anim .cb i{height:0;transition:height 1.4s cubic-bezier(.16,1,.3,1),opacity .2s}
+.ch.anim.go .cb i{height:var(--h)}
+.ch.anim .cb>div:nth-child(2) i{transition-delay:.14s}.ch.anim .cb>div:nth-child(3) i{transition-delay:.28s}.ch.anim .cb>div:nth-child(4) i{transition-delay:.42s}
 .cb .lr .v{font-family:var(--mono);font-weight:500;font-size:var(--lbs);text-transform:uppercase;letter-spacing:.04em;color:var(--gray)}
 .cb b{border-top:1px solid var(--line);padding-top:.6em;font-family:var(--grot);font-weight:700;font-size:max(15px,calc(11*var(--u)))}
 .cb .n{font-size:max(13px,calc(9.4*var(--u)));line-height:1.35;color:var(--soft);min-height:2.7em}
@@ -1248,6 +1252,15 @@ p.modes[mode].forEach(function(qa,n){
 M.forEach(function(m){var b=el('button',null,m[1]);b.type='button';b.dataset.m=m[0];b.onclick=function(){mode=m[0];show()};md.appendChild(b)});
 P.forEach(function(p,i){var b=el('button');b.type='button';var a=el('i','av',p.name[0]);a.style.background=COL[i];b.appendChild(a);var w=el('div');w.appendChild(el('b',null,p.name));w.appendChild(el('span',null,p.seg));b.appendChild(w);b.onclick=function(){cur=i;show()};pp.appendChild(b)});
 show()})();</script>"""
+
+CH_JS = """<script>(function(){var f=document.querySelector('figure.ch');if(!f)return;
+if(matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window))return;
+f.classList.add('anim');var vs=[].slice.call(f.querySelectorAll('.v'));
+vs.forEach(function(e){e.textContent='+0%'});
+function run(){f.classList.add('go');vs.forEach(function(e,i){var to=parseFloat(e.dataset.v),dec=to%1?1:0,t0=null,D=1400,del=i*140;
+ function step(ts){if(t0===null)t0=ts;var p=Math.min(1,Math.max(0,(ts-t0-del)/D)),k=1-Math.pow(1-p,3);e.textContent='+'+(to*k).toFixed(dec)+'%';if(p<1)requestAnimationFrame(step)}
+ requestAnimationFrame(step)})}
+var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){io.disconnect();run()}},{threshold:.35});io.observe(f)})();</script>"""
 
 def pvid(n, label):
     return ('<div class="vshot"><video src="v/%s.mp4" poster="v/%s.jpg" muted loop playsinline preload="metadata" disablepictureinpicture aria-label="%s"></video></div>' % (n, n, label))
@@ -1299,11 +1312,11 @@ def profi_content():
            '<p class="lbl gray cap">A check of the kind we ran between releases. Quotes paraphrase the personas’ prompts</p>')
     bars = [("I", "Shortlist of three", 21, "+21%"), ("II", "Review highlights", 13, "+13%"), ("III", "LLM picks and explains", 18, "+18%"), ("IV", "Same LLM, grounded", 23.5, "+23.5%")]
     chart = ('<figure class="ch" aria-label="Client-to-contact conversion lift by iteration"><div class="cb">' +
-             "".join('<div class="c%s" tabindex="0"><span class="v">%s</span><i style="height:calc(%s * var(--u))"></i><b>%s</b><span class="n">%s</span>'
-                     '<span class="tt">Iteration %s: %s. %s</span></div>' % (" fin" if k == "IV" else "", t, round(v / 25 * 230, 1) if v else 6, k, esc(n), k, esc(n), "client-to-contact conversion " + t + " against variant A") for k, n, v, t in bars) +
+             "".join('<div class="c%s" tabindex="0"><span class="v" data-v="%s">%s</span><i style="--h:calc(%s * var(--u))"></i><b>%s</b><span class="n">%s</span>'
+                     '<span class="tt">Iteration %s: %s. %s</span></div>' % (" fin" if k == "IV" else "", v, t, round(v / 25 * 230, 1) if v else 6, k, esc(n), k, esc(n), "client-to-contact conversion " + t + " against variant A") for k, n, v, t in bars) +
              '</div><figcaption class="lbl gray cap">Conversion lift of each iteration vs the original</figcaption>'
              '<table class="vh"><caption>Conversion lift by iteration</caption><tr><th>Iteration</th><th>Lift</th></tr>' +
-             "".join('<tr><td>%s</td><td>%s</td></tr>' % (k, t) for k, n, v, t in bars) + '</table></figure>')
+             "".join('<tr><td>%s</td><td>%s</td></tr>' % (k, t) for k, n, v, t in bars) + '</table></figure>' + CH_JS)
     return (
       company(body(ps("Profi is a large service marketplace: tutors, repair, beauty, home services. A client describes a task, specialists reply with offers, and the client picks who to work with.",
                       "Tutoring is one of its biggest verticals. That’s where I worked, in the growth team."))) +
