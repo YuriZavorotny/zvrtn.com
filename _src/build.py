@@ -791,7 +791,7 @@ def og(cur, title):
     return ('<meta name="description" content="%s">\n<meta property="og:type" content="website">\n<meta property="og:site_name" content="Yuri Zavorotny">\n'
             '<meta property="og:title" content="%s">\n<meta property="og:description" content="%s">\n<meta property="og:url" content="%s%s">\n'
             '<meta property="og:image" content="%s%s">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
-            '<meta name="twitter:card" content="summary_large_image">\n<meta name="theme-color" content="#ecebe8">') % (esc(desc), esc(title), esc(desc), SITE, page, SITE, img)
+            '<meta name="twitter:card" content="summary_large_image">\n<meta name="theme-color" content="#ecebe8">') % (esc(desc), esc(title), esc(desc), SITE, page, SITE, img + "?v=2")
 
 def shell(cur, title, main, scripts="", pre="", main_cls="page", body_cls=""):
     return f'''<!doctype html>
